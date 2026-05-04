@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Strength Almanac — Powerlifting Warmup Calculator & Nutrition Timing Tool</title>
+  <meta name="description" content="Free powerlifting tools built by a competitive USAPL lifter and coach. RPE-based warmup calculator, plate loader with IPF color coding, and nutrition timing planner for strength athletes.">
+  <meta name="keywords" content="powerlifting warmup calculator, RPE warmup, plate loader, nutrition timing powerlifting, USAPL, strength training warmup, RPE calculator, deadlift warmup, squat warmup, bench warmup">
+  <meta name="author" content="The Strength Almanac">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://thestrengthalimanac.com/">
+
+  <!-- Open Graph (Facebook, Discord, iMessage link previews) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The Strength Almanac — Free Powerlifting Calculator Tools">
+  <meta property="og:description" content="RPE-based warmup calculator, plate loader, and nutrition timing planner. Built by a competitive USAPL lifter and coach. Free forever.">
+  <meta property="og:url" content="https://thestrengthalimanac.com/">
+  <meta property="og:site_name" content="The Strength Almanac">
+  <meta property="og:image" content="https://thestrengthalimanac.com/og-image.png">
+
+  <!-- Twitter/X card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Strength Almanac — Free Powerlifting Tools">
+  <meta name="twitter:description" content="RPE warmup calculator, plate loader, and nutrition timing. Built by a USAPL lifter and coach.">
+  <meta name="twitter:image" content="https://thestrengthalimanac.com/og-image.png">
+
+  <!-- Structured data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "The Strength Almanac",
+    "description": "Free powerlifting warmup calculator with RPE-based loading, IPF-standard plate loader, and nutrition timing planner for strength athletes.",
+    "url": "https://thestrengthalimanac.com/",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": {
+      "@type": "Person",
+      "name": "The Strength Almanac",
+      "sameAs": "https://www.instagram.com/the_strength_almanac/"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #0f0f0f; --ink2: #3a3a3a; --ink3: #6b6b6b;
+      --paper: #f5f1ea; --paper2: #ede9e0; --paper3: #d9d4c8;
+      --red: #c0392b; --red2: #e74c3c;
+      --border: 1px solid #c8c2b4;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --display: 'Bebas Neue', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); font-family: var(--sans); color: var(--ink); line-height: 1.6; }
+
+    /* ── APP SHELL ── */
+    .app { max-width: 960px; margin: 0 auto; border-left: 2px solid var(--ink); border-right: 2px solid var(--ink); min-height: 100vh; }
+    .header { background: var(--ink); padding: 20px 24px 16px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .logo { font-family: var(--display); font-size: 42px; letter-spacing: 2px; line-height: 1; color: #f5f1ea; }
+    .logo span { color: var(--red2); }
+    .header-links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .header-links a { color: var(--paper3); font-family: var(--mono); font-size: 10px; letter-spacing: 1px; text-decoration: none; border: 1px solid #444; padding: 4px 10px; transition: all 0.2s; }
+    .header-links a:hover { background: var(--red2); border-color: var(--red2); color: #fff; }
+    .tabs { display: flex; border-bottom: 2px solid var(--ink); background: var(--paper2); overflow-x: auto; }
+    .tab { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; padding: 12px 16px; cursor: pointer; border-right: var(--border); color: var(--ink3); text-transform: uppercase; user-select: none; white-space: nowrap; flex-shrink: 0; }
+    .tab:hover { background: var(--paper3); color: var(--ink); }
+    .tab.active { background: var(--ink); color: var(--paper); font-weight: 500; }
+    .panel { display: none; padding: 24px; }
+    .panel.active { display: block; }
+
+    /* ── FORM ELEMENTS ── */
+    .fl { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--ink3); text-transform: uppercase; margin-bottom: 4px; }
+    .fg { margin-bottom: 14px; }
+    input[type=number], select { width: 100%; border: var(--border); background: var(--paper2); font-family: var(--mono); font-size: 14px; padding: 8px 12px; color: var(--ink); outline: none; -webkit-appearance: none; appearance: none; border-radius: 0; }
+    input[type=number]:focus, select:focus { border-color: var(--ink); background: #fff; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .idiv { font-family: var(--mono); font-size: 9px; color: var(--ink3); letter-spacing: 2px; text-transform: uppercase; padding: 8px 0 4px; border-top: var(--border); margin-top: 4px; margin-bottom: 2px; }
+    .mtog { display: flex; border: var(--border); overflow: hidden; margin-bottom: 14px; }
+    .mbtn { flex: 1; font-family: var(--mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 9px 8px; cursor: pointer; border: none; background: var(--paper2); color: var(--ink3); text-align: center; border-radius: 0; }
+    .mbtn.active { background: var(--ink); color: var(--paper); }
+    .utog { display: flex; border: 2px solid var(--ink); overflow: hidden; width: 120px; }
+    .ubtn { flex: 1; font-family: var(--mono); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 8px; cursor: pointer; border: none; background: var(--paper2); color: var(--ink3); text-align: center; font-weight: 500; border-radius: 0; }
+    .ubtn.active { background: var(--ink); color: var(--paper); }
+
+    /* ── RESULT BOXES ── */
+    .rbox { background: var(--ink); color: var(--paper); padding: 16px 20px; margin-top: 14px; font-family: var(--mono); }
+    .rlbl { font-size: 10px; letter-spacing: 2px; color: var(--paper3); text-transform: uppercase; margin-top: 2px; }
+
+    /* ── WARMUP TABLE ── */
+    .wtbl { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; margin-top: 8px; }
+    .wtbl th { background: var(--ink); color: var(--paper); padding: 8px 10px; text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+    .wtbl td { padding: 8px 10px; border-bottom: var(--border); color: var(--ink); }
+    .wtbl tr:nth-child(even) td { background: var(--paper2); }
+    .wtbl tr.ts td { background: var(--red); color: #fff; font-weight: 500; }
+    .wtbl tr.prep-row td { background: #2a2a2a; color: var(--paper3); font-size: 11px; }
+    .wtbl tr.skip-row td { color: #aaa; font-style: italic; }
+
+    /* ── PLATE LOADER ── */
+    .bar-wrap { background: var(--paper2); border: var(--border); display: flex; align-items: center; justify-content: center; min-height: 110px; padding: 12px; overflow-x: auto; }
+    .bar-assy { display: inline-flex; align-items: center; flex-shrink: 0; }
+    .bar-shaft { height: 10px; background: #888; width: 60px; border-radius: 2px; flex-shrink: 0; }
+    .bar-sleeve { width: 32px; height: 6px; background: #888; border-radius: 2px; flex-shrink: 0; }
+    .collar { width: 12px; height: 32px; background: #666; border: 1px solid #444; border-radius: 3px; flex-shrink: 0; margin: 0 2px; }
+    .plate { border-radius: 2px; margin: 0 1px; flex-shrink: 0; }
+    .mc { background: var(--paper2); border: var(--border); padding: 10px 12px; }
+    .mv { font-family: var(--display); font-size: 22px; color: var(--red); line-height: 1.1; }
+    .ml { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; color: var(--ink3); text-transform: uppercase; margin-top: 2px; }
+    .sinfo { background: var(--paper2); border: var(--border); padding: 10px 12px; margin-top: 10px; font-family: var(--mono); font-size: 12px; }
+    .sw { font-family: var(--display); font-size: 28px; color: var(--red); line-height: 1; }
+    .sd { color: var(--ink3); font-size: 11px; margin-top: 4px; }
+    .lsw { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 4px; border: 1px solid rgba(0,0,0,0.2); }
+
+    /* ── NUTRITION ── */
+    .totals-box { background: var(--ink); padding: 16px 20px; margin-top: 14px; }
+    .totals-grid { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 10px; }
+    .total-cell { padding: 8px 12px; border-right: 1px solid #2a2a2a; }
+    .total-cell:last-child { border-right: none; }
+    .total-lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--ink3); text-transform: uppercase; }
+    .total-val { font-family: var(--display); font-size: 32px; line-height: 1.1; margin-top: 2px; }
+    .nn-box { background: var(--paper2); border: var(--border); padding: 14px 16px; margin-top: 14px; }
+    .nn-title { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--ink3); text-transform: uppercase; margin-bottom: 8px; }
+    .nn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; }
+    .nn-item { font-family: var(--mono); font-size: 11px; color: var(--ink2); padding: 2px 0; display: flex; align-items: flex-start; gap: 6px; }
+    .nn-check { color: var(--red); flex-shrink: 0; }
+    .nn-supp { font-family: var(--mono); font-size: 10px; color: var(--ink3); margin-top: 6px; padding-top: 6px; border-top: var(--border); }
+    .meal-card { background: #fff; border: var(--border); margin-bottom: 8px; overflow: hidden; }
+    .meal-card.wk { border-left: 4px solid var(--red); }
+    .meal-card.nm { border-left: 4px solid #c8c2b4; }
+    .meal-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 6px; border-bottom: 1px solid var(--paper2); }
+    .meal-name { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink); }
+    .wbadge { background: var(--red); color: #fff; font-family: var(--mono); font-size: 8px; letter-spacing: 1px; padding: 2px 7px; text-transform: uppercase; flex-shrink: 0; }
+    .meal-macros { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--paper2); }
+    .mcell { padding: 6px 10px; text-align: center; }
+    .mcell:not(:last-child) { border-right: 1px solid var(--paper2); }
+    .mlbl { font-family: var(--mono); font-size: 8px; letter-spacing: 1.5px; color: var(--ink3); text-transform: uppercase; }
+    .mval { font-family: var(--display); font-size: clamp(13px,2vw,22px); color: var(--ink); line-height: 1.2; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mval.pro { color: var(--red); }
+    .mnote { padding: 7px 14px; font-family: var(--mono); font-size: 10px; color: var(--ink3); line-height: 1.5; background: #faf9f6; }
+    .meals-title { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--ink3); text-transform: uppercase; margin-bottom: 10px; }
+
+    /* ── GENERATE BUTTON ── */
+    .genbtn { font-family: var(--mono) !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 3px !important; text-transform: uppercase !important; color: #fff !important; background-color: var(--red) !important; border: 3px solid #7b1a10 !important; border-radius: 0 !important; padding: 16px 20px !important; width: 100% !important; display: block !important; margin-top: 12px !important; cursor: pointer !important; -webkit-appearance: none !important; appearance: none !important; outline: none !important; opacity: 1 !important; }
+    .genbtn:hover { background-color: var(--red2) !important; }
+    .genbtn:active { background-color: #922b21 !important; }
+
+    /* ── FOOTER ── */
+    .footer-strip { background: var(--ink); color: var(--paper3); font-family: var(--mono); font-size: 9px; letter-spacing: 1px; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; flex-wrap: wrap; gap: 8px; }
+    .footer-strip a { color: var(--red2); text-decoration: none; }
+
+    /* ── ABOUT SECTION (SEO text) ── */
+    .about-section { border-top: 2px solid var(--ink); background: var(--paper2); padding: 40px 24px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 24px; }
+    .about-section h2 { font-family: var(--display); font-size: 32px; letter-spacing: 1px; color: var(--ink); }
+    .about-section h3 { font-family: var(--display); font-size: 20px; letter-spacing: 1px; color: var(--ink); margin-bottom: 8px; }
+    .about-section p { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 12px; }
+    .about-section p:last-child { margin-bottom: 0; }
+    .about-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--red); text-transform: uppercase; margin-bottom: 8px; }
+    .divider { border: none; border-top: var(--border); margin: 16px 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .g2, .about-grid { grid-template-columns: 1fr; }
+      .g3 { grid-template-columns: 1fr 1fr 1fr; }
+      .totals-grid { grid-template-columns: repeat(2,1fr); }
+      .total-cell:nth-child(2) { border-right: none; }
+      .total-cell:nth-child(3) { border-right: var(--border); border-top: 1px solid #2a2a2a; }
+      .total-cell:nth-child(4) { border-top: 1px solid #2a2a2a; }
+      .logo { font-size: 32px; }
+      .header { padding: 16px; }
+      .panel { padding: 16px; }
+      .nn-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div><div class="logo">THE STRENGTH<br><span>ALMANAC</span></div></div>
+    <div class="header-links">
+      <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener">↗ Instagram</a>
+      <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener">↗ Apply for Coaching</a>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('warmup',this)">Warmup Calculator</div>
+    <div class="tab" onclick="switchTab('plates',this)">Plate Loader</div>
+    <div class="tab" onclick="switchTab('nutrition',this)">Nutrition Timing</div>
+  </div>
+
+  <!-- ══ WARMUP ══════════════════════════════════════════════════════════════ -->
+  <div id="tab-warmup" class="panel active">
+    <div class="g2">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="fl" style="margin-bottom:0">Unit</div>
+          <div class="utog" id="wu-utog">
+            <div class="ubtn active" onclick="setGlobalUnit('lbs',this)">LBS</div>
+            <div class="ubtn" onclick="setGlobalUnit('kg',this)">KG</div>
+          </div>
+        </div>
+        <div class="fg"><div class="fl">Exercise</div>
+          <select id="wu-exercise">
+            <option value="squat">Squat</option>
+            <option value="bench">Bench Press</option>
+            <option value="sumo" selected>Deadlift (Sumo)</option>
+            <option value="conv">Deadlift (Conventional)</option>
+          </select>
+        </div>
+        <div class="fl" style="margin-bottom:6px">Calculation Mode</div>
+        <div class="mtog">
+          <div class="mbtn active" onclick="setWuMode('rpe',this)">RPE Based</div>
+          <div class="mbtn" onclick="setWuMode('manual',this)">Manual Override</div>
+        </div>
+        <div id="wu-rpe">
+          <div class="idiv">Last Session</div>
+          <div class="g3">
+            <div class="fg"><div class="fl">Weight</div><input type="number" id="wu-lw" value="465" min="1"></div>
+            <div class="fg"><div class="fl">Reps</div><input type="number" id="wu-lr" value="3" min="1" max="10"></div>
+            <div class="fg"><div class="fl">RPE</div>
+              <select id="wu-lrpe">
+                <option>10</option><option>9.5</option><option>9</option><option>8.5</option>
+                <option>8</option><option>7.5</option><option>7</option><option selected>6.5</option>
+                <option>6</option><option>5.5</option><option>5</option>
+              </select>
+            </div>
+          </div>
+          <div class="idiv">Today's Target</div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Goal Reps</div><input type="number" id="wu-gr" value="5" min="1" max="10"></div>
+            <div class="fg"><div class="fl">Goal RPE</div>
+              <select id="wu-grpe">
+                <option>10</option><option>9.5</option><option>9</option><option>8.5</option>
+                <option>8</option><option>7.5</option><option selected>7</option><option>6.5</option>
+                <option>6</option><option>5.5</option><option>5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="wu-man" style="display:none">
+          <div class="idiv">Top Set</div>
+          <div class="g2">
+            <div class="fg"><div class="fl">Working Weight</div><input type="number" id="wu-mw" value="405" min="1"></div>
+            <div class="fg"><div class="fl">Top Set Reps</div><input type="number" id="wu-mr" value="3" min="1" max="10"></div>
+          </div>
+        </div>
+        <button class="genbtn" id="wu-btn">GENERATE WARMUP</button>
+        <div id="wu-res" style="display:none" class="rbox">
+          <div class="rlbl">Top Set Target</div>
+          <div style="font-family:var(--display);font-size:56px;color:#e74c3c;line-height:1" id="wu-top">—</div>
+          <div style="font-family:var(--display);font-size:28px;color:#f5f1ea;margin-top:2px" id="wu-alt">—</div>
+          <div id="wu-e1rm-row" style="margin-top:12px;padding-top:12px;border-top:1px solid #333">
+            <div class="rlbl">Estimated 1RM</div>
+            <div style="font-family:var(--display);font-size:22px;color:#6b6b6b" id="wu-e1rm">—</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="fl" style="margin-bottom:8px">Warmup Sets</div>
+        <table class="wtbl">
+          <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note</th></tr></thead>
+          <tbody id="wu-tbody">
+            <tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PLATE LOADER ════════════════════════════════════════════════════════ -->
+  <div id="tab-plates" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Plate Loader</div>
+      <div class="utog" id="pl-utog">
+        <div class="ubtn active" onclick="setGlobalUnit('lbs',this)">LBS</div>
+        <div class="ubtn" onclick="setGlobalUnit('kg',this)">KG</div>
+      </div>
+    </div>
+    <div class="fl" style="margin-bottom:6px">Input Mode</div>
+    <div class="mtog" style="max-width:360px;margin-bottom:16px">
+      <div class="mbtn" onclick="setPlMode('manual',this)">Manual Weight</div>
+      <div class="mbtn active" onclick="setPlMode('warmup',this)">From Warmup Sets</div>
+    </div>
+    <div class="g2">
+      <div>
+        <div id="pl-man" style="display:none">
+          <div class="fg"><div class="fl">Total Weight</div><input type="number" id="pl-w" value="" min="1" placeholder="Enter weight..."></div>
+        </div>
+        <div id="pl-wu">
+          <div class="fg"><div class="fl">Select Warmup Set</div>
+            <select id="pl-pick"><option value="">— Generate warmups first —</option></select>
+          </div>
+          <div class="sinfo" id="pl-sinfo" style="display:none">
+            <div class="sw" id="pl-sw">—</div><div class="sd" id="pl-sd">—</div>
+          </div>
+        </div>
+        <div class="idiv" style="border-top:var(--border);margin-top:8px">Bar Setup</div>
+        <div class="g2">
+          <div class="fg"><div class="fl">Bar Type</div>
+            <select id="pl-bar">
+              <option value="20">Standard Olympic (20kg)</option>
+              <option value="15">Women's Olympic (15kg)</option>
+              <option value="11.3">Junior / Curl (11.3kg)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="fg" id="pl-cbar-g" style="display:none"><div class="fl">Custom Bar (kg)</div><input type="number" id="pl-cbar" value="20" min="1" step="0.1"></div>
+        </div>
+        <div class="g2">
+          <div class="fg"><div class="fl">Collar Type</div>
+            <select id="pl-col">
+              <option value="0">No Collars (0kg)</option>
+              <option value="0.45">Thin Spin (~0.45kg ea)</option>
+              <option value="1.1">Standard Clamp (~1.1kg ea)</option>
+              <option value="2.5">Competition (2.5kg ea)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="fg" id="pl-ccol-g" style="display:none"><div class="fl">Custom Collar (kg ea)</div><input type="number" id="pl-ccol" value="1" min="0" step="0.05"></div>
+        </div>
+        <div id="pl-summ" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:6px"></div>
+        <div class="rbox" style="margin-top:12px">
+          <div class="rlbl">Per Side (plates only)</div>
+          <div style="font-family:var(--display);font-size:48px;color:#e74c3c;line-height:1" id="pl-ps">—</div>
+          <div style="margin-top:6px;font-size:10px;letter-spacing:1px;color:#d9d4c8" id="pl-conv">—</div>
+        </div>
+      </div>
+      <div>
+        <div class="fl" style="margin-bottom:6px">Bar Diagram</div>
+        <div class="bar-wrap" id="pl-bar-diagram">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--ink3)">Generate warmups then select a set</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="fl" style="margin-bottom:8px">IPF/IWF Plate Colors</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-family:var(--mono);font-size:10px">
+            <div><span class="lsw" style="background:#c0392b"></span>25kg / 55lbs</div>
+            <div><span class="lsw" style="background:#1a5fa8"></span>20kg / 45lbs</div>
+            <div><span class="lsw" style="background:#e8c020"></span>15kg / 35lbs</div>
+            <div><span class="lsw" style="background:#27a84a"></span>10kg / 25lbs</div>
+            <div><span class="lsw" style="background:#e4e4e4;border:1px solid #aaa"></span>5kg / 10lbs</div>
+            <div><span class="lsw" style="background:#333"></span>2.5kg / 5lbs</div>
+            <div><span class="lsw" style="background:#a8b4bc"></span>1.25kg / 2.5lbs</div>
+            <div><span class="lsw" style="background:#666"></span>Collar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NUTRITION ═══════════════════════════════════════════════════════════ -->
+  <div id="tab-nutrition" class="panel">
+    <div class="g2">
+      <div>
+        <div class="fg"><div class="fl">Daily Protein (g)</div><input type="number" id="nt-p" value="165" min="50" max="400"></div>
+        <div class="fg"><div class="fl">Daily Carbs (g)</div><input type="number" id="nt-c" value="380" min="50" max="800"></div>
+        <div class="fg"><div class="fl">Daily Fats (g)</div><input type="number" id="nt-f" value="60" min="20" max="300"></div>
+        <div class="fg"><div class="fl">Workout Timing</div>
+          <select id="nt-t">
+            <option value="early">Early Morning (pre-breakfast)</option>
+            <option value="late">Late Morning (post-breakfast)</option>
+            <option value="afternoon">Early Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </div>
+        <button class="genbtn" id="nt-btn">GENERATE TIMING PLAN</button>
+        <div class="totals-box">
+          <div class="fl" style="color:var(--ink3);margin-bottom:0">Daily Totals</div>
+          <div class="totals-grid">
+            <div class="total-cell"><div class="total-lbl">Calories</div><div class="total-val" style="color:#f5f1ea" id="nt-cal">—</div></div>
+            <div class="total-cell"><div class="total-lbl">Protein</div><div class="total-val" style="color:#e74c3c" id="nt-po">—</div></div>
+            <div class="total-cell"><div class="total-lbl">Carbs</div><div class="total-val" style="color:#f5f1ea" id="nt-co">—</div></div>
+            <div class="total-cell"><div class="total-lbl">Fats</div><div class="total-val" style="color:#f5f1ea" id="nt-fo">—</div></div>
+          </div>
+        </div>
+        <div class="nn-box">
+          <div class="nn-title">Daily Non-Negotiables</div>
+          <div class="nn-grid">
+            <div class="nn-item"><span class="nn-check">✓</span><span>Veggies with every meal</span></div>
+            <div class="nn-item"><span class="nn-check">✓</span><span>2+ servings fruit daily</span></div>
+            <div class="nn-item"><span class="nn-check">✓</span><span>Fermented foods daily</span></div>
+            <div class="nn-item"><span class="nn-check">✓</span><span>Lean beef + 1 egg minimum</span></div>
+            <div class="nn-item"><span class="nn-check">✓</span><span>Omega-3s (fish 2×/wk or supp)</span></div>
+            <div class="nn-item"><span class="nn-check">✓</span><span>Lean/fat-free dairy daily</span></div>
+          </div>
+          <div class="nn-supp">+ Creatine · Magnesium · D3+K2 · Whey/Casein</div>
+        </div>
+      </div>
+      <div>
+        <div class="meals-title">Meal Timing Plan</div>
+        <div id="nt-meals">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);padding:20px;text-align:center;border:var(--border);background:var(--paper2)">Enter your macros and click generate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>The Strength Almanac · Built for lifters</span>
+    <span>
+      <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener">@the_strength_almanac</a>
+      · <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener">Apply for Coaching</a>
+    </span>
+  </div>
+</div>
+
+<!-- ══ ABOUT / SEO SECTION ═══════════════════════════════════════════════════ -->
+<div class="about-section" style="max-width:960px;margin:0 auto;border-left:2px solid var(--ink);border-right:2px solid var(--ink)">
+  <div class="about-tag">About the tools</div>
+  <h2>Built by a lifter, for lifters</h2>
+  <div class="about-grid">
+    <div>
+      <h3>RPE-Based Warmup Calculator</h3>
+      <p>The warmup calculator uses your last session's performance — weight, reps, and RPE — to calculate your estimated 1-rep max and generate a target weight for today's top set based on your goal reps and RPE. Warmup sets are then built as percentages of that target, specific to each lift.</p>
+      <p>Squats, bench press, sumo deadlift, and conventional deadlift each have their own loading percentages and cues — pause reps, positional work, and set-by-set rep targets — built from real competitive programming protocols used in USAPL powerlifting.</p>
+      <p>The RPE (Rate of Perceived Exertion) scale rates effort from 5 to 10, where 10 is maximum effort and 9 leaves one rep in the tank. Using RPE instead of fixed percentages accounts for daily readiness, sleep, fatigue, and stress — giving you a smarter target every session.</p>
+      <hr class="divider">
+      <h3>Plate Loader</h3>
+      <p>The plate loader calculates exactly which plates to load for any target weight, displayed using official IPF and IWF color coding: red 25kg, blue 20kg, yellow 15kg, green 10kg, white 5kg, black 2.5kg, chrome 1.25kg. Supports standard Olympic bars, women's bars, custom bar weights, and accounts for collar weight including competition collars.</p>
+      <p>Plates are rounded to the nearest loadable increment — no more wondering if 187.3lbs is actually achievable on your bar.</p>
+    </div>
+    <div>
+      <h3>Nutrition Timing Calculator</h3>
+      <p>Strength training performance is heavily influenced by when you eat, not just how much. The nutrition timing planner takes your total daily protein, carbohydrate, and fat targets and distributes them across your day based on your training window — early morning, late morning, afternoon, or evening sessions.</p>
+      <p>Pre- and intra-workout carbohydrate recommendations are based on bodyweight-scaled guidelines. Meal distribution follows evidence-based sport nutrition protocols, with protein spread evenly across 6–7 meals and carbohydrates front-loaded around training. The last snack of the day is automatically removed at lower calorie intakes where it isn't needed.</p>
+      <p>The non-negotiables list covers the daily dietary foundations that support long-term health and recovery — fermented foods, omega-3s, micronutrient variety, and strategic supplementation.</p>
+      <hr class="divider">
+      <h3>About the Coach</h3>
+      <p>The Strength Almanac is built and run by a competitive USAPL powerlifter and strength coach. These tools are the same systems used with real athletes — not generic calculators built from textbook theory. If you're interested in personalized programming, injury management, or competition prep coaching, apply using the link above.</p>
+      <p>Follow <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none">@the_strength_almanac</a> on Instagram for training content, meet prep coverage, and coaching insights.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PLATE DATA ────────────────────────────────────────────────────────────────
+const PLATES=[
+  {kg:25,  color:'#c0392b',border:'#922b21'},
+  {kg:20,  color:'#1a5fa8',border:'#154f8a'},
+  {kg:15,  color:'#e8c020',border:'#b8940a'},
+  {kg:10,  color:'#27a84a',border:'#1e8a3a'},
+  {kg:5,   color:'#e4e4e4',border:'#aaaaaa'},
+  {kg:2.5, color:'#333333',border:'#555555'},
+  {kg:1.25,color:'#a8b4bc',border:'#8a9298'},
+];
+function pH(kg){return kg>=25?72:kg>=20?62:kg>=15?52:kg>=10?42:kg>=5?30:kg>=2.5?22:16;}
+function pW(kg){return kg>=10?16:kg>=5?14:kg>=2.5?12:10;}
+
+// ── RPE TABLE ─────────────────────────────────────────────────────────────────
+const RPE_T={1:[1,0.97775,0.955,0.9385,0.922,0.907,0.892,0.8772,0.863,0.85,0.837,0.824,0.811],2:[0.955,0.9385,0.922,0.907,0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786],3:[0.922,0.9007,0.892,0.8772,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762],4:[0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739],5:[0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707],6:[0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68],7:[0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653],8:[0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626],9:[0.762,0.7505,0.739,0.723,0.701,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599],10:[0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599,0.5855,0.572]};
+const RPE_I={10:0,9.5:1,9:2,8.5:3,8:4,7.5:5,7:6,6.5:7,6:8,5.5:9,5:10,4.5:11,4:12};
+function rpeF(reps,rpe){const r=Math.min(10,Math.max(1,Math.round(reps)));const row=RPE_T[r];if(!row)return 0.8;const i=RPE_I[parseFloat(rpe)];return i!==undefined?row[i]:row[0];}
+
+// ── WARMUP SCHEMES ────────────────────────────────────────────────────────────
+const SCHEMES={
+  squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:_=>''},
+  bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:_=>''},
+  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:s=>s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':''},
+  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:s=>s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':''}
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let gUnit='lbs',wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
+
+function rwKg(r){const ps=Math.max(0,(r-20))/2;return 20+Math.round(ps/1.25)*1.25*2;}
+function rwLb(r){const ps=Math.max(0,(r-45))/2;return 45+Math.round(ps/2.5)*2.5*2;}
+function dW(kg,isKg){return isKg?rwKg(kg).toFixed(1)+' kg':rwLb(kg*2.20462).toFixed(1)+' lbs';}
+function dWKg(kg,isKg){return isKg?rwKg(kg):rwLb(kg*2.20462)/2.20462;}
+
+function syncToggles(u){
+  ['wu-utog','pl-utog'].forEach(id=>{
+    const t=document.getElementById(id);if(!t)return;
+    t.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  });
+}
+function setGlobalUnit(u,el){gUnit=u;syncToggles(u);if(lastKg!==null)renderPlates(lastKg);}
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');
+}
+function setWuMode(m,el){
+  wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  document.getElementById('wu-rpe').style.display=m==='rpe'?'block':'none';
+  document.getElementById('wu-man').style.display=m==='manual'?'block':'none';
+  document.getElementById('wu-e1rm-row').style.display=m==='rpe'?'block':'none';
+}
+function setPlMode(m,el){
+  plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  document.getElementById('pl-man').style.display=m==='manual'?'block':'none';
+  document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';
+  if(m==='warmup')populatePicker();else if(lastKg!==null)renderPlates(lastKg);
+}
+function getBarKg(){const v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||20:parseFloat(v);}
+function getColKg(){const v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
+function rerender(){
+  if(plMode==='warmup'){const idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx])renderPlates(warmupSets[idx].weightKg);}
+  else{const v=parseFloat(document.getElementById('pl-w').value);if(v>0){const kg=gUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
+}
+function wireControls(){
+  ['pl-bar','pl-col','pl-cbar','pl-ccol','pl-w','pl-pick'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.addEventListener('change',function(){
+      document.getElementById('pl-cbar-g').style.display=document.getElementById('pl-bar').value==='custom'?'block':'none';
+      document.getElementById('pl-ccol-g').style.display=document.getElementById('pl-col').value==='custom'?'block':'none';
+      if(id==='pl-pick')pickWarmupSet();else rerender();
+    });
+    el.addEventListener('input',function(){if(id==='pl-w'||id==='pl-cbar'||id==='pl-ccol')rerender();});
+  });
+  document.getElementById('wu-btn').addEventListener('click',calcWarmup);
+  document.getElementById('nt-btn').addEventListener('click',calcNutrition);
+}
+
+// ── WARMUP ────────────────────────────────────────────────────────────────────
+function calcWarmup(){
+  const isKg=gUnit==='kg',scheme=SCHEMES[document.getElementById('wu-exercise').value];
+  let targetKg,goalReps,goalRPE='—',e1rmKg=null;
+  if(wuMode==='rpe'){
+    const lw=parseFloat(document.getElementById('wu-lw').value),lr=parseInt(document.getElementById('wu-lr').value),lrpe=parseFloat(document.getElementById('wu-lrpe').value);
+    goalReps=parseInt(document.getElementById('wu-gr').value);goalRPE=parseFloat(document.getElementById('wu-grpe').value);
+    if(!lw||!lr)return;
+    const lwKg=isKg?lw:lw/2.20462;e1rmKg=lwKg/rpeF(lr,lrpe);
+    const raw=e1rmKg*rpeF(goalReps,goalRPE);
+    targetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
+    document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs';
+  } else {
+    const mw=parseFloat(document.getElementById('wu-mw').value);goalReps=parseInt(document.getElementById('wu-mr').value);if(!mw)return;targetKg=isKg?mw:mw/2.20462;
+  }
+  const tLbs=targetKg*2.20462;
+  const topD=isKg?targetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
+  const topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg';
+  document.getElementById('wu-top').textContent=topD;document.getElementById('wu-alt').textContent=topA;
+  document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';document.getElementById('wu-res').style.display='block';
+  const s2r=Math.max(goalReps,5),setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
+  const s2Lbs=targetKg*scheme.pcts[2]*2.20462;
+  let s1Kg=null,s1Skip=false;
+  if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;else if(s2Lbs>=250)s1Kg=155/2.20462;else s1Skip=true;
+  warmupSets=[];const rows=[];
+  rows.push(`<tr class="prep-row"><td>PREP</td><td colspan="3">${scheme.prep}</td></tr>`);
+  if(s1Skip){rows.push(`<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>`);}
+  else{
+    const d=dW(s1Kg,isKg),wkg=dWKg(s1Kg,isKg),n=scheme.note(1);
+    rows.push(`<tr><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${setReps[1]}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
+    warmupSets.push({label:'S1',weightDisp:d,weightKg:wkg,reps:setReps[1],note:n});
+  }
+  ['S2','S3','S4','S5','S6'].forEach((lbl,i)=>{
+    const sn=i+2,raw=targetKg*scheme.pcts[sn],d=dW(raw,isKg),wkg=dWKg(raw,isKg),n=scheme.note(sn),r=setReps[sn];
+    rows.push(`<tr><td style="font-family:var(--mono)">${lbl}</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${r}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
+    warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
+  });
+  const tl=goalRPE!=='—'?`@RPE ${goalRPE}`:'';
+  rows.push(`<tr class="ts"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${tl}</td></tr>`);
+  warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
+  document.getElementById('wu-tbody').innerHTML=rows.join('');
+  if(plMode==='warmup')populatePicker();
+}
+
+// ── PLATE LOADER ──────────────────────────────────────────────────────────────
+function populatePicker(){
+  const pk=document.getElementById('pl-pick');pk.innerHTML='';
+  const valid=warmupSets.filter(s=>s.weightKg>0);
+  if(!valid.length){pk.innerHTML='<option value="">— Generate warmups first —</option>';return;}
+  valid.forEach(s=>{const o=document.createElement('option');o.value=warmupSets.indexOf(s);o.textContent=s.label+' — '+s.weightDisp+' × '+s.reps+' reps';pk.appendChild(o);});
+  pk.selectedIndex=0;pickWarmupSet();
+}
+function pickWarmupSet(){
+  const idx=document.getElementById('pl-pick').value;if(idx===''||!warmupSets[idx])return;
+  const s=warmupSets[idx];
+  document.getElementById('pl-sinfo').style.display='block';
+  document.getElementById('pl-sw').textContent=s.weightDisp+' × '+s.reps+' reps';
+  document.getElementById('pl-sd').textContent=s.note||s.label;
+  lastKg=s.weightKg;renderPlates(s.weightKg);
+}
+function mkPlate(p){return `<div class="plate" style="width:${pW(p.kg)}px;height:${pH(p.kg)}px;background:${p.color};border:1px solid ${p.border}"></div>`;}
+function mkCollar(){return `<div class="collar"></div>`;}
+function renderPlates(totalKg){
+  lastKg=totalKg;
+  const barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
+  const isKg=gUnit==='kg',totLbs=totalKg*2.20462;
+  let rem=perSideKg;const loaded=[];
+  PLATES.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
+  let sHTML=Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
+    const pl=PLATES.find(p=>p.kg==kg);
+    return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${kg}</div><div class="ml">kg/side</div></div>`;
+  }).join('');
+  if(colKg>0)sHTML+=`<div class="mc" style="border-left:3px solid #666"><div class="mv">2×${colKg}</div><div class="ml">collars</div></div>`;
+  document.getElementById('pl-summ').innerHTML=sHTML;
+  document.getElementById('pl-ps').textContent=isKg?perSideKg.toFixed(2)+' kg':(perSideKg*2.20462).toFixed(1)+' lbs';
+  document.getElementById('pl-conv').textContent=
+    (isKg?totalKg.toFixed(2)+' kg':totLbs.toFixed(1)+' lbs')+
+    ' = '+(isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(2)+' kg')+
+    ' | Bar: '+barKg+'kg'+(colKg>0?` + 2 collars @ ${colKg}kg ea`:'');
+  const colHTML=colKg>0?mkCollar():'';
+  const leftPlates=[...loaded].reverse().map(mkPlate).join('');
+  const rightPlates=loaded.map(mkPlate).join('');
+  const diag=document.getElementById('pl-bar-diagram');
+  diag.innerHTML=`<div class="bar-assy">
+    <div class="bar-sleeve"></div>
+    <div style="display:flex;align-items:center">${leftPlates}</div>
+    ${colHTML}<div class="bar-shaft"></div>${colHTML}
+    <div style="display:flex;align-items:center">${rightPlates}</div>
+    <div class="bar-sleeve"></div>
+  </div>${!loaded.length?`<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: ${barKg}kg</div>`:''}`;
+}
+
+// ── NUTRITION ─────────────────────────────────────────────────────────────────
+function rn(x){return Math.round(x);}
+function calcNutrition(){
+  const P=parseFloat(document.getElementById('nt-p').value)||165;
+  const C=parseFloat(document.getElementById('nt-c').value)||380;
+  const F=parseFloat(document.getElementById('nt-f').value)||60;
+  const timing=document.getElementById('nt-t').value;
+  const cals=Math.round(P*4+C*4+F*9);
+  const hi=cals>=2500;
+  document.getElementById('nt-cal').textContent=cals;
+  document.getElementById('nt-po').textContent=P+'g';
+  document.getElementById('nt-co').textContent=C+'g';
+  document.getElementById('nt-fo').textContent=F+'g';
+  const p6=P/6,p7=P/7,pp=hi?p7:p6;
+  const LC=timing==='late'?C-90.44-30:C-68-30;
+  const m=(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls=false)=>({meal,badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note,ls});
+  let meals=[];
+  if(timing==='early'){meals=[
+    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
+    m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),
+    m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),
+    m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),
+    m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate — protein + starchy carbs + veggies.'),
+    m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),
+    m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),
+    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true),
+  ];}else if(timing==='late'){meals=[
+    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs — fuel loading before your session.'),
+    m('Pre-Workout',true,0,10,90.44,136,0,5,'Carb-forward. Eat 60 min before training.'),
+    m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs if session exceeds 60 minutes.'),
+    m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),
+    m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),
+    m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),
+    m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true),
+  ];}else if(timing==='afternoon'){meals=[
+    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),
+    m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
+    m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward — largest carb meal, fuels afternoon session.'),
+    m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
+    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
+    m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),
+    m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish — prioritize protein + carbs post-session.'),
+    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
+  ];}else{meals=[
+    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),
+    m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
+    m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day — peak energy window.'),
+    m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
+    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs 30–60 min before. Keep it light.'),
+    m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),
+    m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb — winding down before sleep.'),
+    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
+  ];}
+  const visible=meals.filter(x=>!(x.ls&&!hi));
+  document.getElementById('nt-meals').innerHTML=visible.map(x=>`
+    <div class="meal-card ${x.badge?'wk':'nm'}">
+      <div class="meal-header"><div class="meal-name">${x.meal}</div>${x.badge?'<div class="wbadge">Workout</div>':''}</div>
+      <div class="meal-macros">
+        <div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">${x.pLo}–${x.pHi}g</div></div>
+        <div class="mcell"><div class="mlbl">Carbs</div><div class="mval">${x.cLo}–${x.cHi}g</div></div>
+        <div class="mcell"><div class="mlbl">Fats</div><div class="mval">${x.fLo}–${x.fHi}g</div></div>
+      </div>
+      <div class="mnote">${x.note}</div>
+    </div>`).join('');
+}
+
+wireControls();
+</script>
+</body>
+</html>
