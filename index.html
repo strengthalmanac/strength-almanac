@@ -267,13 +267,20 @@
         </div>
       </div>
       <div>
-        <div class="fl" style="margin-bottom:8px">Warmup Sets</div>
+        <div class="fl" style="margin-bottom:8px">Warmup Sets <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;font-size:9px">— click a set for plate count</span></div>
         <table class="wtbl">
           <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note</th></tr></thead>
           <tbody id="wu-tbody">
             <tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>
           </tbody>
         </table>
+        <!-- Plate count panel — shown on row click -->
+        <div id="wu-plate-panel" style="display:none;margin-top:12px">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;margin-bottom:6px">
+            Plates — <span id="wu-plate-label"></span> — 20kg bar, per side
+          </div>
+          <div id="wu-plate-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -521,6 +528,88 @@ function wireControls(){
   document.getElementById('nt-btn').addEventListener('click',calcNutrition);
 }
 
+// ── LOCALSTORAGE ──────────────────────────────────────────────────────────────
+function saveInputs(){
+  const ex=document.getElementById('wu-exercise').value;
+  const data={
+    unit:gUnit,
+    wuMode,
+    lw:document.getElementById('wu-lw').value,
+    lr:document.getElementById('wu-lr').value,
+    lrpe:document.getElementById('wu-lrpe').value,
+    gr:document.getElementById('wu-gr').value,
+    grpe:document.getElementById('wu-grpe').value,
+    mw:document.getElementById('wu-mw').value,
+    mr:document.getElementById('wu-mr').value,
+  };
+  try{localStorage.setItem('tsa-wu-'+ex, JSON.stringify(data));}catch(e){}
+  // nutrition
+  try{localStorage.setItem('tsa-nt', JSON.stringify({
+    p:document.getElementById('nt-p').value,
+    c:document.getElementById('nt-c').value,
+    f:document.getElementById('nt-f').value,
+    t:document.getElementById('nt-t').value,
+  }));}catch(e){}
+}
+
+function loadInputs(){
+  // nutrition
+  try{
+    const nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
+    if(nt.p)document.getElementById('nt-p').value=nt.p;
+    if(nt.c)document.getElementById('nt-c').value=nt.c;
+    if(nt.f)document.getElementById('nt-f').value=nt.f;
+    if(nt.t)document.getElementById('nt-t').value=nt.t;
+  }catch(e){}
+  // warmup — load for current exercise
+  loadExerciseInputs(document.getElementById('wu-exercise').value);
+}
+
+function loadExerciseInputs(ex){
+  try{
+    const d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
+    if(d.unit){gUnit=d.unit;syncToggles(d.unit);}
+    if(d.wuMode){
+      wuMode=d.wuMode;
+      document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';
+      document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';
+      document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';
+      document.querySelectorAll('.mtog .mbtn').forEach(b=>{
+        b.classList.toggle('active',
+          (b.textContent.trim().toLowerCase().includes('rpe')&&d.wuMode==='rpe')||
+          (b.textContent.trim().toLowerCase().includes('manual')&&d.wuMode==='manual'));
+      });
+    }
+    if(d.lw)document.getElementById('wu-lw').value=d.lw;
+    if(d.lr)document.getElementById('wu-lr').value=d.lr;
+    if(d.lrpe)document.getElementById('wu-lrpe').value=d.lrpe;
+    if(d.gr)document.getElementById('wu-gr').value=d.gr;
+    if(d.grpe)document.getElementById('wu-grpe').value=d.grpe;
+    if(d.mw)document.getElementById('wu-mw').value=d.mw;
+    if(d.mr)document.getElementById('wu-mr').value=d.mr;
+  }catch(e){}
+}
+
+// ── WARMUP PLATE COUNT ────────────────────────────────────────────────────────
+function showWuPlateCount(weightKg, label){
+  // Always 20kg bar, no collars for warmup plate display
+  const BAR_KG=20;
+  const isKg=gUnit==='kg';
+  const perSideKg=Math.max(0,(weightKg-BAR_KG))/2;
+  const availPlates=PLATES.filter(p=>isKg||p.kg<25);
+  let rem=perSideKg;
+  const loaded=[];
+  availPlates.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
+  document.getElementById('wu-plate-label').textContent=label;
+  document.getElementById('wu-plate-cards').innerHTML=
+    Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
+      const pl=PLATES.find(p=>p.kg==kg);
+      return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${kg}</div><div class="ml">kg/side</div></div>`;
+    }).join('') || `<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only (20kg)</div>`;
+  document.getElementById('wu-plate-panel').style.display='block';
+}
+
 // ── WARMUP ────────────────────────────────────────────────────────────────────
 function calcWarmup(){
   const isKg=gUnit==='kg',scheme=SCHEMES[document.getElementById('wu-exercise').value];
@@ -550,19 +639,21 @@ function calcWarmup(){
   if(s1Skip){rows.push(`<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>`);}
   else{
     const d=dW(s1Kg,isKg),wkg=dWKg(s1Kg,isKg),n=scheme.note(1);
-    rows.push(`<tr><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${setReps[1]}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
+    rows.push(`<tr style="cursor:pointer" onclick="showWuPlateCount(${wkg},'S1 — ${d}')"><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${setReps[1]}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
     warmupSets.push({label:'S1',weightDisp:d,weightKg:wkg,reps:setReps[1],note:n});
   }
   ['S2','S3','S4','S5','S6'].forEach((lbl,i)=>{
     const sn=i+2,raw=targetKg*scheme.pcts[sn],d=dW(raw,isKg),wkg=dWKg(raw,isKg),n=scheme.note(sn),r=setReps[sn];
-    rows.push(`<tr><td style="font-family:var(--mono)">${lbl}</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${r}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
+    rows.push(`<tr style="cursor:pointer" onclick="showWuPlateCount(${wkg},'${lbl} — ${d}')"><td style="font-family:var(--mono)">${lbl}</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${r}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
     warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
   });
   const tl=goalRPE!=='—'?`@RPE ${goalRPE}`:'';
-  rows.push(`<tr class="ts"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${tl}</td></tr>`);
+  rows.push(`<tr class="ts" style="cursor:pointer" onclick="showWuPlateCount(${targetKg},'TOP SET — ${topD}')"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${tl}</td></tr>`);
   warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
   document.getElementById('wu-tbody').innerHTML=rows.join('');
+  document.getElementById('wu-plate-panel').style.display='none';
   if(plMode==='warmup')populatePicker();
+  saveInputs();
 }
 
 // ── PLATE LOADER ──────────────────────────────────────────────────────────────
@@ -683,6 +774,18 @@ function calcNutrition(){
 }
 
 wireControls();
+// Load saved inputs on startup
+loadInputs();
+// When exercise changes, load that exercise's saved inputs
+document.getElementById('wu-exercise').addEventListener('change',function(){
+  loadExerciseInputs(this.value);
+  document.getElementById('wu-plate-panel').style.display='none';
+  document.getElementById('wu-res').style.display='none';
+  document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(\'DM Mono\',monospace)">Enter inputs and click Generate</td></tr>';
+  warmupSets=[];
+});
+// Save nutrition when generated
+document.getElementById('nt-btn').addEventListener('click',()=>setTimeout(saveInputs,100),true);
 </script>
 </body>
 </html>
