@@ -629,8 +629,10 @@ function showWuPlateCount(weightKg, label){
   document.getElementById('wu-plate-cards').innerHTML=
     Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
       const pl=PLATES.find(p=>p.kg==kg);
-      return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${kg}</div><div class="ml">kg/side</div></div>`;
-    }).join('') || `<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only (20kg)</div>`;
+      const disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
+      const lbl=isKg?'kg/side':'lbs/side';
+      return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${disp}</div><div class="ml">${lbl}</div></div>`;
+    }).join('') || `<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only (${isKg?'20kg':'44lbs'})</div>`;
   document.getElementById('wu-plate-panel').style.display='block';
 }
 
@@ -709,9 +711,11 @@ function renderPlates(totalKg){
   const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
   let sHTML=Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
     const pl=PLATES.find(p=>p.kg==kg);
-    return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${kg}</div><div class="ml">kg/side</div></div>`;
+    const disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
+    const lbl=isKg?'kg/side':'lbs/side';
+    return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${disp}</div><div class="ml">${lbl}</div></div>`;
   }).join('');
-  if(colKg>0)sHTML+=`<div class="mc" style="border-left:3px solid #666"><div class="mv">2×${colKg}</div><div class="ml">collars</div></div>`;
+  if(colKg>0){const colDisp=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+=`<div class="mc" style="border-left:3px solid #666"><div class="mv">2×${colDisp}</div><div class="ml">collars</div></div>`;}
   document.getElementById('pl-summ').innerHTML=sHTML;
   document.getElementById('pl-ps').textContent=isKg?perSideKg.toFixed(2)+' kg':(perSideKg*2.20462).toFixed(1)+' lbs';
   document.getElementById('pl-conv').textContent=
