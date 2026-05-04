@@ -226,20 +226,11 @@
   <div id="tab-warmup" class="panel active">
     <div class="g2">
       <div>
-        <div class="g2" style="margin-bottom:14px">
-          <div>
-            <div class="fl" style="margin-bottom:4px">Input Unit</div>
-            <div class="utog" id="wu-in-tog" style="width:100%">
-              <div class="ubtn active" style="flex:1" onclick="setInputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" style="flex:1" onclick="setInputUnit('kg',this)">KG</div>
-            </div>
-          </div>
-          <div>
-            <div class="fl" style="margin-bottom:4px">Output Unit</div>
-            <div class="utog" id="wu-out-tog" style="width:100%">
-              <div class="ubtn active" style="flex:1" onclick="setOutputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" style="flex:1" onclick="setOutputUnit('kg',this)">KG</div>
-            </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="fl" style="margin-bottom:0">Unit</div>
+          <div class="utog" id="wu-utog">
+            <div class="ubtn active" onclick="setGlobalUnit('lbs',this)">LBS</div>
+            <div class="ubtn" onclick="setGlobalUnit('kg',this)">KG</div>
           </div>
         </div>
         <div class="fg"><div class="fl">Exercise</div>
@@ -322,23 +313,9 @@
   <div id="tab-plates" class="panel">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Plate Loader</div>
-      <div>
-        <div style="display:flex;gap:12px;align-items:flex-end">
-          <div>
-            <div class="fl" style="margin-bottom:4px">Input</div>
-            <div class="utog" id="pl-in-tog">
-              <div class="ubtn active" onclick="setPlInputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" onclick="setPlInputUnit('kg',this)">KG</div>
-            </div>
-          </div>
-          <div>
-            <div class="fl" style="margin-bottom:4px">Output</div>
-            <div class="utog" id="pl-out-tog">
-              <div class="ubtn active" onclick="setPlOutputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" onclick="setPlOutputUnit('kg',this)">KG</div>
-            </div>
-          </div>
-        </div>
+      <div class="utog" id="pl-utog">
+        <div class="ubtn active" onclick="setGlobalUnit('lbs',this)">LBS</div>
+        <div class="ubtn" onclick="setGlobalUnit('kg',this)">KG</div>
       </div>
     </div>
     <div class="fl" style="margin-bottom:6px">Input Mode</div>
@@ -524,33 +501,20 @@ const SCHEMES={
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let wuInUnit='lbs', wuOutUnit='lbs';  // warmup input/output units
-let plInUnit='lbs', plOutUnit='lbs';  // plate loader input/output units
-let wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
-// legacy alias used by shared code
-Object.defineProperty(window,'gUnit',{get:()=>plOutUnit});
+let gUnit='lbs',wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
 
 function rwKg(r){const ps=Math.max(0,(r-20))/2;return 20+Math.round(ps/1.25)*1.25*2;}
 function rwLb(r){const ps=Math.max(0,(r-45))/2;return 45+Math.round(ps/2.5)*2.5*2;}
 function dW(kg,isKg){return isKg?rwKg(kg).toFixed(1)+' kg':rwLb(kg*2.20462).toFixed(1)+' lbs';}
 function dWKg(kg,isKg){return isKg?rwKg(kg):rwLb(kg*2.20462)/2.20462;}
 
-function setToggle(togId, unit){
-  const t=document.getElementById(togId);if(!t)return;
-  t.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit));
+function syncToggles(u){
+  ['wu-utog','pl-utog'].forEach(id=>{
+    const t=document.getElementById(id);if(!t)return;
+    t.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  });
 }
-function setInputUnit(u,el){
-  wuInUnit=u;setToggle('wu-in-tog',u);saveInputs();
-}
-function setOutputUnit(u,el){
-  wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();
-}
-function setPlInputUnit(u,el){
-  plInUnit=u;setToggle('pl-in-tog',u);rerender();
-}
-function setPlOutputUnit(u,el){
-  plOutUnit=u;setToggle('pl-out-tog',u);if(lastKg!==null)renderPlates(lastKg);
-}
+function setGlobalUnit(u,el){gUnit=u;syncToggles(u);if(lastKg!==null)renderPlates(lastKg);}
 function switchTab(id,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -572,7 +536,7 @@ function getBarKg(){const v=document.getElementById('pl-bar').value;return v==='
 function getColKg(){const v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
 function rerender(){
   if(plMode==='warmup'){const idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx])renderPlates(warmupSets[idx].weightKg);}
-  else{const v=parseFloat(document.getElementById('pl-w').value);if(v>0){const kg=plInUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
+  else{const v=parseFloat(document.getElementById('pl-w').value);if(v>0){const kg=gUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
 }
 function wireControls(){
   ['pl-bar','pl-col','pl-cbar','pl-ccol','pl-w','pl-pick'].forEach(id=>{
@@ -592,7 +556,7 @@ function wireControls(){
 function saveInputs(){
   const ex=document.getElementById('wu-exercise').value;
   const data={
-    inUnit:wuInUnit,outUnit:wuOutUnit,
+    unit:gUnit,
     wuMode,
     lw:document.getElementById('wu-lw').value,
     lr:document.getElementById('wu-lr').value,
@@ -628,8 +592,7 @@ function loadInputs(){
 function loadExerciseInputs(ex){
   try{
     const d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
-    if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);}
-    if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
+    if(d.unit){gUnit=d.unit;syncToggles(d.unit);}
     if(d.wuMode){
       wuMode=d.wuMode;
       document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';
@@ -655,7 +618,7 @@ function loadExerciseInputs(ex){
 function showWuPlateCount(weightKg, label){
   // Always 20kg bar, no collars for warmup plate display
   const BAR_KG=20;
-  const isKg=wuOutUnit==='kg';
+  const isKg=gUnit==='kg';
   const perSideKg=Math.max(0,(weightKg-BAR_KG))/2;
   const availPlates=PLATES.filter(p=>isKg||p.kg<25);
   let rem=perSideKg;
@@ -675,24 +638,23 @@ function showWuPlateCount(weightKg, label){
 
 // ── WARMUP ────────────────────────────────────────────────────────────────────
 function calcWarmup(){
-  const isKgIn=wuInUnit==='kg',isKg=wuOutUnit==='kg',scheme=SCHEMES[document.getElementById('wu-exercise').value];
+  const isKg=gUnit==='kg',scheme=SCHEMES[document.getElementById('wu-exercise').value];
   let targetKg,goalReps,goalRPE='—',e1rmKg=null;
   if(wuMode==='rpe'){
     const lw=parseFloat(document.getElementById('wu-lw').value),lr=parseInt(document.getElementById('wu-lr').value),lrpe=parseFloat(document.getElementById('wu-lrpe').value);
     goalReps=parseInt(document.getElementById('wu-gr').value);goalRPE=parseFloat(document.getElementById('wu-grpe').value);
     if(!lw||!lr)return;
-    const lwKg=isKgIn?lw:lw/2.20462;e1rmKg=lwKg/rpeF(lr,lrpe);
+    const lwKg=isKg?lw:lw/2.20462;e1rmKg=lwKg/rpeF(lr,lrpe);
     const raw=e1rmKg*rpeF(goalReps,goalRPE);
     targetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
-    document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs'; // output unit
+    document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs';
   } else {
-    const mw=parseFloat(document.getElementById('wu-mw').value);goalReps=parseInt(document.getElementById('wu-mr').value);if(!mw)return;targetKg=isKgIn?mw:mw/2.20462;
+    const mw=parseFloat(document.getElementById('wu-mw').value);goalReps=parseInt(document.getElementById('wu-mr').value);if(!mw)return;targetKg=isKg?mw:mw/2.20462;
   }
   const tLbs=targetKg*2.20462;
   const topD=isKg?targetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  const topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg'; // alt always opposite of output
+  const topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg';
   document.getElementById('wu-top').textContent=topD;document.getElementById('wu-alt').textContent=topA;
-  document.getElementById('wu-altlbl').textContent=isKg?'In LBS':'In KG';
   document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';document.getElementById('wu-res').style.display='block';
   const s2r=Math.max(goalReps,5),setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
   const s2Lbs=targetKg*scheme.pcts[2]*2.20462;
@@ -741,7 +703,7 @@ function mkCollar(){return `<div class="collar"></div>`;}
 function renderPlates(totalKg){
   lastKg=totalKg;
   const barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
-  const isKg=plOutUnit==='kg',totLbs=totalKg*2.20462;
+  const isKg=gUnit==='kg',totLbs=totalKg*2.20462;
   let rem=perSideKg;const loaded=[];
   // In LBS mode skip 25kg/55lb plates — uncommon in US gyms, default to 45lb as largest
   const availPlates=PLATES.filter(p=>isKg||p.kg<25);
@@ -847,7 +809,6 @@ document.getElementById('wu-exercise').addEventListener('change',function(){
   loadExerciseInputs(this.value);
   document.getElementById('wu-plate-panel').style.display='none';
   document.getElementById('wu-res').style.display='none';
-  // unit toggles get restored by loadExerciseInputs
   document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(\'DM Mono\',monospace)">Enter inputs and click Generate</td></tr>';
   warmupSets=[];
 });
