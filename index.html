@@ -587,7 +587,9 @@ function renderPlates(totalKg){
   const barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
   const isKg=gUnit==='kg',totLbs=totalKg*2.20462;
   let rem=perSideKg;const loaded=[];
-  PLATES.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  // In LBS mode skip 25kg/55lb plates — uncommon in US gyms, default to 45lb as largest
+  const availPlates=PLATES.filter(p=>isKg||p.kg<25);
+  availPlates.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
   const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
   let sHTML=Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
     const pl=PLATES.find(p=>p.kg==kg);
