@@ -44,11 +44,31 @@
   }
   </script>
 
+  <!-- Google Analytics — only fires after cookie consent -->
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    function loadGA(){
+      if(document.getElementById('ga-script'))return;
+      var s=document.createElement('script');
+      s.id='ga-script';s.async=true;
+      s.src='https://www.googletagmanager.com/gtag/js?id=G-N1GK184C1H';
+      document.head.appendChild(s);
+      s.onload=function(){gtag('config','G-N1GK184C1H',{anonymize_ip:true});};
+    }
+    if(localStorage.getItem('tsa-cookie-ok')==='1')loadGA();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;background:#0f0f0f;color:#d9d4c8;font-family:'DM Mono',monospace;font-size:11px;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:9999;border-top:2px solid #c0392b;flex-wrap:wrap;}
+    #cookie-banner a{color:#e74c3c;text-decoration:none;}
+    #cookie-accept{background:#c0392b;color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;cursor:pointer;flex-shrink:0;}
+    #cookie-accept:hover{background:#e74c3c;}
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --ink: #0f0f0f; --ink2: #3a3a3a; --ink3: #6b6b6b;
@@ -104,6 +124,9 @@
     .wtbl tr.ts td { background: var(--red); color: #fff; font-weight: 500; }
     .wtbl tr.prep-row td { background: #2a2a2a; color: var(--paper3); font-size: 11px; }
     .wtbl tr.skip-row td { color: #aaa; font-style: italic; }
+    .wtbl tbody tr:not(.prep-row):not(.skip-row) { cursor: pointer; }
+    .wtbl tbody tr:not(.prep-row):not(.skip-row):hover td { background: #d9d4c8 !important; }
+    .wtbl tbody tr.ts:hover td { background: #e74c3c !important; }
 
     /* ── PLATE LOADER ── */
     .bar-wrap { background: var(--paper2); border: var(--border); display: flex; align-items: center; justify-content: center; min-height: 110px; padding: 12px; overflow-x: auto; }
@@ -267,17 +290,18 @@
         </div>
       </div>
       <div>
-        <div class="fl" style="margin-bottom:8px">Warmup Sets <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;font-size:9px">— click a set for plate count</span></div>
+        <div class="fl" style="margin-bottom:4px">Warmup Sets</div>
+        <div style="font-family:var(--mono);font-size:10px;color:#c0392b;margin-bottom:8px;letter-spacing:0.5px">&#8595; Click any set row to see plate loading</div>
         <table class="wtbl">
-          <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note</th></tr></thead>
+          <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note &#8594; tap row for plates</th></tr></thead>
           <tbody id="wu-tbody">
             <tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>
           </tbody>
         </table>
         <!-- Plate count panel — shown on row click -->
-        <div id="wu-plate-panel" style="display:none;margin-top:12px">
-          <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;margin-bottom:6px">
-            Plates — <span id="wu-plate-label"></span> — 20kg bar, per side
+        <div id="wu-plate-panel" style="display:none;margin-top:12px;border:1px solid #c8c2b4;padding:12px;background:#ede9e0">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;margin-bottom:8px">
+            Plate Load &#8212; <span id="wu-plate-label" style="color:#0f0f0f"></span> &#8212; 20kg bar, per side
           </div>
           <div id="wu-plate-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px"></div>
         </div>
@@ -786,6 +810,23 @@ document.getElementById('wu-exercise').addEventListener('change',function(){
 });
 // Save nutrition when generated
 document.getElementById('nt-btn').addEventListener('click',()=>setTimeout(saveInputs,100),true);
+</script>
+<!-- Cookie consent banner -->
+<div id="cookie-banner" style="display:none">
+  <span>This site uses cookies for analytics to understand how lifters use the tool. No personal data is sold or shared. <a href="https://www.iubenda.com/privacy-policy/your-id" target="_blank">Privacy policy</a></span>
+  <button id="cookie-accept" onclick="acceptCookies()">Got it</button>
+</div>
+
+<script>
+function acceptCookies(){
+  localStorage.setItem('tsa-cookie-ok','1');
+  document.getElementById('cookie-banner').style.display='none';
+  loadGA();
+}
+// Show banner if not yet accepted
+if(localStorage.getItem('tsa-cookie-ok')!=='1'){
+  document.getElementById('cookie-banner').style.display='flex';
+}
 </script>
 </body>
 </html>
