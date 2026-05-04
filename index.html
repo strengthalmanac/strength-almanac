@@ -258,7 +258,12 @@
         <div id="wu-rpe">
           <div class="idiv">Last Session</div>
           <div class="g3">
-            <div class="fg"><div class="fl">Weight</div><input type="number" id="wu-lw" value="465" min="1"></div>
+            <div class="fg"><div class="fl">Weight</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input type="number" id="wu-lw" value="465" min="1" style="flex:1">
+                <span id="wu-lw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">lbs</span>
+              </div>
+            </div>
             <div class="fg"><div class="fl">Reps</div><input type="number" id="wu-lr" value="3" min="1" max="10"></div>
             <div class="fg"><div class="fl">RPE</div>
               <select id="wu-lrpe">
@@ -283,7 +288,12 @@
         <div id="wu-man" style="display:none">
           <div class="idiv">Top Set</div>
           <div class="g2">
-            <div class="fg"><div class="fl">Working Weight</div><input type="number" id="wu-mw" value="405" min="1"></div>
+            <div class="fg"><div class="fl">Working Weight</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input type="number" id="wu-mw" value="405" min="1" style="flex:1">
+                <span id="wu-mw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">lbs</span>
+              </div>
+            </div>
             <div class="fg"><div class="fl">Top Set Reps</div><input type="number" id="wu-mr" value="3" min="1" max="10"></div>
           </div>
         </div>
@@ -541,6 +551,9 @@ function setToggle(togId, unit){
 }
 function setInputUnit(u,el){
   wuInUnit=u;setToggle('wu-in-tog',u);saveInputs();
+  const lbl=u==='kg'?'kg':'lbs';
+  const lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
+  const mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;
 }
 function setOutputUnit(u,el){
   wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();
@@ -629,7 +642,12 @@ function loadInputs(){
 function loadExerciseInputs(ex){
   try{
     const d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
-    if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);}
+    if(d.inUnit){
+      wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);
+      const lbl=d.inUnit==='kg'?'kg':'lbs';
+      const lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
+      const mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;
+    }
     if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
     if(d.wuMode){
       wuMode=d.wuMode;
