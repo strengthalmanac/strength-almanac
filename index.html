@@ -217,6 +217,35 @@
       .utog { width: 100% !important; }
       .ubtn { font-size: 11px; }
     }
+
+  /* Supplement cards */
+  .supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  .supp-card{background:#fff;border:1px solid #c8c2b4;overflow:hidden}
+  .supp-card.scaled{border-left:4px solid #c0392b}
+  .supp-card.flat{border-left:4px solid #c8c2b4}
+  .supp-header{background:#0f0f0f;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .supp-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#f5f1ea}
+  .supp-tag{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;flex-shrink:0}
+  .supp-tag.wt{background:#c0392b;color:#fff}
+  .supp-tag.ft{background:#3a3a3a;color:#d9d4c8}
+  .supp-body{padding:12px 14px}
+  .supp-dose{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#c0392b;line-height:1}
+  .supp-dose-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#6b6b6b;text-transform:uppercase;margin-top:2px}
+  .supp-timing{font-family:'DM Mono',monospace;font-size:10px;color:#3a3a3a;margin-top:8px;padding-top:8px;border-top:1px solid #ede9e0;line-height:1.6}
+  .supp-note{font-family:'DM Mono',monospace;font-size:10px;color:#c0392b;margin-top:6px;line-height:1.6;font-style:italic}
+  .supp-link{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:#0f0f0f;color:#f5f1ea;padding:8px 12px;text-decoration:none;text-align:center;margin-top:10px}
+  .supp-link:hover{background:#c0392b}
+  .bracket-bar{display:flex;margin-top:8px;border:1px solid #c8c2b4;overflow:hidden}
+  .bseg{flex:1;padding:4px 4px;text-align:center;font-family:'DM Mono',monospace;font-size:8px;color:#6b6b6b;border-right:1px solid #c8c2b4;line-height:1.3}
+  .bseg:last-child{border-right:none}
+  .bseg.on{background:#0f0f0f;color:#f5f1ea}
+  /* Gear cards */
+  .gear-card{background:#fff;border:1px solid #c8c2b4;border-left:4px solid #0f0f0f;overflow:hidden}
+  .gear-header{padding:10px 14px;border-bottom:1px solid #ede9e0}
+  .gear-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#0f0f0f}
+  .gear-link{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:#0f0f0f;color:#f5f1ea;padding:8px 12px;text-decoration:none;text-align:center;margin:10px 14px 12px}
+  .gear-link:hover{background:#c0392b}
+  @media(max-width:640px){.supp-grid,.gear-grid-inner{grid-template-columns:1fr}#gear-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -234,6 +263,8 @@
     <div class="tab active" onclick="switchTab('warmup',this)">Warmup Calculator</div>
     <div class="tab" onclick="switchTab('plates',this)">Plate Loader</div>
     <div class="tab" onclick="switchTab('nutrition',this)">Nutrition Timing</div>
+    <div class="tab" onclick="switchTab('supps',this)">Supplements</div>
+    <div class="tab" onclick="switchTab('products',this)">Recommended Gear</div>
   </div>
 
   <!-- ══ WARMUP ══════════════════════════════════════════════════════════════ -->
@@ -444,13 +475,13 @@
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
             <div class="fl" style="margin-bottom:0">Bodyweight</div>
             <div class="utog" id="nt-bw-tog" style="width:auto">
-              <div class="ubtn active" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('kg',this)">KG</div>
-              <div class="ubtn" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('lbs',this)">LBS</div>
+              <div class="ubtn active" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('lbs',this)">LBS</div>
+              <div class="ubtn" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('kg',this)">KG</div>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
-            <input type="number" id="nt-bw" value="68" min="30" max="500" step="0.5" style="flex:1">
-            <span id="nt-bw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">kg</span>
+            <input type="number" id="nt-bw" value="150" min="30" max="500" step="0.5" style="flex:1">
+            <span id="nt-bw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">lbs</span>
           </div>
         </div>
         <div class="fg"><div class="fl">Daily Protein (g)</div><input type="number" id="nt-p" value="165" min="50" max="400"></div>
@@ -494,6 +525,45 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- SUPPLEMENTS TAB -->
+  <div id="tab-supps" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+      <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Supplement Calculator</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:16px">Based on your bodyweight. Links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
+
+
+
+    <!-- BW Input -->
+    <div style="max-width:400px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="fl" style="margin-bottom:0">Bodyweight</div>
+        <div class="utog" id="supp-bw-tog">
+          <div class="ubtn active" onclick="setSuppBWU('lbs',this)">LBS</div>
+          <div class="ubtn" onclick="setSuppBWU('kg',this)">KG</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <input type="number" id="supp-bw" value="185" min="50" max="500" step="1" style="flex:1">
+        <span id="supp-bw-lbl" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;min-width:24px">lbs</span>
+      </div>
+    </div>
+    <button class="genbtn" id="supp-btn">CALCULATE SUPPLEMENTS</button>
+    <div id="supp-out" style="margin-top:16px">
+      <div style="font-family:var(--mono);font-size:11px;color:#6b6b6b;padding:20px;text-align:center;border:var(--border);background:var(--paper2)">Enter your bodyweight and click calculate</div>
+    </div>
+  </div>
+
+  <!-- RECOMMENDED GEAR TAB -->
+  <div id="tab-products" class="panel">
+    <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:8px">Recommended Gear</div>
+    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:20px">Products I personally use and recommend. Amazon links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
+
+
+
+    <div id="gear-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
   </div>
 
   <div class="footer-strip">
@@ -562,7 +632,7 @@ const SCHEMES={
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let wuInUnit='lbs', wuOutUnit='lbs';  // warmup input/output units
-let ntBWUnit='kg';  // nutrition bodyweight unit
+let ntBWUnit='lbs';  // nutrition bodyweight unit
 let plInUnit='lbs', plOutUnit='lbs';  // plate loader input/output units
 let wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
 // legacy alias used by shared code
@@ -591,12 +661,35 @@ function setBWUnit(u,el){
   ntBWUnit=u;
   el.parentElement.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
   document.getElementById('nt-bw-unit').textContent=u;
-  // Convert current value to new unit
   const current=parseFloat(document.getElementById('nt-bw').value);
   if(!isNaN(current)){
     if(u==='lbs') document.getElementById('nt-bw').value=Math.round(current*2.20462*10)/10;
     else document.getElementById('nt-bw').value=Math.round(current/2.20462*10)/10;
   }
+  // Sync unit toggle and value to supplement tab
+  suppBWUnit=u;
+  var suppTog=document.getElementById('supp-bw-tog');
+  if(suppTog) suppTog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var suppLbl=document.getElementById('supp-bw-lbl');
+  if(suppLbl) suppLbl.textContent=u;
+  syncBWToSupp();
+}
+function syncBWToSupp(){
+  var ntVal=parseFloat(document.getElementById('nt-bw').value);
+  if(isNaN(ntVal)) return;
+  var suppEl=document.getElementById('supp-bw');
+  if(!suppEl) return;
+  // Convert to suppBWUnit
+  var inKg=ntBWUnit==='kg'?ntVal:ntVal/2.20462;
+  suppEl.value=suppBWUnit==='kg'?Math.round(inKg*10)/10:Math.round(inKg*2.20462*10)/10;
+}
+function syncSuppToNT(){
+  var sVal=parseFloat(document.getElementById('supp-bw').value);
+  if(isNaN(sVal)) return;
+  var ntEl=document.getElementById('nt-bw');
+  if(!ntEl) return;
+  var inKg=suppBWUnit==='kg'?sVal:sVal/2.20462;
+  ntEl.value=ntBWUnit==='kg'?Math.round(inKg*10)/10:Math.round(inKg*2.20462*10)/10;
 }
 function setPlInputUnit(u,el){
   plInUnit=u;setToggle('pl-in-tog',u);rerender();
@@ -937,6 +1030,175 @@ function calcNutrition(){
       +'</div>';
   }).join('');
 }
+
+// ── SUPPLEMENT CALCULATOR ─────────────────────────────────────────────────────
+let suppBWUnit='lbs';
+
+function setSuppBWU(u,el){
+  suppBWUnit=u;
+  el.parentElement.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  document.getElementById('supp-bw-lbl').textContent=u;
+  const cur=parseFloat(document.getElementById('supp-bw').value);
+  if(!isNaN(cur)){
+    document.getElementById('supp-bw').value=u==='kg'
+      ?Math.round(cur/2.20462*10)/10
+      :Math.round(cur*2.20462*10)/10;
+  }
+  // Sync unit toggle and value to nutrition tab
+  ntBWUnit=u;
+  var ntTog=document.getElementById('nt-bw-tog');
+  if(ntTog) ntTog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var ntLbl=document.getElementById('nt-bw-unit');
+  if(ntLbl) ntLbl.textContent=u;
+  syncSuppToNT();
+}
+
+function getSuppBWLbs(){
+  const v=parseFloat(document.getElementById('supp-bw').value)||185;
+  return suppBWUnit==='kg'?v*2.20462:v;
+}
+
+function getSuppBracket(lbs){return lbs<=130?0:lbs<=175?1:2;}
+
+function bracketBar(b){
+  const labels=['≤130lbs','130–175lbs','175+lbs'];
+  return '<div class="bracket-bar">'+labels.map(function(l,i){
+    return '<div class="bseg'+(i===b?' on':'')+'">'+l+'</div>';
+  }).join('')+'</div>';
+}
+
+function suppCard(s,b){
+  var dose=s.scaled?s.doses[b]:s.dose;
+  var cls=s.scaled?'scaled':'flat';
+  var tag=s.scaled?'<span class="supp-tag wt">Weight-scaled</span>':'<span class="supp-tag ft">Fixed dose</span>';
+  var bar=s.scaled?bracketBar(b):'';
+  var note=s.note?'<div class="supp-note">'+s.note+'</div>':'';
+  var myp='';
+  var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop →</a>':'';
+  return '<div class="supp-card '+cls+'">'
+    +'<div class="supp-header"><div class="supp-name">'+s.name+'</div>'+tag+'</div>'
+    +'<div class="supp-body">'
+    +'<div class="supp-dose">'+dose+'</div>'
+    +'<div class="supp-dose-lbl">'+s.form+'</div>'
+    +bar
+    +'<div class="supp-timing">'+s.timing+'</div>'
+    +note+myp+link
+    +'</div></div>';
+}
+
+function calcSupps(){
+  var lbs=getSuppBWLbs();
+  var b=getSuppBracket(lbs);
+  var SUPPS=[
+    {
+      name:'Creatine Monohydrate',
+      scaled:true,
+      doses:['5g','7.5g','10g'],
+      form:'Monohydrate form',
+      timing:'Post-workout or anytime daily — consistency matters more than timing',
+      note:null,
+      myprotein:true,
+      link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362',
+    },
+    {
+      name:'Vitamin D3 + K2',
+      scaled:true,
+      doses:['3,000 IU','4,000 IU','5,000 IU'],
+      form:'D3 always paired with K2 (MK-7 form) · K2: 100–200mcg',
+      timing:'With a fat-containing meal for best absorption',
+      note:null,
+      myprotein:false,
+      link:'https://amzn.to/4qIn6Li',
+    },
+    {
+      name:'Magnesium Glycinate',
+      scaled:false,
+      dose:'200–400mg',
+      form:'Glycinate form for absorption',
+      timing:'Before bed',
+      note:'Start at 200mg. If sleep quality is poor or you wake frequently, increase to 400mg. Most find their sweet spot within 1–2 weeks.',
+      myprotein:false,
+      link:'https://amzn.to/49fQwdU',
+    },
+    {
+      name:'Omega-3 (EPA+DHA)',
+      scaled:true,
+      doses:['2g','3g','4g'],
+      form:'EPA+DHA combined — not total fish oil weight',
+      timing:'With a fat-containing meal',
+      note:null,
+      myprotein:false,
+      link:'https://amzn.to/4qsf3lW',
+    },
+    {
+      name:'Whey Protein',
+      scaled:false,
+      dose:'As needed',
+      form:'Whey isolate — to hit daily protein target',
+      timing:'Post-workout or to close daily protein gap',
+      note:null,
+      myprotein:true,
+      link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362',
+    },
+    {
+      name:'Casein Protein',
+      scaled:false,
+      dose:'As needed',
+      form:'Micellar casein — slow release overnight',
+      timing:'Pre-bed meal to support overnight recovery',
+      note:null,
+      myprotein:true,
+      link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362',
+    },
+  ];
+  document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div><div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
+  try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}
+}
+
+// ── RECOMMENDED GEAR ──────────────────────────────────────────────────────────
+function buildGear(){
+  var GEAR=[
+    {name:'Trioral (Electrolytes)',          link:'https://amzn.to/49vQPjt'},
+    {name:'Glycerol with Pump',              link:'https://amzn.to/4pBE7pl'},
+    {name:'Plant Glycerol',                  link:'https://amzn.to/4py2CDW'},
+    {name:'Meal Prep Containers',            link:'https://amzn.to/4gr9Lr1'},
+    {name:'Chalk',                           link:'https://amzn.to/4jCf3gS'},
+    {name:'Lifting Wrist Straps',            link:'https://amzn.to/3LdGKQq'},
+    {name:'Caffeine Energy Gum',             link:'https://amzn.to/4jCf5Fw'},
+    {name:'Rythmhealth — Home Blood Testing', link:'https://rythmhealth.com', code:'RIFE341K', discount:'$20 off'},
+  ];
+  document.getElementById('gear-grid').innerHTML=GEAR.map(function(g){
+    var codeRow=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> — '+g.discount+'</div>':'';
+    var shopLabel=g.code?'Shop Rythmhealth ↗':'Shop on Amazon ↗';
+    return '<div class="gear-card">'
+      +'<div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'
+      +codeRow
+      +'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+shopLabel+'</a>'
+      +'</div>';
+  }).join('');
+}
+
+document.getElementById('supp-btn').addEventListener('click', calcSupps);
+// Sync bodyweight inputs between nutrition and supplement tabs
+document.getElementById('nt-bw').addEventListener('input', function(){syncBWToSupp();});
+document.getElementById('supp-bw').addEventListener('input', function(){
+  syncSuppToNT();
+  try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}
+});
+buildGear();
+// Restore supplement BW inputs
+try{
+  var sd=JSON.parse(localStorage.getItem('tsa-supp')||'{}');
+  if(sd.bw) document.getElementById('supp-bw').value=sd.bw;
+  if(sd.bwUnit){
+    suppBWUnit=sd.bwUnit;
+    var st=document.getElementById('supp-bw-tog');
+    if(st) st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===sd.bwUnit);});
+    var sl=document.getElementById('supp-bw-lbl');
+    if(sl) sl.textContent=sd.bwUnit;
+  }
+}catch(e){}
+
 wireControls();
 // Load saved inputs on startup
 loadInputs();
