@@ -202,6 +202,20 @@
       .header { padding: 16px; }
       .panel { padding: 16px; }
       .nn-grid { grid-template-columns: 1fr; }
+      /* Meal cards on mobile */
+      .meal-macros { grid-template-columns: 1fr 1fr 1fr; }
+      .mval { font-size: 16px !important; }
+      .mlbl { font-size: 8px; }
+      .meal-name { font-size: 12px; }
+      .meal-header { padding: 8px 10px 5px; flex-wrap: wrap; gap: 4px; }
+      .mnote { font-size: 10px; padding: 6px 10px; }
+      .mcell { padding: 5px 6px; }
+      /* Warmup table on mobile */
+      .wtbl { font-size: 11px; }
+      .wtbl td, .wtbl th { padding: 6px 6px; }
+      /* Nutrition inputs */
+      .utog { width: 100% !important; }
+      .ubtn { font-size: 11px; }
     }
   </style>
 </head>
@@ -426,6 +440,19 @@
   <div id="tab-nutrition" class="panel">
     <div class="g2">
       <div>
+        <div class="fg">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div class="fl" style="margin-bottom:0">Bodyweight</div>
+            <div class="utog" id="nt-bw-tog" style="width:auto">
+              <div class="ubtn active" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('kg',this)">KG</div>
+              <div class="ubtn" style="padding:4px 10px;font-size:11px" onclick="setBWUnit('lbs',this)">LBS</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="number" id="nt-bw" value="68" min="30" max="500" step="0.5" style="flex:1">
+            <span id="nt-bw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">kg</span>
+          </div>
+        </div>
         <div class="fg"><div class="fl">Daily Protein (g)</div><input type="number" id="nt-p" value="165" min="50" max="400"></div>
         <div class="fg"><div class="fl">Daily Carbs (g)</div><input type="number" id="nt-c" value="380" min="50" max="800"></div>
         <div class="fg"><div class="fl">Daily Fats (g)</div><input type="number" id="nt-f" value="60" min="20" max="300"></div>
@@ -535,6 +562,7 @@ const SCHEMES={
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let wuInUnit='lbs', wuOutUnit='lbs';  // warmup input/output units
+let ntBWUnit='kg';  // nutrition bodyweight unit
 let plInUnit='lbs', plOutUnit='lbs';  // plate loader input/output units
 let wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
 // legacy alias used by shared code
@@ -558,6 +586,17 @@ function setInputUnit(u,el){
 function setOutputUnit(u,el){
   wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();
   if(warmupSets.length)calcWarmup();
+}
+function setBWUnit(u,el){
+  ntBWUnit=u;
+  el.parentElement.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  document.getElementById('nt-bw-unit').textContent=u;
+  // Convert current value to new unit
+  const current=parseFloat(document.getElementById('nt-bw').value);
+  if(!isNaN(current)){
+    if(u==='lbs') document.getElementById('nt-bw').value=Math.round(current*2.20462*10)/10;
+    else document.getElementById('nt-bw').value=Math.round(current/2.20462*10)/10;
+  }
 }
 function setPlInputUnit(u,el){
   plInUnit=u;setToggle('pl-in-tog',u);rerender();
@@ -623,6 +662,8 @@ function saveInputs(){
     c:document.getElementById('nt-c').value,
     f:document.getElementById('nt-f').value,
     t:document.getElementById('nt-t').value,
+    bw:document.getElementById('nt-bw').value,
+    bwUnit:ntBWUnit,
   }));}catch(e){}
 }
 
@@ -630,6 +671,13 @@ function loadInputs(){
   // nutrition
   try{
     const nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
+    if(nt.bwUnit){
+      ntBWUnit=nt.bwUnit;
+      const tog=document.getElementById('nt-bw-tog');
+      if(tog)tog.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit));
+      const lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;
+    }
+    if(nt.bw)document.getElementById('nt-bw').value=nt.bw;
     if(nt.p)document.getElementById('nt-p').value=nt.p;
     if(nt.c)document.getElementById('nt-c').value=nt.c;
     if(nt.f)document.getElementById('nt-f').value=nt.f;
@@ -797,66 +845,98 @@ function calcNutrition(){
   const P=parseFloat(document.getElementById('nt-p').value)||165;
   const C=parseFloat(document.getElementById('nt-c').value)||380;
   const F=parseFloat(document.getElementById('nt-f').value)||60;
+  const bwRaw=parseFloat(document.getElementById('nt-bw').value)||68;
+  const BW=ntBWUnit==='lbs'?bwRaw/2.20462:bwRaw; // I2 = bodyweight in kg always
   const timing=document.getElementById('nt-t').value;
-  const cals=Math.round(P*4+C*4+F*9);
-  const hi=cals>=2500;
+  const cals=Math.round(P*4+C*4+F*9);   // H2
+  const hi=cals>=2500;                   // IF(H2<2500,...)
   document.getElementById('nt-cal').textContent=cals;
   document.getElementById('nt-po').textContent=P+'g';
   document.getElementById('nt-co').textContent=C+'g';
   document.getElementById('nt-fo').textContent=F+'g';
-  const p6=P/6,p7=P/7,pp=hi?p7:p6;
-  const LC=timing==='late'?C-90.44-30:C-68-30;
-  const m=(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls=false)=>({meal,badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note,ls});
-  let meals=[];
-  if(timing==='early'){meals=[
-    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
-    m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),
-    m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),
-    m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),
-    m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate — protein + starchy carbs + veggies.'),
-    m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),
-    m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),
-    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true),
-  ];}else if(timing==='late'){meals=[
-    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs — fuel loading before your session.'),
-    m('Pre-Workout',true,0,10,90.44,136,0,5,'Carb-forward. Eat 60 min before training.'),
-    m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs if session exceeds 60 minutes.'),
-    m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),
-    m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),
-    m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),
-    m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true),
-  ];}else if(timing==='afternoon'){meals=[
-    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),
-    m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
-    m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward — largest carb meal, fuels afternoon session.'),
-    m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
-    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
-    m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),
-    m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish — prioritize protein + carbs post-session.'),
-    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
-  ];}else{meals=[
-    m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),
-    m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
-    m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day — peak energy window.'),
-    m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
-    m('Pre-Workout',true,0,10,68,136,0,5,'Fast carbs 30–60 min before. Keep it light.'),
-    m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),
-    m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb — winding down before sleep.'),
-    m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
-  ];}
-  const visible=meals.filter(x=>!(x.ls&&!hi));
-  document.getElementById('nt-meals').innerHTML=visible.map(x=>`
-    <div class="meal-card ${x.badge?'wk':'nm'}">
-      <div class="meal-header"><div class="meal-name">${x.meal}</div>${x.badge?'<div class="wbadge">Workout</div>':''}</div>
-      <div class="meal-macros">
-        <div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">${x.pLo}–${x.pHi}g</div></div>
-        <div class="mcell"><div class="mlbl">Carbs</div><div class="mval">${x.cLo}–${x.cHi}g</div></div>
-        <div class="mcell"><div class="mlbl">Fats</div><div class="mval">${x.fLo}–${x.fHi}g</div></div>
-      </div>
-      <div class="mnote">${x.note}</div>
-    </div>`).join('');
-}
 
+  // Excel variables — exact cell formulas
+  const p6=P/6;   // K2 = B2/6
+  const p7=P/7;   // K3 = B2/7
+  const pp=hi?p7:p6;
+
+  // Pre-WO carbs depend on timing (and bodyweight)
+  // Early/afternoon/evening: D5=BW, E5=BW*2  → LC = C - BW - 30
+  // Late morning:            D18=BW*1.33, E18=BW*2 → LC = C - BW*1.33 - 30
+  const preWO_lo = timing==='late' ? BW*1.33 : BW;   // D5 or D18
+  const preWO_hi = BW*2;                               // E5 or E18
+  const midWO_lo = 30;                                 // D6/D19
+  const LC = C - preWO_lo - midWO_lo;                 // L2 = D2-D5-D6
+
+  const m=(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls=false)=>
+    ({meal,badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note,ls});
+
+  let meals=[];
+
+  if(timing==='early'){
+    // L2 = C - BW - 30
+    meals=[
+      m('Pre-Workout',   true,  0,    10,     BW,        BW*2,      0,                    5,       'Fast carbs + optional protein. 30–60 min before training.'),
+      m('Mid-Workout',   false, 0,    5,      30,        90,        0,                    0,       'Simple carbs only if session exceeds 60 minutes.'),
+      m('Breakfast / Post-Workout',false, pp*.9,pp*1.4, LC*(hi?.10:.12),LC*.23,  F*(hi?.25:.30),F*.35, 'Prioritize protein + moderate carbs to kick off recovery.'),
+      m('Snack 1',       false, 0,    pp*.5,  LC*.15,    LC*.20,    0,                    F*.03,   'Light protein or whole fruit.'),
+      m('Lunch',         false, hi?p7*.9:p6, pp*1.8, LC*(hi?.18:.20),LC*(hi?.33:.36), F*(hi?.25:.30),F*.35, 'Balanced plate — protein + starchy carbs + veggies.'),
+      m('Snack 2',       false, pp*.8,pp*1.5, LC*(hi?.02:.07),LC*(hi?.12:.15), 0,         F*.03,   'Protein-heavy, low carb. Keep it simple.'),
+      m('Dinner',        false, pp*.9,pp*(hi?1.8:1.4), LC*(hi?.18:.20),LC*(hi?.33:.36), F*(hi?.25:.30),F*.33, 'Protein + veggies + moderate carbs.'),
+      m('Snack 3',       false, hi?p7*.9:0, hi?p7*1.4:0, 0, hi?LC*.05:0, 0, hi?F*.05:0, 'Casein protein or cottage cheese before bed.',true),
+    ];
+  } else if(timing==='late'){
+    // L16 = C - BW*1.33 - 30
+    meals=[
+      m('Breakfast',     false, pp*.9,pp*1.4, LC*(hi?.10:.12),LC*.23,  F*(hi?.25:.30),F*.35, 'Moderate carbs — fuel loading before your session.'),
+      m('Pre-Workout',   true,  0,    10,     BW*1.33,   BW*2,      0,                    5,       'Carb-forward. Eat 60 min before training.'),
+      m('Mid-Workout',   false, 0,    5,      30,        90,        0,                    0,       'Simple carbs if session exceeds 60 minutes.'),
+      m('Lunch / Post-Workout',false, pp*.9,pp*(hi?1.8:1.4), LC*(hi?.22:.20),LC*.33, F*(hi?.25:.30),F*.35, 'Prioritize carb replenishment post-session.'),
+      m('Snack 1',       false, pp*.8,pp*1.5, LC*.10,    LC*.20,    0,                    F*.03,   'Protein + light carbs.'),
+      m('Dinner',        false, pp*.9,pp*(hi?1.8:1.4), LC*.10,LC*(hi?.33:.33), F*(hi?.25:.30),F*.33, 'Protein + veggies. Taper carbs toward evening.'),
+      m('Snack 2',       false, hi?p7*.9:0,hi?p7*1.4:0, 0,hi?LC*.05:0, 0,hi?F*.05:0, 'Casein before bed.',true),
+    ];
+  } else if(timing==='afternoon'){
+    // L2 = C - BW - 30
+    meals=[
+      m('Breakfast',     false, pp*.9,pp*1.4, LC*(hi?.10:.12),LC*.23,  F*(hi?.25:.30),F*.35, 'Normal balanced meal to start the day.'),
+      m('Snack 1',       false, pp*.8,pp*1.5, LC*(hi?.02:.07),LC*(hi?.12:.12), 0,         F*.03,   'Protein + light carbs.'),
+      m('Lunch',         false, pp*.9,pp*(hi?1.8:1.4), LC*(hi?.18:.20),LC*(hi?.33:.33), F*(hi?.25:.30),F*.35, 'Carb-forward — largest carb meal, fuels afternoon session.'),
+      m('Snack 2',       false, 0,    pp*.5,  LC*.15,    LC*.20,    0,                    F*.03,   'Pre-workout fuel. Easy to digest.'),
+      m('Pre-Workout',   true,  0,    10,     BW,        BW*2,      0,                    5,       'Fast carbs + optional protein. 30–60 min before training.'),
+      m('Mid-Workout',   false, 0,    5,      30,        90,        0,                    0,       'Intra carbs if session exceeds 60 minutes.'),
+      m('Dinner / Post-Workout',false, pp*.9,pp*(hi?1.8:1.4), LC*(hi?.18:.20),LC*(hi?.33:.33), F*(hi?.25:.30),F*.33, 'Replenish — prioritize protein + carbs post-session.'),
+      m('Snack 3',       false, hi?p7*.9:0,hi?p7*1.4:0, 0,hi?LC*.05:0, 0,hi?F*.05:0, 'Casein protein before bed.',true),
+    ];
+  } else { // evening
+    // L2 = C - BW - 30
+    meals=[
+      m('Breakfast',     false, pp*.9,pp*1.4, LC*(hi?.10:.12),LC*.23,  F*(hi?.25:.30),F*.35, 'Normal balanced meal.'),
+      m('Snack 1',       false, pp*.8,pp*1.5, LC*(hi?.02:.07),LC*(hi?.12:.12), 0,         F*.03,   'Protein + light carbs.'),
+      m('Lunch',         false, pp*.9,pp*(hi?1.8:1.4), LC*(hi?.18:.20),LC*(hi?.33:.33), F*(hi?.25:.30),F*.35, 'Biggest carb meal of the day — peak energy window.'),
+      m('Snack 2',       false, 0,    pp*.5,  LC*.15,    LC*.20,    0,                    F*.03,   'Pre-workout fuel. Easy to digest.'),
+      m('Pre-Workout',   true,  0,    10,     BW,        BW*2,      0,                    5,       'Fast carbs 30–60 min before. Keep it light.'),
+      m('Mid-Workout',   false, 0,    5,      30,        90,        0,                    0,       'Intra carbs if needed for long sessions.'),
+      m('Dinner / Post-Workout',false, pp*.9,pp*(hi?1.8:1.4), 0,LC*.10, F*(hi?.25:.30),F*.33, 'High protein, lower carb — winding down before sleep.'),
+      m('Snack 3',       false, hi?p7*.9:0,hi?p7*1.4:0, 0,hi?LC*.05:0, 0,hi?F*.05:0, 'Casein protein before bed.',true),
+    ];
+  }
+
+  const visible=meals.filter(x=>!(x.ls&&!hi));
+  document.getElementById('nt-meals').innerHTML=visible.map(function(x){
+    var badge = x.badge ? '<div class="wbadge">Workout</div>' : '';
+    var cls = x.badge ? 'wk' : 'nm';
+    return '<div class="meal-card '+cls+'">'
+      +'<div class="meal-header"><div class="meal-name">'+x.meal+'</div>'+badge+'</div>'
+      +'<div class="meal-macros">'
+      +'<div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'&ndash;'+x.pHi+'g</div></div>'
+      +'<div class="mcell"><div class="mlbl">Carbs</div><div class="mval">'+x.cLo+'&ndash;'+x.cHi+'g</div></div>'
+      +'<div class="mcell"><div class="mlbl">Fats</div><div class="mval">'+x.fLo+'&ndash;'+x.fHi+'g</div></div>'
+      +'</div>'
+      +'<div class="mnote">'+x.note+'</div>'
+      +'</div>';
+  }).join('');
+}
 wireControls();
 // Load saved inputs on startup
 loadInputs();
