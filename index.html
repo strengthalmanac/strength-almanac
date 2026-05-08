@@ -45,13 +45,7 @@
     #cookie-accept{background:#c0392b;color:#fff;border:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;cursor:pointer;flex-shrink:0;}
     #cookie-accept:hover{background:#e74c3c;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{
-      --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#6b6b6b;
-      --paper:#f5f1ea;--paper2:#ede9e0;--paper3:#d9d4c8;
-      --red:#c0392b;--red2:#e74c3c;
-      --border:1px solid #c8c2b4;
-      --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Bebas Neue',sans-serif;
-    }
+    :root{--ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#6b6b6b;--paper:#f5f1ea;--paper2:#ede9e0;--paper3:#d9d4c8;--red:#c0392b;--red2:#e74c3c;--border:1px solid #c8c2b4;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Bebas Neue',sans-serif;}
     html{scroll-behavior:smooth;}
     body{background:var(--paper);font-family:var(--sans);color:var(--ink);line-height:1.6;}
     .app{max-width:960px;margin:0 auto;border-left:2px solid var(--ink);border-right:2px solid var(--ink);min-height:100vh;}
@@ -152,29 +146,9 @@
     .barsetup-arrow.open{transform:rotate(90deg);}
     .barsetup-body{display:none;padding-top:10px;}
     .barsetup-body.open{display:block;}
+    .no-rest-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#aaa;white-space:nowrap;}
     .rest-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#6b6b6b;white-space:nowrap;}
-    .rest-tag-top{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#f5f1ea;opacity:0.75;white-space:nowrap;}
-    @media(max-width:640px){
-      .g2,.about-grid{grid-template-columns:1fr;}
-      .totals-grid{grid-template-columns:repeat(2,1fr);}
-      .total-cell:nth-child(2){border-right:none;}
-      .total-cell:nth-child(3){border-right:var(--border);border-top:1px solid #2a2a2a;}
-      .total-cell:nth-child(4){border-top:1px solid #2a2a2a;}
-      .logo{font-size:32px;}
-      .header{padding:16px;}
-      .panel{padding:16px;}
-      .nn-grid{grid-template-columns:1fr;}
-      .wtbl{font-size:11px;}
-      .wtbl td,.wtbl th{padding:6px 6px;}
-      .utog{width:100% !important;}
-      .ubtn{font-size:11px;}
-      .feel-btns{flex-direction:column;}
-      .mval{font-size:16px !important;}
-      .meal-name{font-size:12px;}
-      .meal-header{padding:8px 10px 5px;flex-wrap:wrap;gap:4px;}
-      .mnote{font-size:10px;padding:6px 10px;}
-      .mcell{padding:5px 6px;}
-    }
+    .rest-tag-top{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,0.7);white-space:nowrap;}
     .supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
     .supp-card{background:#fff;border:1px solid #c8c2b4;overflow:hidden;}
     .supp-card.scaled{border-left:4px solid #c0392b;}
@@ -200,7 +174,29 @@
     .gear-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#0f0f0f;}
     .gear-link{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:#0f0f0f;color:#f5f1ea;padding:8px 12px;text-decoration:none;text-align:center;margin:10px 14px 12px;}
     .gear-link:hover{background:#c0392b;}
-    @media(max-width:640px){.supp-grid{grid-template-columns:1fr;}#gear-grid{grid-template-columns:1fr;}}
+    @media(max-width:640px){
+      .g2,.about-grid{grid-template-columns:1fr;}
+      .totals-grid{grid-template-columns:repeat(2,1fr);}
+      .total-cell:nth-child(2){border-right:none;}
+      .total-cell:nth-child(3){border-right:var(--border);border-top:1px solid #2a2a2a;}
+      .total-cell:nth-child(4){border-top:1px solid #2a2a2a;}
+      .logo{font-size:32px;}
+      .header{padding:16px;}
+      .panel{padding:16px;}
+      .nn-grid{grid-template-columns:1fr;}
+      .wtbl{font-size:11px;}
+      .wtbl td,.wtbl th{padding:6px 6px;}
+      .utog{width:100% !important;}
+      .ubtn{font-size:11px;}
+      .feel-btns{flex-direction:column;}
+      .mval{font-size:16px !important;}
+      .meal-name{font-size:12px;}
+      .meal-header{padding:8px 10px 5px;flex-wrap:wrap;gap:4px;}
+      .mnote{font-size:10px;padding:6px 10px;}
+      .mcell{padding:5px 6px;}
+      .supp-grid{grid-template-columns:1fr;}
+      #gear-grid{grid-template-columns:1fr;}
+    }
   </style>
 </head>
 <body>
@@ -299,9 +295,8 @@
           </div>
         </div>
         <button class="genbtn" id="wu-btn">GENERATE WARMUP</button>
-        <!-- Bar Setup collapsible -->
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
-          <span class="barsetup-arrow" id="barsetup-arrow">▶</span>
+          <span class="barsetup-arrow" id="barsetup-arrow">&#9658;</span>
           <span>Bar Setup</span>
         </div>
         <div class="barsetup-body" id="barsetup-body">
@@ -331,40 +326,38 @@
         </div>
         <div id="wu-res" style="display:none" class="rbox">
           <div class="rlbl">Top Set Target</div>
-          <div style="font-family:var(--display);font-size:56px;color:#e74c3c;line-height:1" id="wu-top">—</div>
-          <div style="font-family:var(--display);font-size:28px;color:#f5f1ea;margin-top:2px" id="wu-alt">—</div>
+          <div style="font-family:var(--display);font-size:56px;color:#e74c3c;line-height:1" id="wu-top">-</div>
+          <div style="font-family:var(--display);font-size:28px;color:#f5f1ea;margin-top:2px" id="wu-alt">-</div>
           <div id="wu-e1rm-row" style="margin-top:12px;padding-top:12px;border-top:1px solid #333">
             <div class="rlbl">Estimated 1RM</div>
-            <div style="font-family:var(--display);font-size:22px;color:#6b6b6b" id="wu-e1rm">—</div>
+            <div style="font-family:var(--display);font-size:22px;color:#6b6b6b" id="wu-e1rm">-</div>
           </div>
           <div id="wu-adj-note" style="display:none;margin-top:8px;font-family:var(--mono);font-size:10px;color:#e74c3c;letter-spacing:0.5px"></div>
         </div>
       </div>
       <div>
         <div class="fl" style="margin-bottom:4px">Warmup Sets</div>
-        <div style="font-family:var(--mono);font-size:10px;color:#c0392b;margin-bottom:8px;letter-spacing:0.5px">&#8595; Click any set row to see plate loading</div>
+        <div style="font-family:var(--mono);font-size:10px;color:#c0392b;margin-bottom:8px;letter-spacing:0.5px">Click any row to see plate loading</div>
         <table class="wtbl">
           <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note / Rest</th></tr></thead>
           <tbody id="wu-tbody">
             <tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>
           </tbody>
         </table>
-        <!-- Feel check -->
         <div id="wu-feel-wrap" style="display:none">
           <div class="feel-check">
             <div class="feel-check-lbl">How did that last warmup feel?</div>
             <div class="feel-btns">
-              <button class="feel-btn" id="feel-worse" onclick="setFeel('worse')">&#8595; Worse than normal</button>
+              <button class="feel-btn" id="feel-worse" onclick="setFeel('worse')">&#8595; Worse</button>
               <button class="feel-btn" id="feel-normal" onclick="setFeel('normal')">&#8594; Normal</button>
-              <button class="feel-btn" id="feel-better" onclick="setFeel('better')">&#8593; Better than normal</button>
+              <button class="feel-btn" id="feel-better" onclick="setFeel('better')">&#8593; Better</button>
             </div>
             <div class="feel-adj" id="feel-adj-text"></div>
           </div>
         </div>
-        <!-- Plate count panel -->
         <div id="wu-plate-panel" style="display:none;margin-top:12px;border:1px solid #c8c2b4;padding:12px;background:#ede9e0">
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;margin-bottom:8px">
-            Plate Load &#8212; <span id="wu-plate-label" style="color:#0f0f0f"></span> &#8212; <span id="wu-plate-bar-lbl">20kg bar</span>, per side
+            Plate Load - <span id="wu-plate-label" style="color:#0f0f0f"></span> - <span id="wu-plate-bar-lbl">20kg bar</span>, per side
           </div>
           <div id="wu-plate-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px"></div>
         </div>
@@ -377,15 +370,13 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Plate Loader</div>
       <div style="display:flex;gap:12px;align-items:flex-end">
-        <div>
-          <div class="fl" style="margin-bottom:4px">Input</div>
+        <div><div class="fl" style="margin-bottom:4px">Input</div>
           <div class="utog" id="pl-in-tog">
             <div class="ubtn active" onclick="setPlInputUnit('lbs',this)">LBS</div>
             <div class="ubtn" onclick="setPlInputUnit('kg',this)">KG</div>
           </div>
         </div>
-        <div>
-          <div class="fl" style="margin-bottom:4px">Output</div>
+        <div><div class="fl" style="margin-bottom:4px">Output</div>
           <div class="utog" id="pl-out-tog">
             <div class="ubtn active" onclick="setPlOutputUnit('lbs',this)">LBS</div>
             <div class="ubtn" onclick="setPlOutputUnit('kg',this)">KG</div>
@@ -405,10 +396,10 @@
         </div>
         <div id="pl-wu">
           <div class="fg"><div class="fl">Select Warmup Set</div>
-            <select id="pl-pick"><option value="">— Generate warmups first —</option></select>
+            <select id="pl-pick"><option value="">- Generate warmups first -</option></select>
           </div>
           <div class="sinfo" id="pl-sinfo" style="display:none">
-            <div class="sw" id="pl-sw">—</div><div class="sd" id="pl-sd">—</div>
+            <div class="sw" id="pl-sw">-</div><div class="sd" id="pl-sd">-</div>
           </div>
         </div>
         <div class="idiv" style="border-top:var(--border);margin-top:8px">Bar Setup</div>
@@ -438,9 +429,9 @@
         <div id="pl-summ" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:6px"></div>
         <div class="rbox" style="margin-top:12px">
           <div class="rlbl">Total Weight on Bar</div>
-          <div style="font-family:var(--display);font-size:48px;color:#e74c3c;line-height:1" id="pl-total">—</div>
-          <div style="font-family:var(--display);font-size:24px;color:#6b6b6b;line-height:1;margin-top:4px" id="pl-total-alt">—</div>
-          <div style="margin-top:8px;font-size:10px;letter-spacing:1px;color:#6b6b6b;border-top:1px solid #2a2a2a;padding-top:8px" id="pl-conv">—</div>
+          <div style="font-family:var(--display);font-size:48px;color:#e74c3c;line-height:1" id="pl-total">-</div>
+          <div style="font-family:var(--display);font-size:24px;color:#6b6b6b;line-height:1;margin-top:4px" id="pl-total-alt">-</div>
+          <div style="margin-top:8px;font-size:10px;letter-spacing:1px;color:#6b6b6b;border-top:1px solid #2a2a2a;padding-top:8px" id="pl-conv">-</div>
         </div>
       </div>
       <div>
@@ -497,21 +488,21 @@
         <div class="totals-box">
           <div class="fl" style="color:var(--ink3);margin-bottom:0">Daily Totals</div>
           <div class="totals-grid">
-            <div class="total-cell"><div class="total-lbl">Calories</div><div class="total-val" style="color:#f5f1ea" id="nt-cal">—</div></div>
-            <div class="total-cell"><div class="total-lbl">Protein</div><div class="total-val" style="color:#e74c3c" id="nt-po">—</div></div>
-            <div class="total-cell"><div class="total-lbl">Carbs</div><div class="total-val" style="color:#f5f1ea" id="nt-co">—</div></div>
-            <div class="total-cell"><div class="total-lbl">Fats</div><div class="total-val" style="color:#f5f1ea" id="nt-fo">—</div></div>
+            <div class="total-cell"><div class="total-lbl">Calories</div><div class="total-val" style="color:#f5f1ea" id="nt-cal">-</div></div>
+            <div class="total-cell"><div class="total-lbl">Protein</div><div class="total-val" style="color:#e74c3c" id="nt-po">-</div></div>
+            <div class="total-cell"><div class="total-lbl">Carbs</div><div class="total-val" style="color:#f5f1ea" id="nt-co">-</div></div>
+            <div class="total-cell"><div class="total-lbl">Fats</div><div class="total-val" style="color:#f5f1ea" id="nt-fo">-</div></div>
           </div>
         </div>
         <div class="nn-box">
           <div class="nn-title">Daily Non-Negotiables</div>
           <div class="nn-grid">
-            <div class="nn-item"><span class="nn-check">✓</span><span>Veggies with every meal</span></div>
-            <div class="nn-item"><span class="nn-check">✓</span><span>2+ servings fruit daily</span></div>
-            <div class="nn-item"><span class="nn-check">✓</span><span>Fermented foods daily</span></div>
-            <div class="nn-item"><span class="nn-check">✓</span><span>Lean beef + 1 egg minimum</span></div>
-            <div class="nn-item"><span class="nn-check">✓</span><span>Omega-3s (fish 2×/wk or supp)</span></div>
-            <div class="nn-item"><span class="nn-check">✓</span><span>Lean/fat-free dairy daily</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>Veggies with every meal</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>2+ servings fruit daily</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>Fermented foods daily</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>Lean beef + 1 egg minimum</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>Omega-3s (fish 2x/wk or supp)</span></div>
+            <div class="nn-item"><span class="nn-check">&#10003;</span><span>Lean/fat-free dairy daily</span></div>
           </div>
           <div class="nn-supp">+ Creatine · Magnesium · D3+K2 · Whey/Casein</div>
         </div>
@@ -528,7 +519,7 @@
   <!-- SUPPLEMENTS -->
   <div id="tab-supps" class="panel">
     <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:8px">Supplement Calculator</div>
-    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:16px">Based on your bodyweight. Links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
+    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:16px">Based on your bodyweight. Links are affiliate links - purchasing supports The Strength Almanac at no extra cost to you.</div>
     <div style="max-width:400px;margin-bottom:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
         <div class="fl" style="margin-bottom:0">Bodyweight</div>
@@ -551,15 +542,15 @@
   <!-- RECOMMENDED GEAR -->
   <div id="tab-products" class="panel">
     <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:8px">Recommended Gear</div>
-    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:20px">Products I personally use and recommend. Amazon links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
+    <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:20px">Products I personally use and recommend. Amazon links are affiliate links - purchasing supports The Strength Almanac at no extra cost to you.</div>
     <div id="gear-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
   </div>
 
   <div class="footer-strip">
-    <span>The Strength Almanac · Built for lifters</span>
+    <span>The Strength Almanac - Built for lifters</span>
     <span>
       <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener">@the_strength_almanac</a>
-      · <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener">Apply for Coaching</a>
+      &middot; <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener">Apply for Coaching</a>
     </span>
   </div>
 </div>
@@ -572,12 +563,12 @@
 
 <script>
 var PLATES=[
-  {kg:25,  color:'#c0392b',border:'#922b21'},
-  {kg:20,  color:'#1a5fa8',border:'#154f8a'},
-  {kg:15,  color:'#e8c020',border:'#b8940a'},
-  {kg:10,  color:'#27a84a',border:'#1e8a3a'},
-  {kg:5,   color:'#e4e4e4',border:'#aaaaaa'},
-  {kg:2.5, color:'#333333',border:'#555555'},
+  {kg:25,color:'#c0392b',border:'#922b21'},
+  {kg:20,color:'#1a5fa8',border:'#154f8a'},
+  {kg:15,color:'#e8c020',border:'#b8940a'},
+  {kg:10,color:'#27a84a',border:'#1e8a3a'},
+  {kg:5,color:'#e4e4e4',border:'#aaaaaa'},
+  {kg:2.5,color:'#333333',border:'#555555'},
   {kg:1.25,color:'#a8b4bc',border:'#8a9298'}
 ];
 function pH(kg){return kg>=25?72:kg>=20?62:kg>=15?52:kg>=10?42:kg>=5?30:kg>=2.5?22:16;}
@@ -605,51 +596,37 @@ function rpeF(reps,rpe){
 }
 
 var SCHEMES={
-  squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:function(){return '';}},
-  bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:function(){return '';}},
-  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(){return '';}},
-  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:function(){return '';}}
+  squat:{prep:'Barbell Twist Sequence - Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:function(s){return s<=3?'':''}},
+  bench:{prep:'Bar - 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:function(s){return ''}},
+  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(s){return ''}},
+  conv:{prep:'RDL with bar - 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:function(s){return ''}}
 };
 
 var REST={
-  bench:{
-    s4:'1:00–1:30',s5:'1:30–2:30',s6:'2:00–3:00',
-    top:[{max:6,r:'1:00–1:30'},{max:7,r:'1:30–2:30'},{max:8,r:'2:00–3:00'},{max:8.5,r:'2:30–4:00'},{max:10,r:'3:00–5:30'}]
-  },
-  squat:{
-    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
-    top:[{max:6,r:'1:30–2:00'},{max:7,r:'2:30–3:30'},{max:8,r:'3:00–4:30'},{max:8.5,r:'4:00–5:30'},{max:10,r:'5:00–7:00'}]
-  },
-  sumo:{
-    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
-    top:[{max:6,r:'1:30–2:00'},{max:7,r:'3:00–5:00'},{max:8,r:'3:30–5:30'},{max:8.5,r:'4:00–6:30'},{max:10,r:'5:00–8:00'}]
-  },
-  conv:{
-    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
-    top:[{max:6,r:'1:30–2:00'},{max:7,r:'3:00–5:00'},{max:8,r:'3:30–5:30'},{max:8.5,r:'4:00–6:30'},{max:10,r:'5:00–8:00'}]
-  }
+  bench:{s4:'1:00-1:30',s5:'1:30-2:30',s6:'2:00-3:00',top:[{max:6,r:'1:00-1:30'},{max:7,r:'1:30-2:30'},{max:8,r:'2:00-3:00'},{max:8.5,r:'2:30-4:00'},{max:10,r:'3:00-5:30'}]},
+  squat:{s4:'1:30-2:00',s5:'2:30-3:30',s6:'3:30-5:00',top:[{max:6,r:'1:30-2:00'},{max:7,r:'2:30-3:30'},{max:8,r:'3:00-4:30'},{max:8.5,r:'4:00-5:30'},{max:10,r:'5:00-7:00'}]},
+  sumo:{s4:'1:30-2:00',s5:'2:30-3:30',s6:'3:30-5:00',top:[{max:6,r:'1:30-2:00'},{max:7,r:'3:00-5:00'},{max:8,r:'3:30-5:30'},{max:8.5,r:'4:00-6:30'},{max:10,r:'5:00-8:00'}]},
+  conv:{s4:'1:30-2:00',s5:'2:30-3:30',s6:'3:30-5:00',top:[{max:6,r:'1:30-2:00'},{max:7,r:'3:00-5:00'},{max:8,r:'3:30-5:30'},{max:8.5,r:'4:00-6:30'},{max:10,r:'5:00-8:00'}]}
 };
 
 function getTopRest(ex,rpe){
-  var buckets=REST[ex].top;
-  for(var i=0;i<buckets.length;i++){if(rpe<=buckets[i].max)return buckets[i].r;}
-  return buckets[buckets.length-1].r;
+  var b=REST[ex].top;
+  for(var i=0;i<b.length;i++){if(rpe<=b[i].max)return b[i].r;}
+  return b[b.length-1].r;
 }
-function restTag(txt,isTop){
-  if(!txt)return '';
-  var cls=isTop?'rest-tag-top':'rest-tag';
-  return '<span class="'+cls+'">REST '+txt+'</span>';
-}
+function noRestTag(){return '<span class="no-rest-tag">NO REST</span>';}
+function restTag(txt){return txt?'<span class="rest-tag">REST '+txt+'</span>':'';}
+function restTagTop(txt){return txt?'<span class="rest-tag-top">REST '+txt+'</span>':'';}
 
 var wuInUnit='lbs',wuOutUnit='lbs',ntBWUnit='lbs',plInUnit='lbs',plOutUnit='lbs';
 var wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
 var feelAdj=0,baseTargetKg=null,baseGoalReps=null,baseGoalRPE=null,baseE1rmKg=null;
+var suppBWUnit='lbs';
 
-function rwKg(r,barKg){var b=barKg||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
-function rwLb(r,barLb){var b=barLb||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
+function rwKg(r,b){b=b||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
+function rwLb(r,b){b=b||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
 function dW(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b).toFixed(1)+' kg':rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lbs';}
 function dWKg(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b):rwLb(kg*2.20462,b*2.20462)/2.20462;}
-
 function getWuBarKg(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
 function getWuColKg(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
 function getBarKg(){var v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||20:parseFloat(v);}
@@ -658,37 +635,35 @@ function getColKg(){var v=document.getElementById('pl-col').value;return v==='cu
 function toggleBarSetup(){
   var body=document.getElementById('barsetup-body');
   var arrow=document.getElementById('barsetup-arrow');
-  var open=body.classList.toggle('open');
-  arrow.classList.toggle('open',open);
+  body.classList.toggle('open');
+  arrow.classList.toggle('open',body.classList.contains('open'));
 }
 
 function setFeel(f){
-  ['worse','normal','better'].forEach(function(x){
-    document.getElementById('feel-'+x).className='feel-btn'+(f===x?' active-'+x:'');
-  });
+  ['worse','normal','better'].forEach(function(x){document.getElementById('feel-'+x).className='feel-btn'+(f===x?' active-'+x:'');});
   var adjText=document.getElementById('feel-adj-text');
-  if(f==='worse'){feelAdj=-0.5;adjText.textContent='▼ Top set adjusted down — listen to your body.';adjText.style.color='#6b6b6b';}
-  else if(f==='better'){feelAdj=0.5;adjText.textContent='▲ Top set adjusted up — push it.';adjText.style.color='var(--red)';}
-  else{feelAdj=0;adjText.textContent='No adjustment — proceed as planned.';adjText.style.color='var(--ink3)';}
+  if(f==='worse'){feelAdj=-0.5;adjText.textContent='Down - listen to your body.';adjText.style.color='#6b6b6b';}
+  else if(f==='better'){feelAdj=0.5;adjText.textContent='Up - push it.';adjText.style.color='var(--red)';}
+  else{feelAdj=0;adjText.textContent='No adjustment.';adjText.style.color='var(--ink3)';}
   applyFeelAdj();
 }
 
 function applyFeelAdj(){
   if(baseTargetKg===null)return;
   var isKg=wuOutUnit==='kg';
-  var adjustedTargetKg=baseTargetKg;
+  var adjKg=baseTargetKg;
   var adjNote='';
   if(feelAdj!==0&&baseE1rmKg!==null&&baseGoalReps!==null){
     var adjRPE=Math.min(10,Math.max(5,parseFloat(baseGoalRPE)+feelAdj));
     var raw=baseE1rmKg*rpeF(baseGoalReps,adjRPE);
-    adjustedTargetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
-    var diff=adjustedTargetKg-baseTargetKg;
-    var diffDisp=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lbs';
-    adjNote=(diff>=0?'▲ +':'▼ −')+diffDisp+' from original projection';
+    adjKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
+    var diff=adjKg-baseTargetKg;
+    var diffD=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lbs';
+    adjNote=(diff>=0?'+ ':'-')+diffD+' from original';
   }
-  var tLbs=adjustedTargetKg*2.20462;
-  var topD=isKg?adjustedTargetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(adjustedTargetKg).toFixed(1)+' kg';
+  var tLbs=adjKg*2.20462;
+  var topD=isKg?adjKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
+  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(adjKg).toFixed(1)+' kg';
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
   var adjEl=document.getElementById('wu-adj-note');
@@ -699,56 +674,54 @@ function applyFeelAdj(){
   var exNow=document.getElementById('wu-exercise').value;
   var rpeNow=baseGoalRPE!=='—'?parseFloat(baseGoalRPE):7;
   var topRestNow=getTopRest(exNow,rpeNow);
-  var adjNoteCell=tl+(tl?' · ':'')+restTag(topRestNow,true);
+  var adjCell=tl+(tl?' · ':'')+restTagTop(topRestNow);
   var lastRow=document.querySelector('#wu-tbody tr.ts');
   if(lastRow){
     lastRow.cells[1].textContent=topDLabel;
-    lastRow.cells[3].innerHTML=adjNoteCell;
-    lastRow.onclick=function(){showWuPlateCount(adjustedTargetKg,'TOP SET — '+topDLabel);};
+    lastRow.cells[3].innerHTML=adjCell;
+    lastRow.onclick=function(){showWuPlateCount(adjKg,'TOP SET - '+topDLabel);};
   }
-  var tsIdx=-1;
-  for(var i=0;i<warmupSets.length;i++){if(warmupSets[i].label==='TOP SET'){tsIdx=i;break;}}
-  if(tsIdx>=0){warmupSets[tsIdx].weightDisp=topDLabel;warmupSets[tsIdx].weightKg=adjustedTargetKg;warmupSets[tsIdx].note=tl;}
+  for(var i=0;i<warmupSets.length;i++){
+    if(warmupSets[i].label==='TOP SET'){
+      warmupSets[i].weightDisp=topDLabel;warmupSets[i].weightKg=adjKg;warmupSets[i].note=tl;break;
+    }
+  }
   if(plMode==='warmup')populatePicker();
 }
 
-function setToggle(togId,unit){
-  var t=document.getElementById(togId);if(!t)return;
+function setToggle(id,unit){
+  var t=document.getElementById(id);if(!t)return;
   t.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit);});
 }
 function setInputUnit(u,el){
   wuInUnit=u;setToggle('wu-in-tog',u);saveInputs();
   var lbl=u==='kg'?'kg':'lbs';
-  var lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
-  var mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;
+  var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;
+  var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;
 }
 function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();if(warmupSets.length)calcWarmup();}
 function setBWUnit(u,el){
   ntBWUnit=u;
   el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('nt-bw-unit').textContent=u;
-  var current=parseFloat(document.getElementById('nt-bw').value);
-  if(!isNaN(current)){
-    if(u==='lbs')document.getElementById('nt-bw').value=Math.round(current*2.20462*10)/10;
-    else document.getElementById('nt-bw').value=Math.round(current/2.20462*10)/10;
-  }
+  var cur=parseFloat(document.getElementById('nt-bw').value);
+  if(!isNaN(cur))document.getElementById('nt-bw').value=u==='lbs'?Math.round(cur*2.20462*10)/10:Math.round(cur/2.20462*10)/10;
   suppBWUnit=u;
-  var suppTog=document.getElementById('supp-bw-tog');
-  if(suppTog)suppTog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
-  var suppLbl=document.getElementById('supp-bw-lbl');if(suppLbl)suppLbl.textContent=u;
+  var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=u;
   syncBWToSupp();
 }
 function syncBWToSupp(){
-  var ntVal=parseFloat(document.getElementById('nt-bw').value);if(isNaN(ntVal))return;
-  var suppEl=document.getElementById('supp-bw');if(!suppEl)return;
-  var inKg=ntBWUnit==='kg'?ntVal:ntVal/2.20462;
-  suppEl.value=suppBWUnit==='kg'?Math.round(inKg*10)/10:Math.round(inKg*2.20462*10)/10;
+  var v=parseFloat(document.getElementById('nt-bw').value);if(isNaN(v))return;
+  var el=document.getElementById('supp-bw');if(!el)return;
+  var kg=ntBWUnit==='kg'?v:v/2.20462;
+  el.value=suppBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;
 }
 function syncSuppToNT(){
-  var sVal=parseFloat(document.getElementById('supp-bw').value);if(isNaN(sVal))return;
-  var ntEl=document.getElementById('nt-bw');if(!ntEl)return;
-  var inKg=suppBWUnit==='kg'?sVal:sVal/2.20462;
-  ntEl.value=ntBWUnit==='kg'?Math.round(inKg*10)/10:Math.round(inKg*2.20462*10)/10;
+  var v=parseFloat(document.getElementById('supp-bw').value);if(isNaN(v))return;
+  var el=document.getElementById('nt-bw');if(!el)return;
+  var kg=suppBWUnit==='kg'?v:v/2.20462;
+  el.value=ntBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;
 }
 function setPlInputUnit(u,el){plInUnit=u;setToggle('pl-in-tog',u);rerender();}
 function setPlOutputUnit(u,el){plOutUnit=u;setToggle('pl-out-tog',u);if(lastKg!==null)renderPlates(lastKg);}
@@ -796,23 +769,13 @@ function wireControls(){
 
 function saveInputs(){
   var ex=document.getElementById('wu-exercise').value;
-  var data={inUnit:wuInUnit,outUnit:wuOutUnit,wuMode:wuMode,
-    lw:document.getElementById('wu-lw').value,lr:document.getElementById('wu-lr').value,
-    lrpe:document.getElementById('wu-lrpe').value,gr:document.getElementById('wu-gr').value,
-    grpe:document.getElementById('wu-grpe').value,mw:document.getElementById('wu-mw').value,
-    mr:document.getElementById('wu-mr').value};
-  try{localStorage.setItem('tsa-wu-'+ex,JSON.stringify(data));}catch(e){}
-  try{localStorage.setItem('tsa-nt',JSON.stringify({
-    p:document.getElementById('nt-p').value,c:document.getElementById('nt-c').value,
-    f:document.getElementById('nt-f').value,t:document.getElementById('nt-t').value,
-    bw:document.getElementById('nt-bw').value,bwUnit:ntBWUnit}));}catch(e){}
+  try{localStorage.setItem('tsa-wu-'+ex,JSON.stringify({inUnit:wuInUnit,outUnit:wuOutUnit,wuMode:wuMode,lw:document.getElementById('wu-lw').value,lr:document.getElementById('wu-lr').value,lrpe:document.getElementById('wu-lrpe').value,gr:document.getElementById('wu-gr').value,grpe:document.getElementById('wu-grpe').value,mw:document.getElementById('wu-mw').value,mr:document.getElementById('wu-mr').value}));}catch(e){}
+  try{localStorage.setItem('tsa-nt',JSON.stringify({p:document.getElementById('nt-p').value,c:document.getElementById('nt-c').value,f:document.getElementById('nt-f').value,t:document.getElementById('nt-t').value,bw:document.getElementById('nt-bw').value,bwUnit:ntBWUnit}));}catch(e){}
 }
 function loadInputs(){
   try{
     var nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
-    if(nt.bwUnit){ntBWUnit=nt.bwUnit;var tog=document.getElementById('nt-bw-tog');
-      if(tog)tog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit);});
-      var lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
+    if(nt.bwUnit){ntBWUnit=nt.bwUnit;var tog=document.getElementById('nt-bw-tog');if(tog)tog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit);});var lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
     if(nt.bw)document.getElementById('nt-bw').value=nt.bw;
     if(nt.p)document.getElementById('nt-p').value=nt.p;
     if(nt.c)document.getElementById('nt-c').value=nt.c;
@@ -824,22 +787,9 @@ function loadInputs(){
 function loadExerciseInputs(ex){
   try{
     var d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
-    if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);
-      var lbl=d.inUnit==='kg'?'kg':'lbs';
-      var lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
-      var mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;}
+    if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);var lbl=d.inUnit==='kg'?'kg':'lbs';var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;}
     if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
-    if(d.wuMode){
-      wuMode=d.wuMode;
-      document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';
-      document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';
-      document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';
-      document.querySelectorAll('.mtog .mbtn').forEach(function(b){
-        b.classList.toggle('active',
-          (b.textContent.trim().toLowerCase().includes('rpe')&&d.wuMode==='rpe')||
-          (b.textContent.trim().toLowerCase().includes('manual')&&d.wuMode==='manual'));
-      });
-    }
+    if(d.wuMode){wuMode=d.wuMode;document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';document.querySelectorAll('.mtog .mbtn').forEach(function(b){b.classList.toggle('active',(b.textContent.toLowerCase().includes('rpe')&&d.wuMode==='rpe')||(b.textContent.toLowerCase().includes('manual')&&d.wuMode==='manual'));});}
     if(d.lw)document.getElementById('wu-lw').value=d.lw;
     if(d.lr)document.getElementById('wu-lr').value=d.lr;
     if(d.lrpe)document.getElementById('wu-lrpe').value=d.lrpe;
@@ -853,14 +803,15 @@ function loadExerciseInputs(ex){
 function showWuPlateCount(weightKg,label){
   var barKg=getWuBarKg(),colKg=getWuColKg(),isKg=wuOutUnit==='kg';
   var perSideKg=Math.max(0,(weightKg-barKg-colKg*2))/2;
-  var availPlates=PLATES.filter(function(p){return isKg||p.kg<25;});
+  var avail=PLATES.filter(function(p){return isKg||p.kg<25;});
   var rem=perSideKg,loaded=[];
-  availPlates.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  avail.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
   var counts={};loaded.forEach(function(p){counts[p.kg]=(counts[p.kg]||0)+1;});
   document.getElementById('wu-plate-label').textContent=label;
   document.getElementById('wu-plate-bar-lbl').textContent=barKg+'kg bar'+(colKg>0?' + collars':'');
-  var html=Object.keys(counts).sort(function(a,b){return b-a;}).map(function(kg){
-    var pl=PLATES.filter(function(p){return p.kg==kg;})[0];
+  var keys=Object.keys(counts).sort(function(a,b){return b-a;});
+  var html=keys.map(function(kg){
+    var pl=null;for(var i=0;i<PLATES.length;i++){if(PLATES[i].kg==kg){pl=PLATES[i];break;}}
     var disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[kg]+'x'+disp+'</div><div class="ml">'+(isKg?'kg':'lbs')+'/side</div></div>';
   }).join('');
@@ -888,8 +839,8 @@ function calcWarmup(){
     if(!lw||!lr)return;
     var lwKg=isKgIn?lw:lw/2.20462;
     e1rmKg=lwKg/rpeF(lr,lrpe);
-    var raw=e1rmKg*rpeF(goalReps,goalRPE);
-    targetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
+    var rawT=e1rmKg*rpeF(goalReps,goalRPE);
+    targetKg=isKg?rwKg(rawT):rwLb(rawT*2.20462)/2.20462;
     document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs';
   } else {
     var mw=parseFloat(document.getElementById('wu-mw').value);
@@ -922,43 +873,41 @@ function calcWarmup(){
   rows.push('<tr class="prep-row"><td>PREP</td><td colspan="3">'+scheme.prep+'</td></tr>');
 
   if(s1Skip){
-    rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>');
+    rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
   } else {
-    var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg),n1=scheme.note(1);
-    rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1 \u2014 '+d1+'\')">'
+    var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
+    rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
       +'<td style="font-family:var(--mono)">S1</td>'
       +'<td style="font-family:var(--mono)">'+d1+'</td>'
       +'<td style="font-family:var(--mono)">'+setReps[1]+'</td>'
-      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+n1cell+'</td></tr>');
-    warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setReps[1],note:n1});
+      +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
+    warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setReps[1],note:''});
   }
 
-  var setRestKeys={2:'',3:'',4:'s4',5:'s5',6:'s6'};
+  var setRestMap={2:null,3:null,4:'s4',5:'s5',6:'s6'};
   ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
     var sn=i+2;
     var rawW=targetKg*scheme.pcts[sn];
     var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
-    var n=scheme.note(sn),r=setReps[sn];
-    var restKey=setRestKeys[sn];
-    var rest=restKey?REST[exKey][restKey]:'';
-    var noRestTag=!restKey?'<span class="rest-tag">NO REST</span>':'';
-    var noteCell=n+(n&&rest?' · ':'')+restTag(rest,false)+noRestTag;
-    rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+' \u2014 '+d+'\')">'
+    var r=setReps[sn];
+    var rk=setRestMap[sn];
+    var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
+    rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
       +'<td style="font-family:var(--mono)">'+lbl+'</td>'
       +'<td style="font-family:var(--mono)">'+d+'</td>'
       +'<td style="font-family:var(--mono)">'+r+'</td>'
-      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+noteCell+'</td></tr>');
-    warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
+      +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
+    warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
   });
 
   var rpeVal=goalRPE!=='—'?parseFloat(goalRPE):7;
   var topRest=getTopRest(exKey,rpeVal);
   var tl=goalRPE!=='—'?'@RPE '+goalRPE:'';
-  var topNoteCell=tl+(tl?' · ':'')+restTag(topRest,true);
+  var topCell=tl+(tl?' · ':'')+restTagTop(topRest);
 
-  rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET \u2014 '+topD+'\')">'
+  rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET\')">'
     +'<td>TOP SET</td><td>'+topD+'</td><td>'+goalReps+'</td>'
-    +'<td style="font-size:11px">'+topNoteCell+'</td></tr>');
+    +'<td style="font-size:11px">'+topCell+'</td></tr>');
   warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
 
   document.getElementById('wu-tbody').innerHTML=rows.join('');
@@ -971,11 +920,11 @@ function calcWarmup(){
 function populatePicker(){
   var pk=document.getElementById('pl-pick');pk.innerHTML='';
   var valid=warmupSets.filter(function(s){return s.weightKg>0;});
-  if(!valid.length){pk.innerHTML='<option value="">— Generate warmups first —</option>';return;}
+  if(!valid.length){pk.innerHTML='<option value="">- Generate warmups first -</option>';return;}
   valid.forEach(function(s){
     var o=document.createElement('option');
     o.value=warmupSets.indexOf(s);
-    o.textContent=s.label+' — '+s.weightDisp+' x '+s.reps+' reps';
+    o.textContent=s.label+' - '+s.weightDisp+' x '+s.reps+' reps';
     pk.appendChild(o);
   });
   pk.selectedIndex=0;pickWarmupSet();
@@ -985,7 +934,7 @@ function pickWarmupSet(){
   var s=warmupSets[idx];
   document.getElementById('pl-sinfo').style.display='block';
   document.getElementById('pl-sw').textContent=s.weightDisp+' x '+s.reps+' reps';
-  document.getElementById('pl-sd').textContent=s.note||s.label;
+  document.getElementById('pl-sd').textContent=s.label;
   lastKg=s.weightKg;renderPlates(s.weightKg);
 }
 function mkPlate(p){return '<div class="plate" style="width:'+pW(p.kg)+'px;height:'+pH(p.kg)+'px;background:'+p.color+';border:1px solid '+p.border+'"></div>';}
@@ -995,30 +944,24 @@ function renderPlates(totalKg){
   var barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
   var isKg=plOutUnit==='kg',totLbs=totalKg*2.20462;
   var rem=perSideKg,loaded=[];
-  var availPlates=PLATES.filter(function(p){return isKg||p.kg<25;});
-  availPlates.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  var avail=PLATES.filter(function(p){return isKg||p.kg<25;});
+  avail.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
   var counts={};loaded.forEach(function(p){counts[p.kg]=(counts[p.kg]||0)+1;});
-  var sHTML=Object.keys(counts).sort(function(a,b){return b-a;}).map(function(kg){
-    var pl=PLATES.filter(function(p){return p.kg==kg;})[0];
+  var keys=Object.keys(counts).sort(function(a,b){return b-a;});
+  var sHTML=keys.map(function(kg){
+    var pl=null;for(var i=0;i<PLATES.length;i++){if(PLATES[i].kg==kg){pl=PLATES[i];break;}}
     var disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[kg]+'x'+disp+'</div><div class="ml">'+(isKg?'kg':'lbs')+'/side</div></div>';
   }).join('');
-  if(colKg>0){var colDisp=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+colDisp+'</div><div class="ml">collars</div></div>';}
+  if(colKg>0){var cd=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+cd+'</div><div class="ml">collars</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
   document.getElementById('pl-total').textContent=isKg?totalKg.toFixed(1)+' kg':totLbs.toFixed(1)+' lbs';
   document.getElementById('pl-total-alt').textContent=isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(1)+' kg';
   document.getElementById('pl-conv').textContent='Bar: '+barKg+'kg'+(colKg>0?' + 2 collars @ '+colKg+'kg ea':'')+' | '+perSideKg.toFixed(2)+' kg per side';
   var colHTML=colKg>0?mkCollar():'';
-  var leftPlates=loaded.slice().reverse().map(mkPlate).join('');
-  var rightPlates=loaded.map(mkPlate).join('');
-  var diag=document.getElementById('pl-bar-diagram');
-  diag.innerHTML='<div class="bar-assy">'
-    +'<div class="bar-sleeve"></div>'
-    +'<div style="display:flex;align-items:center">'+leftPlates+'</div>'
-    +colHTML+'<div class="bar-shaft"></div>'+colHTML
-    +'<div style="display:flex;align-items:center">'+rightPlates+'</div>'
-    +'<div class="bar-sleeve"></div>'
-    +'</div>'
+  var lp=loaded.slice().reverse().map(mkPlate).join('');
+  var rp=loaded.map(mkPlate).join('');
+  document.getElementById('pl-bar-diagram').innerHTML='<div class="bar-assy"><div class="bar-sleeve"></div><div style="display:flex;align-items:center">'+lp+'</div>'+colHTML+'<div class="bar-shaft"></div>'+colHTML+'<div style="display:flex;align-items:center">'+rp+'</div><div class="bar-sleeve"></div></div>'
     +(!loaded.length?'<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: '+barKg+'kg</div>':'');
 }
 
@@ -1039,81 +982,34 @@ function calcNutrition(){
   var p6=P/6,p7=P/7,pp=hi?p7:p6;
   var preWO_lo=timing==='late'?BW*1.33:BW;
   var LC=C-preWO_lo-30;
-  var m=function(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls){
-    return {meal:meal,badge:badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note:note,ls:ls||false};
-  };
+  function m(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls){return {meal:meal,badge:badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note:note,ls:ls||false};}
   var meals=[];
-  if(timing==='early'){
-    meals=[
-      m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
-      m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),
-      m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),
-      m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),
-      m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate — protein + starchy carbs + veggies.'),
-      m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),
-      m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true)
-    ];
-  } else if(timing==='late'){
-    meals=[
-      m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs — fuel loading before your session.'),
-      m('Pre-Workout',true,0,10,BW*1.33,BW*2,0,5,'Carb-forward. Eat 60 min before training.'),
-      m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs if session exceeds 60 minutes.'),
-      m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),
-      m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),
-      m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),
-      m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true)
-    ];
-  } else if(timing==='afternoon'){
-    meals=[
-      m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),
-      m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
-      m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward — largest carb meal, fuels afternoon session.'),
-      m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
-      m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
-      m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),
-      m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish — prioritize protein + carbs post-session.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)
-    ];
-  } else {
-    meals=[
-      m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),
-      m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
-      m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day — peak energy window.'),
-      m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),
-      m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs 30–60 min before. Keep it light.'),
-      m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),
-      m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb — winding down before sleep.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)
-    ];
-  }
+  if(timing==='early'){meals=[m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate - protein + starchy carbs + veggies.'),m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true)];}
+  else if(timing==='late'){meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs - fuel loading before your session.'),m('Pre-Workout',true,0,10,BW*1.33,BW*2,0,5,'Carb-forward. Eat 60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs if session exceeds 60 minutes.'),m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true)];}
+  else if(timing==='afternoon'){meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward - largest carb meal, fuels afternoon session.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish - prioritize protein + carbs post-session.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
+  else{meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day - peak energy window.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs 30-60 min before. Keep it light.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb - winding down before sleep.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
   var visible=meals.filter(function(x){return !(x.ls&&!hi);});
   document.getElementById('nt-meals').innerHTML=visible.map(function(x){
     var badge=x.badge?'<div class="wbadge">Workout</div>':'';
-    var cls=x.badge?'wk':'nm';
-    return '<div class="meal-card '+cls+'">'
+    return '<div class="meal-card '+(x.badge?'wk':'nm')+'">'
       +'<div class="meal-header"><div class="meal-name">'+x.meal+'</div>'+badge+'</div>'
       +'<div class="meal-macros">'
-      +'<div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'&ndash;'+x.pHi+'g</div></div>'
-      +'<div class="mcell"><div class="mlbl">Carbs</div><div class="mval">'+x.cLo+'&ndash;'+x.cHi+'g</div></div>'
-      +'<div class="mcell"><div class="mlbl">Fats</div><div class="mval">'+x.fLo+'&ndash;'+x.fHi+'g</div></div>'
-      +'</div>'
-      +'<div class="mnote">'+x.note+'</div>'
-      +'</div>';
+      +'<div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'-'+x.pHi+'g</div></div>'
+      +'<div class="mcell"><div class="mlbl">Carbs</div><div class="mval">'+x.cLo+'-'+x.cHi+'g</div></div>'
+      +'<div class="mcell"><div class="mlbl">Fats</div><div class="mval">'+x.fLo+'-'+x.fHi+'g</div></div>'
+      +'</div><div class="mnote">'+x.note+'</div></div>';
   }).join('');
 }
 
-var suppBWUnit='lbs';
 function setSuppBWU(u,el){
   suppBWUnit=u;
   el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('supp-bw-lbl').textContent=u;
   var cur=parseFloat(document.getElementById('supp-bw').value);
-  if(!isNaN(cur)){document.getElementById('supp-bw').value=u==='kg'?Math.round(cur/2.20462*10)/10:Math.round(cur*2.20462*10)/10;}
+  if(!isNaN(cur))document.getElementById('supp-bw').value=u==='kg'?Math.round(cur/2.20462*10)/10:Math.round(cur*2.20462*10)/10;
   ntBWUnit=u;
-  var ntTog=document.getElementById('nt-bw-tog');
-  if(ntTog)ntTog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
-  var ntLbl=document.getElementById('nt-bw-unit');if(ntLbl)ntLbl.textContent=u;
+  var nt=document.getElementById('nt-bw-tog');if(nt)nt.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var nl=document.getElementById('nt-bw-unit');if(nl)nl.textContent=u;
   syncSuppToNT();
 }
 function getSuppBWLbs(){var v=parseFloat(document.getElementById('supp-bw').value)||185;return suppBWUnit==='kg'?v*2.20462:v;}
@@ -1124,28 +1020,25 @@ function bracketBar(b){
 }
 function suppCard(s,b){
   var dose=s.scaled?s.doses[b]:s.dose;
-  var cls=s.scaled?'scaled':'flat';
   var tag=s.scaled?'<span class="supp-tag wt">Weight-scaled</span>':'<span class="supp-tag ft">Fixed dose</span>';
   var bar=s.scaled?bracketBar(b):'';
   var note=s.note?'<div class="supp-note">'+s.note+'</div>':'';
-  var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop &#8594;</a>':'';
-  return '<div class="supp-card '+cls+'">'
+  var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop</a>':'';
+  return '<div class="supp-card '+(s.scaled?'scaled':'flat')+'">'
     +'<div class="supp-header"><div class="supp-name">'+s.name+'</div>'+tag+'</div>'
-    +'<div class="supp-body">'
-    +'<div class="supp-dose">'+dose+'</div>'
+    +'<div class="supp-body"><div class="supp-dose">'+dose+'</div>'
     +'<div class="supp-dose-lbl">'+s.form+'</div>'
-    +bar+'<div class="supp-timing">'+s.timing+'</div>'
-    +note+link+'</div></div>';
+    +bar+'<div class="supp-timing">'+s.timing+'</div>'+note+link+'</div></div>';
 }
 function calcSupps(){
   var lbs=getSuppBWLbs(),b=getSuppBracket(lbs);
   var SUPPS=[
-    {name:'Creatine Monohydrate',scaled:true,doses:['5g','7.5g','10g'],form:'Monohydrate form',timing:'Post-workout or anytime daily — consistency matters more than timing',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
-    {name:'Vitamin D3 + K2',scaled:true,doses:['3,000 IU','4,000 IU','5,000 IU'],form:'D3 always paired with K2 (MK-7 form) · K2: 100-200mcg',timing:'With a fat-containing meal for best absorption',note:null,link:'https://amzn.to/4qIn6Li'},
-    {name:'Magnesium Glycinate',scaled:false,dose:'200-400mg',form:'Glycinate form for absorption',timing:'Before bed',note:'Start at 200mg. If sleep quality is poor or you wake frequently, increase to 400mg. Most find their sweet spot within 1-2 weeks.',link:'https://amzn.to/49fQwdU'},
-    {name:'Omega-3 (EPA+DHA)',scaled:true,doses:['2g','3g','4g'],form:'EPA+DHA combined — not total fish oil weight',timing:'With a fat-containing meal',note:null,link:'https://amzn.to/4qsf3lW'},
-    {name:'Whey Protein',scaled:false,dose:'As needed',form:'Whey isolate — to hit daily protein target',timing:'Post-workout or to close daily protein gap',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
-    {name:'Casein Protein',scaled:false,dose:'As needed',form:'Micellar casein — slow release overnight',timing:'Pre-bed meal to support overnight recovery',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'}
+    {name:'Creatine Monohydrate',scaled:true,doses:['5g','7.5g','10g'],form:'Monohydrate form',timing:'Post-workout or anytime daily - consistency matters more than timing',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
+    {name:'Vitamin D3 + K2',scaled:true,doses:['3,000 IU','4,000 IU','5,000 IU'],form:'D3 always paired with K2 (MK-7 form) - K2: 100-200mcg',timing:'With a fat-containing meal for best absorption',note:null,link:'https://amzn.to/4qIn6Li'},
+    {name:'Magnesium Glycinate',scaled:false,dose:'200-400mg',form:'Glycinate form for absorption',timing:'Before bed',note:'Start at 200mg. If sleep quality is poor or you wake frequently, increase to 400mg.',link:'https://amzn.to/49fQwdU'},
+    {name:'Omega-3 (EPA+DHA)',scaled:true,doses:['2g','3g','4g'],form:'EPA+DHA combined - not total fish oil weight',timing:'With a fat-containing meal',note:null,link:'https://amzn.to/4qsf3lW'},
+    {name:'Whey Protein',scaled:false,dose:'As needed',form:'Whey isolate - to hit daily protein target',timing:'Post-workout or to close daily protein gap',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
+    {name:'Casein Protein',scaled:false,dose:'As needed',form:'Micellar casein - slow release overnight',timing:'Pre-bed meal to support overnight recovery',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'}
   ];
   document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div>'
     +'<div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
@@ -1161,12 +1054,11 @@ function buildGear(){
     {name:'Chalk',link:'https://amzn.to/4jCf3gS'},
     {name:'Lifting Wrist Straps',link:'https://amzn.to/3LdGKQq'},
     {name:'Caffeine Energy Gum',link:'https://amzn.to/4jCf5Fw'},
-    {name:'Rythmhealth — Home Blood Testing',link:'https://rythmhealth.com',code:'RIFE341K',discount:'$20 off'}
+    {name:'Rythmhealth - Home Blood Testing',link:'https://rythmhealth.com',code:'RIFE341K',discount:'$20 off'}
   ];
   document.getElementById('gear-grid').innerHTML=GEAR.map(function(g){
-    var codeRow=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> — '+g.discount+'</div>':'';
-    var shopLabel=g.code?'Shop Rythmhealth &#8599;':'Shop on Amazon &#8599;';
-    return '<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+codeRow+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+shopLabel+'</a></div>';
+    var cr=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> - '+g.discount+'</div>':'';
+    return '<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+cr+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+(g.code?'Shop Rythmhealth':'Shop on Amazon')+'</a></div>';
   }).join('');
 }
 
@@ -1180,12 +1072,7 @@ buildGear();
 try{
   var sd=JSON.parse(localStorage.getItem('tsa-supp')||'{}');
   if(sd.bw)document.getElementById('supp-bw').value=sd.bw;
-  if(sd.bwUnit){
-    suppBWUnit=sd.bwUnit;
-    var st=document.getElementById('supp-bw-tog');
-    if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===sd.bwUnit);});
-    var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=sd.bwUnit;
-  }
+  if(sd.bwUnit){suppBWUnit=sd.bwUnit;var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===sd.bwUnit);});var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=sd.bwUnit;}
 }catch(e){}
 
 wireControls();
@@ -1202,18 +1089,12 @@ document.getElementById('nt-btn').addEventListener('click',function(){setTimeout
 </script>
 
 <div id="cookie-banner" style="display:none">
-  <span>This site uses cookies for analytics to understand how lifters use the tool. No personal data is sold or shared. <a href="https://www.iubenda.com/privacy-policy/your-id" target="_blank">Privacy policy</a></span>
+  <span>This site uses cookies for analytics. No personal data is sold or shared.</span>
   <button id="cookie-accept" onclick="acceptCookies()">Got it</button>
 </div>
 <script>
-function acceptCookies(){
-  localStorage.setItem('tsa-cookie-ok','1');
-  document.getElementById('cookie-banner').style.display='none';
-  loadGA();
-}
-if(localStorage.getItem('tsa-cookie-ok')!=='1'){
-  document.getElementById('cookie-banner').style.display='flex';
-}
+function acceptCookies(){localStorage.setItem('tsa-cookie-ok','1');document.getElementById('cookie-banner').style.display='none';loadGA();}
+if(localStorage.getItem('tsa-cookie-ok')!=='1'){document.getElementById('cookie-banner').style.display='flex';}
 </script>
 </body>
 </html>
