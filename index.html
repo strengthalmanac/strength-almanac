@@ -21,21 +21,7 @@
   <meta name="twitter:description" content="RPE warmup calculator, plate loader, and nutrition timing. Built by a USAPL lifter and coach.">
   <meta name="twitter:image" content="https://thestrengthalimanac.com/og-image.png">
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "The Strength Almanac",
-    "description": "Free powerlifting warmup calculator with RPE-based loading, IPF-standard plate loader, and nutrition timing planner for strength athletes.",
-    "url": "https://thestrengthalimanac.com/",
-    "applicationCategory": "SportsApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "author": {
-      "@type": "Person",
-      "name": "The Strength Almanac",
-      "sameAs": "https://www.instagram.com/the_strength_almanac/"
-    }
-  }
+  {"@context":"https://schema.org","@type":"WebApplication","name":"The Strength Almanac","description":"Free powerlifting warmup calculator with RPE-based loading, IPF-standard plate loader, and nutrition timing planner for strength athletes.","url":"https://thestrengthalimanac.com/","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"The Strength Almanac","sameAs":"https://www.instagram.com/the_strength_almanac/"}}
   </script>
   <script>
     window.dataLayer=window.dataLayer||[];
@@ -43,8 +29,7 @@
     gtag('js',new Date());
     function loadGA(){
       if(document.getElementById('ga-script'))return;
-      var s=document.createElement('script');
-      s.id='ga-script';s.async=true;
+      var s=document.createElement('script');s.id='ga-script';s.async=true;
       s.src='https://www.googletagmanager.com/gtag/js?id=G-N1GK184C1H';
       document.head.appendChild(s);
       s.onload=function(){gtag('config','G-N1GK184C1H',{anonymize_ip:true});};
@@ -152,7 +137,6 @@
     .footer-strip{background:var(--ink);color:var(--paper3);font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase;flex-wrap:wrap;gap:8px;}
     .footer-strip a{color:var(--red2);text-decoration:none;}
     .about-section{border-top:2px solid var(--ink);background:var(--paper2);padding:28px 24px;}
-    /* Feel check widget */
     .feel-check{background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px;margin-top:10px;}
     .feel-check-lbl{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:8px;}
     .feel-btns{display:flex;gap:6px;}
@@ -162,16 +146,16 @@
     .feel-btn.active-normal{background:var(--ink);border-color:var(--ink);color:#fff;}
     .feel-btn.active-better{background:var(--red);border-color:var(--red);color:#fff;}
     .feel-adj{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:8px;min-height:16px;}
-    /* Bar setup collapsible */
     .barsetup-toggle{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 0;border-top:var(--border);margin-top:8px;user-select:none;}
     .barsetup-toggle:hover{color:var(--ink);}
     .barsetup-arrow{font-size:10px;transition:transform 0.2s;display:inline-block;}
     .barsetup-arrow.open{transform:rotate(90deg);}
     .barsetup-body{display:none;padding-top:10px;}
     .barsetup-body.open{display:block;}
+    .rest-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#6b6b6b;white-space:nowrap;}
+    .rest-tag-top{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#f5f1ea;opacity:0.75;white-space:nowrap;}
     @media(max-width:640px){
       .g2,.about-grid{grid-template-columns:1fr;}
-      .g3{grid-template-columns:1fr 1fr 1fr;}
       .totals-grid{grid-template-columns:repeat(2,1fr);}
       .total-cell:nth-child(2){border-right:none;}
       .total-cell:nth-child(3){border-right:var(--border);border-top:1px solid #2a2a2a;}
@@ -180,18 +164,16 @@
       .header{padding:16px;}
       .panel{padding:16px;}
       .nn-grid{grid-template-columns:1fr;}
-      .meal-macros{grid-template-columns:1fr 1fr 1fr;}
-      .mval{font-size:16px !important;}
-      .mlbl{font-size:8px;}
-      .meal-name{font-size:12px;}
-      .meal-header{padding:8px 10px 5px;flex-wrap:wrap;gap:4px;}
-      .mnote{font-size:10px;padding:6px 10px;}
-      .mcell{padding:5px 6px;}
       .wtbl{font-size:11px;}
       .wtbl td,.wtbl th{padding:6px 6px;}
       .utog{width:100% !important;}
       .ubtn{font-size:11px;}
       .feel-btns{flex-direction:column;}
+      .mval{font-size:16px !important;}
+      .meal-name{font-size:12px;}
+      .meal-header{padding:8px 10px 5px;flex-wrap:wrap;gap:4px;}
+      .mnote{font-size:10px;padding:6px 10px;}
+      .mcell{padding:5px 6px;}
     }
     .supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
     .supp-card{background:#fff;border:1px solid #c8c2b4;overflow:hidden;}
@@ -210,7 +192,7 @@
     .supp-link{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:#0f0f0f;color:#f5f1ea;padding:8px 12px;text-decoration:none;text-align:center;margin-top:10px;}
     .supp-link:hover{background:#c0392b;}
     .bracket-bar{display:flex;margin-top:8px;border:1px solid #c8c2b4;overflow:hidden;}
-    .bseg{flex:1;padding:4px 4px;text-align:center;font-family:'DM Mono',monospace;font-size:8px;color:#6b6b6b;border-right:1px solid #c8c2b4;line-height:1.3;}
+    .bseg{flex:1;padding:4px;text-align:center;font-family:'DM Mono',monospace;font-size:8px;color:#6b6b6b;border-right:1px solid #c8c2b4;line-height:1.3;}
     .bseg:last-child{border-right:none;}
     .bseg.on{background:#0f0f0f;color:#f5f1ea;}
     .gear-card{background:#fff;border:1px solid #c8c2b4;border-left:4px solid #0f0f0f;overflow:hidden;}
@@ -218,11 +200,10 @@
     .gear-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#0f0f0f;}
     .gear-link{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:#0f0f0f;color:#f5f1ea;padding:8px 12px;text-decoration:none;text-align:center;margin:10px 14px 12px;}
     .gear-link:hover{background:#c0392b;}
-    @media(max-width:640px){.supp-grid,.gear-grid-inner{grid-template-columns:1fr;}#gear-grid{grid-template-columns:1fr;}}
+    @media(max-width:640px){.supp-grid{grid-template-columns:1fr;}#gear-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="header">
     <div><div class="logo">THE STRENGTH<br><span>ALMANAC</span></div></div>
@@ -231,7 +212,6 @@
       <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener">↗ Apply for Coaching</a>
     </div>
   </div>
-
   <div class="tabs">
     <div class="tab active" onclick="switchTab('warmup',this)">Warmup Calculator</div>
     <div class="tab" onclick="switchTab('plates',this)">Plate Loader</div>
@@ -240,7 +220,7 @@
     <div class="tab" onclick="switchTab('products',this)">Recommended Gear</div>
   </div>
 
-  <!-- ══ WARMUP ══════════════════════════════════════════════════════════════ -->
+  <!-- WARMUP -->
   <div id="tab-warmup" class="panel active">
     <div class="g2">
       <div>
@@ -260,7 +240,8 @@
             </div>
           </div>
         </div>
-        <div class="fg"><div class="fl">Exercise</div>
+        <div class="fg">
+          <div class="fl">Exercise</div>
           <select id="wu-exercise">
             <option value="squat">Squat</option>
             <option value="bench">Bench Press</option>
@@ -276,7 +257,8 @@
         <div id="wu-rpe">
           <div class="idiv">Last Session</div>
           <div class="g3">
-            <div class="fg"><div class="fl">Weight</div>
+            <div class="fg">
+              <div class="fl">Weight</div>
               <div style="display:flex;align-items:center;gap:6px">
                 <input type="number" id="wu-lw" value="465" min="1" style="flex:1">
                 <span id="wu-lw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">lbs</span>
@@ -306,7 +288,8 @@
         <div id="wu-man" style="display:none">
           <div class="idiv">Top Set</div>
           <div class="g2">
-            <div class="fg"><div class="fl">Working Weight</div>
+            <div class="fg">
+              <div class="fl">Working Weight</div>
               <div style="display:flex;align-items:center;gap:6px">
                 <input type="number" id="wu-mw" value="405" min="1" style="flex:1">
                 <span id="wu-mw-unit" style="font-family:var(--mono);font-size:12px;color:#6b6b6b;white-space:nowrap;min-width:24px">lbs</span>
@@ -316,7 +299,6 @@
           </div>
         </div>
         <button class="genbtn" id="wu-btn">GENERATE WARMUP</button>
-
         <!-- Bar Setup collapsible -->
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
           <span class="barsetup-arrow" id="barsetup-arrow">▶</span>
@@ -347,7 +329,6 @@
             <div class="fg" id="wu-ccol-g" style="display:none"><div class="fl">Custom Collar (kg ea)</div><input type="number" id="wu-ccol" value="1" min="0" step="0.05"></div>
           </div>
         </div>
-
         <div id="wu-res" style="display:none" class="rbox">
           <div class="rlbl">Top Set Target</div>
           <div style="font-family:var(--display);font-size:56px;color:#e74c3c;line-height:1" id="wu-top">—</div>
@@ -359,30 +340,27 @@
           <div id="wu-adj-note" style="display:none;margin-top:8px;font-family:var(--mono);font-size:10px;color:#e74c3c;letter-spacing:0.5px"></div>
         </div>
       </div>
-
       <div>
         <div class="fl" style="margin-bottom:4px">Warmup Sets</div>
         <div style="font-family:var(--mono);font-size:10px;color:#c0392b;margin-bottom:8px;letter-spacing:0.5px">&#8595; Click any set row to see plate loading</div>
         <table class="wtbl">
-          <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note &#8594; tap row for plates</th></tr></thead>
+          <thead><tr><th>Set</th><th>Weight</th><th>Reps</th><th>Note / Rest</th></tr></thead>
           <tbody id="wu-tbody">
             <tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>
           </tbody>
         </table>
-
-        <!-- Feel check — shown after generate -->
+        <!-- Feel check -->
         <div id="wu-feel-wrap" style="display:none">
           <div class="feel-check">
             <div class="feel-check-lbl">How did that last warmup feel?</div>
             <div class="feel-btns">
-              <button class="feel-btn" id="feel-worse" onclick="setFeel('worse')">↓ Worse than normal</button>
-              <button class="feel-btn" id="feel-normal" onclick="setFeel('normal')">→ Normal</button>
-              <button class="feel-btn" id="feel-better" onclick="setFeel('better')">↑ Better than normal</button>
+              <button class="feel-btn" id="feel-worse" onclick="setFeel('worse')">&#8595; Worse than normal</button>
+              <button class="feel-btn" id="feel-normal" onclick="setFeel('normal')">&#8594; Normal</button>
+              <button class="feel-btn" id="feel-better" onclick="setFeel('better')">&#8593; Better than normal</button>
             </div>
             <div class="feel-adj" id="feel-adj-text"></div>
           </div>
         </div>
-
         <!-- Plate count panel -->
         <div id="wu-plate-panel" style="display:none;margin-top:12px;border:1px solid #c8c2b4;padding:12px;background:#ede9e0">
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;margin-bottom:8px">
@@ -394,25 +372,23 @@
     </div>
   </div>
 
-  <!-- ══ PLATE LOADER ════════════════════════════════════════════════════════ -->
+  <!-- PLATE LOADER -->
   <div id="tab-plates" class="panel">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Plate Loader</div>
-      <div>
-        <div style="display:flex;gap:12px;align-items:flex-end">
-          <div>
-            <div class="fl" style="margin-bottom:4px">Input</div>
-            <div class="utog" id="pl-in-tog">
-              <div class="ubtn active" onclick="setPlInputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" onclick="setPlInputUnit('kg',this)">KG</div>
-            </div>
+      <div style="display:flex;gap:12px;align-items:flex-end">
+        <div>
+          <div class="fl" style="margin-bottom:4px">Input</div>
+          <div class="utog" id="pl-in-tog">
+            <div class="ubtn active" onclick="setPlInputUnit('lbs',this)">LBS</div>
+            <div class="ubtn" onclick="setPlInputUnit('kg',this)">KG</div>
           </div>
-          <div>
-            <div class="fl" style="margin-bottom:4px">Output</div>
-            <div class="utog" id="pl-out-tog">
-              <div class="ubtn active" onclick="setPlOutputUnit('lbs',this)">LBS</div>
-              <div class="ubtn" onclick="setPlOutputUnit('kg',this)">KG</div>
-            </div>
+        </div>
+        <div>
+          <div class="fl" style="margin-bottom:4px">Output</div>
+          <div class="utog" id="pl-out-tog">
+            <div class="ubtn active" onclick="setPlOutputUnit('lbs',this)">LBS</div>
+            <div class="ubtn" onclick="setPlOutputUnit('kg',this)">KG</div>
           </div>
         </div>
       </div>
@@ -489,7 +465,7 @@
     </div>
   </div>
 
-  <!-- ══ NUTRITION ═══════════════════════════════════════════════════════════ -->
+  <!-- NUTRITION -->
   <div id="tab-nutrition" class="panel">
     <div class="g2">
       <div>
@@ -549,11 +525,9 @@
     </div>
   </div>
 
-  <!-- SUPPLEMENTS TAB -->
+  <!-- SUPPLEMENTS -->
   <div id="tab-supps" class="panel">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px">
-      <div style="font-family:var(--display);font-size:22px;letter-spacing:1px">Supplement Calculator</div>
-    </div>
+    <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:8px">Supplement Calculator</div>
     <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:16px">Based on your bodyweight. Links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
     <div style="max-width:400px;margin-bottom:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -574,7 +548,7 @@
     </div>
   </div>
 
-  <!-- RECOMMENDED GEAR TAB -->
+  <!-- RECOMMENDED GEAR -->
   <div id="tab-products" class="panel">
     <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:8px">Recommended Gear</div>
     <div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-bottom:20px">Products I personally use and recommend. Amazon links are affiliate links — purchasing supports The Strength Almanac at no extra cost to you.</div>
@@ -590,7 +564,6 @@
   </div>
 </div>
 
-<!-- ══ ABOUT / SEO ══════════════════════════════════════════════════════════ -->
 <div class="about-section" style="max-width:960px;margin:0 auto;border-left:2px solid var(--ink);border-right:2px solid var(--ink)">
   <p style="font-size:14px;color:var(--ink2);line-height:1.8;">
     Follow <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none">@the_strength_almanac</a> on Instagram for training content, meet prep coverage, and coaching insights.
@@ -598,133 +571,163 @@
 </div>
 
 <script>
-// ── PLATE DATA ─────────────────────────────────────────────────────────────
-const PLATES=[
+var PLATES=[
   {kg:25,  color:'#c0392b',border:'#922b21'},
   {kg:20,  color:'#1a5fa8',border:'#154f8a'},
   {kg:15,  color:'#e8c020',border:'#b8940a'},
   {kg:10,  color:'#27a84a',border:'#1e8a3a'},
   {kg:5,   color:'#e4e4e4',border:'#aaaaaa'},
   {kg:2.5, color:'#333333',border:'#555555'},
-  {kg:1.25,color:'#a8b4bc',border:'#8a9298'},
+  {kg:1.25,color:'#a8b4bc',border:'#8a9298'}
 ];
 function pH(kg){return kg>=25?72:kg>=20?62:kg>=15?52:kg>=10?42:kg>=5?30:kg>=2.5?22:16;}
 function pW(kg){return kg>=10?16:kg>=5?14:kg>=2.5?12:10;}
 
-// ── RPE TABLE ──────────────────────────────────────────────────────────────
-const RPE_T={1:[1,0.97775,0.955,0.9385,0.922,0.907,0.892,0.8772,0.863,0.85,0.837,0.824,0.811],2:[0.955,0.9385,0.922,0.907,0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786],3:[0.922,0.9007,0.892,0.8772,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762],4:[0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739],5:[0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707],6:[0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68],7:[0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653],8:[0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626],9:[0.762,0.7505,0.739,0.723,0.701,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599],10:[0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599,0.5855,0.572]};
-const RPE_I={10:0,9.5:1,9:2,8.5:3,8:4,7.5:5,7:6,6.5:7,6:8,5.5:9,5:10,4.5:11,4:12};
-function rpeF(reps,rpe){const r=Math.min(10,Math.max(1,Math.round(reps)));const row=RPE_T[r];if(!row)return 0.8;const i=RPE_I[parseFloat(rpe)];return i!==undefined?row[i]:row[0];}
+var RPE_T={
+  1:[1,0.97775,0.955,0.9385,0.922,0.907,0.892,0.8772,0.863,0.85,0.837,0.824,0.811],
+  2:[0.955,0.9385,0.922,0.907,0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786],
+  3:[0.922,0.9007,0.892,0.8772,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762],
+  4:[0.892,0.8775,0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739],
+  5:[0.863,0.85,0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707],
+  6:[0.837,0.824,0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68],
+  7:[0.811,0.7985,0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653],
+  8:[0.786,0.774,0.762,0.7505,0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626],
+  9:[0.762,0.7505,0.739,0.723,0.701,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599],
+  10:[0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599,0.5855,0.572]
+};
+var RPE_I={10:0,9.5:1,9:2,8.5:3,8:4,7.5:5,7:6,6.5:7,6:8,5.5:9,5:10,4.5:11,4:12};
+function rpeF(reps,rpe){
+  var r=Math.min(10,Math.max(1,Math.round(reps)));
+  var row=RPE_T[r];
+  if(!row)return 0.8;
+  var i=RPE_I[parseFloat(rpe)];
+  return i!==undefined?row[i]:row[0];
+}
 
-// ── WARMUP SCHEMES ─────────────────────────────────────────────────────────
-const SCHEMES={
-  squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:_=>''},
-  bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:_=>''},
-  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:s=>s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':''},
-  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:s=>s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':''}
+var SCHEMES={
+  squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:function(){return '';}},
+  bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:function(){return '';}},
+  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(s){return s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':'';}},
+  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:function(s){return s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':'';}}
 };
 
-// ── STATE ──────────────────────────────────────────────────────────────────
-let wuInUnit='lbs',wuOutUnit='lbs',ntBWUnit='lbs',plInUnit='lbs',plOutUnit='lbs';
-let wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
-let feelAdj=0; // RPE adjustment from feel check: -0.5, 0, +0.5
-let baseTargetKg=null, baseGoalReps=null, baseGoalRPE=null, baseE1rmKg=null;
-Object.defineProperty(window,'gUnit',{get:()=>plOutUnit});
+var REST={
+  bench:{
+    s4:'1:00–1:30',s5:'1:30–2:30',s6:'2:00–3:00',
+    top:[{max:6,r:'1:00–1:30'},{max:7,r:'1:30–2:30'},{max:8,r:'2:00–3:00'},{max:8.5,r:'2:30–4:00'},{max:10,r:'3:00–5:30'}]
+  },
+  squat:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,r:'1:30–2:00'},{max:7,r:'2:30–3:30'},{max:8,r:'3:00–4:30'},{max:8.5,r:'4:00–5:30'},{max:10,r:'5:00–7:00'}]
+  },
+  sumo:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,r:'1:30–2:00'},{max:7,r:'3:00–5:00'},{max:8,r:'3:30–5:30'},{max:8.5,r:'4:00–6:30'},{max:10,r:'5:00–8:00'}]
+  },
+  conv:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,r:'1:30–2:00'},{max:7,r:'3:00–5:00'},{max:8,r:'3:30–5:30'},{max:8.5,r:'4:00–6:30'},{max:10,r:'5:00–8:00'}]
+  }
+};
 
-function rwKg(r,barKg){const b=barKg||20;const ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
-function rwLb(r,barLb){const b=barLb||45;const ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
-function dW(kg,isKg,barKg){const b=barKg||20;return isKg?rwKg(kg,b).toFixed(2).replace(/\.?0+$/,'')+' kg':rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lbs';}
-function dWKg(kg,isKg,barKg){const b=barKg||20;return isKg?rwKg(kg,b):rwLb(kg*2.20462,b*2.20462)/2.20462;}
+function getTopRest(ex,rpe){
+  var buckets=REST[ex].top;
+  for(var i=0;i<buckets.length;i++){if(rpe<=buckets[i].max)return buckets[i].r;}
+  return buckets[buckets.length-1].r;
+}
+function restTag(txt,isTop){
+  if(!txt)return '';
+  var cls=isTop?'rest-tag-top':'rest-tag';
+  return '<span class="'+cls+'">REST '+txt+'</span>';
+}
 
-// Warmup bar/collar
-function getWuBarKg(){const v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
-function getWuColKg(){const v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
+var wuInUnit='lbs',wuOutUnit='lbs',ntBWUnit='lbs',plInUnit='lbs',plOutUnit='lbs';
+var wuMode='rpe',plMode='warmup',warmupSets=[],lastKg=null;
+var feelAdj=0,baseTargetKg=null,baseGoalReps=null,baseGoalRPE=null,baseE1rmKg=null;
+
+function rwKg(r,barKg){var b=barKg||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
+function rwLb(r,barLb){var b=barLb||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
+function dW(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b).toFixed(1)+' kg':rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lbs';}
+function dWKg(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b):rwLb(kg*2.20462,b*2.20462)/2.20462;}
+
+function getWuBarKg(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
+function getWuColKg(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
+function getBarKg(){var v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||20:parseFloat(v);}
+function getColKg(){var v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
 
 function toggleBarSetup(){
-  const body=document.getElementById('barsetup-body');
-  const arrow=document.getElementById('barsetup-arrow');
-  const open=body.classList.toggle('open');
+  var body=document.getElementById('barsetup-body');
+  var arrow=document.getElementById('barsetup-arrow');
+  var open=body.classList.toggle('open');
   arrow.classList.toggle('open',open);
 }
 
-// ── FEEL CHECK ─────────────────────────────────────────────────────────────
 function setFeel(f){
-  ['worse','normal','better'].forEach(x=>{
-    const btn=document.getElementById('feel-'+x);
-    btn.className='feel-btn'+(f===x?' active-'+x:'');
+  ['worse','normal','better'].forEach(function(x){
+    document.getElementById('feel-'+x).className='feel-btn'+(f===x?' active-'+x:'');
   });
-  const adjText=document.getElementById('feel-adj-text');
-  if(f==='worse'){
-    feelAdj=-0.5;
-    adjText.textContent='▼ Top set adjusted down 0.5 RPE — listen to your body.';
-    adjText.style.color='#6b6b6b';
-  } else if(f==='better'){
-    feelAdj=0.5;
-    adjText.textContent='▲ Top set adjusted up 0.5 RPE — push it.';
-    adjText.style.color='var(--red)';
-  } else {
-    feelAdj=0;
-    adjText.textContent='No adjustment — proceed as planned.';
-    adjText.style.color='var(--ink3)';
-  }
+  var adjText=document.getElementById('feel-adj-text');
+  if(f==='worse'){feelAdj=-0.5;adjText.textContent='▼ Top set adjusted down — listen to your body.';adjText.style.color='#6b6b6b';}
+  else if(f==='better'){feelAdj=0.5;adjText.textContent='▲ Top set adjusted up — push it.';adjText.style.color='var(--red)';}
+  else{feelAdj=0;adjText.textContent='No adjustment — proceed as planned.';adjText.style.color='var(--ink3)';}
   applyFeelAdj();
 }
 
 function applyFeelAdj(){
-  if(baseTargetKg===null) return;
-  const isKg=wuOutUnit==='kg';
-  let adjustedTargetKg=baseTargetKg;
-  let adjNote='';
-  if(feelAdj!==0 && baseE1rmKg!==null && baseGoalReps!==null){
-    const adjRPE=Math.min(10,Math.max(5,parseFloat(baseGoalRPE)+feelAdj));
-    const raw=baseE1rmKg*rpeF(baseGoalReps,adjRPE);
+  if(baseTargetKg===null)return;
+  var isKg=wuOutUnit==='kg';
+  var adjustedTargetKg=baseTargetKg;
+  var adjNote='';
+  if(feelAdj!==0&&baseE1rmKg!==null&&baseGoalReps!==null){
+    var adjRPE=Math.min(10,Math.max(5,parseFloat(baseGoalRPE)+feelAdj));
+    var raw=baseE1rmKg*rpeF(baseGoalReps,adjRPE);
     adjustedTargetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
-    const diff=adjustedTargetKg-baseTargetKg;
-    const diffDisp=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lbs';
-    adjNote=(diff>=0?'▲ +':'▼ −')+diffDisp+' from original projection (RPE '+(parseFloat(baseGoalRPE)+feelAdj)+')';
+    var diff=adjustedTargetKg-baseTargetKg;
+    var diffDisp=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lbs';
+    adjNote=(diff>=0?'▲ +':'▼ −')+diffDisp+' from original projection';
   }
-  const tLbs=adjustedTargetKg*2.20462;
-  const topD=isKg?adjustedTargetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  const topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(adjustedTargetKg).toFixed(1)+' kg';
+  var tLbs=adjustedTargetKg*2.20462;
+  var topD=isKg?adjustedTargetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
+  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(adjustedTargetKg).toFixed(1)+' kg';
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
-  const adjEl=document.getElementById('wu-adj-note');
+  var adjEl=document.getElementById('wu-adj-note');
   if(adjNote){adjEl.style.display='block';adjEl.textContent=adjNote;}
   else{adjEl.style.display='none';}
-  // update top set row in table
-  const tl=baseGoalRPE!=='—'?`@RPE ${baseGoalRPE}`:'';
-  const topDLabel=feelAdj!==0?topD+' (adjusted)':topD;
-  const lastRow=document.querySelector('#wu-tbody tr.ts');
+  var tl=baseGoalRPE!=='—'?'@RPE '+baseGoalRPE:'';
+  var topDLabel=feelAdj!==0?topD+' (adjusted)':topD;
+  var exNow=document.getElementById('wu-exercise').value;
+  var rpeNow=baseGoalRPE!=='—'?parseFloat(baseGoalRPE):7;
+  var topRestNow=getTopRest(exNow,rpeNow);
+  var adjNoteCell=tl+(tl?' · ':'')+restTag(topRestNow,true);
+  var lastRow=document.querySelector('#wu-tbody tr.ts');
   if(lastRow){
     lastRow.cells[1].textContent=topDLabel;
-    lastRow.cells[3].textContent=tl;
+    lastRow.cells[3].innerHTML=adjNoteCell;
     lastRow.onclick=function(){showWuPlateCount(adjustedTargetKg,'TOP SET — '+topDLabel);};
   }
-  // update warmupSets top set entry
-  const tsIdx=warmupSets.findIndex(s=>s.label==='TOP SET');
+  var tsIdx=-1;
+  for(var i=0;i<warmupSets.length;i++){if(warmupSets[i].label==='TOP SET'){tsIdx=i;break;}}
   if(tsIdx>=0){warmupSets[tsIdx].weightDisp=topDLabel;warmupSets[tsIdx].weightKg=adjustedTargetKg;warmupSets[tsIdx].note=tl;}
   if(plMode==='warmup')populatePicker();
 }
 
 function setToggle(togId,unit){
-  const t=document.getElementById(togId);if(!t)return;
-  t.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit));
+  var t=document.getElementById(togId);if(!t)return;
+  t.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit);});
 }
 function setInputUnit(u,el){
   wuInUnit=u;setToggle('wu-in-tog',u);saveInputs();
-  const lbl=u==='kg'?'kg':'lbs';
-  const lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
-  const mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;
+  var lbl=u==='kg'?'kg':'lbs';
+  var lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
+  var mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;
 }
-function setOutputUnit(u,el){
-  wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();
-  if(warmupSets.length)calcWarmup();
-}
+function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();if(warmupSets.length)calcWarmup();}
 function setBWUnit(u,el){
   ntBWUnit=u;
-  el.parentElement.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('nt-bw-unit').textContent=u;
-  const current=parseFloat(document.getElementById('nt-bw').value);
+  var current=parseFloat(document.getElementById('nt-bw').value);
   if(!isNaN(current)){
     if(u==='lbs')document.getElementById('nt-bw').value=Math.round(current*2.20462*10)/10;
     else document.getElementById('nt-bw').value=Math.round(current/2.20462*10)/10;
@@ -732,8 +735,7 @@ function setBWUnit(u,el){
   suppBWUnit=u;
   var suppTog=document.getElementById('supp-bw-tog');
   if(suppTog)suppTog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
-  var suppLbl=document.getElementById('supp-bw-lbl');
-  if(suppLbl)suppLbl.textContent=u;
+  var suppLbl=document.getElementById('supp-bw-lbl');if(suppLbl)suppLbl.textContent=u;
   syncBWToSupp();
 }
 function syncBWToSupp(){
@@ -751,31 +753,29 @@ function syncSuppToNT(){
 function setPlInputUnit(u,el){plInUnit=u;setToggle('pl-in-tog',u);rerender();}
 function setPlOutputUnit(u,el){plOutUnit=u;setToggle('pl-out-tog',u);if(lastKg!==null)renderPlates(lastKg);}
 function switchTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');
 }
 function setWuMode(m,el){
-  wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
   document.getElementById('wu-rpe').style.display=m==='rpe'?'block':'none';
   document.getElementById('wu-man').style.display=m==='manual'?'block':'none';
   document.getElementById('wu-e1rm-row').style.display=m==='rpe'?'block':'none';
 }
 function setPlMode(m,el){
-  plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
   document.getElementById('pl-man').style.display=m==='manual'?'block':'none';
   document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';
   if(m==='warmup')populatePicker();else if(lastKg!==null)renderPlates(lastKg);
 }
-function getBarKg(){const v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||20:parseFloat(v);}
-function getColKg(){const v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
 function rerender(){
-  if(plMode==='warmup'){const idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx])renderPlates(warmupSets[idx].weightKg);}
-  else{const v=parseFloat(document.getElementById('pl-w').value);if(v>0){const kg=plInUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
+  if(plMode==='warmup'){var idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx])renderPlates(warmupSets[idx].weightKg);}
+  else{var v=parseFloat(document.getElementById('pl-w').value);if(v>0){var kg=plInUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
 }
 function wireControls(){
-  ['pl-bar','pl-col','pl-cbar','pl-ccol','pl-w','pl-pick'].forEach(id=>{
-    const el=document.getElementById(id);if(!el)return;
+  ['pl-bar','pl-col','pl-cbar','pl-ccol','pl-w','pl-pick'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
     el.addEventListener('change',function(){
       document.getElementById('pl-cbar-g').style.display=document.getElementById('pl-bar').value==='custom'?'block':'none';
       document.getElementById('pl-ccol-g').style.display=document.getElementById('pl-col').value==='custom'?'block':'none';
@@ -783,9 +783,8 @@ function wireControls(){
     });
     el.addEventListener('input',function(){if(id==='pl-w'||id==='pl-cbar'||id==='pl-ccol')rerender();});
   });
-  // Warmup bar setup change listeners
-  ['wu-bar','wu-col','wu-cbar','wu-ccol'].forEach(id=>{
-    const el=document.getElementById(id);if(!el)return;
+  ['wu-bar','wu-col','wu-cbar','wu-ccol'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
     el.addEventListener('change',function(){
       document.getElementById('wu-cbar-g').style.display=document.getElementById('wu-bar').value==='custom'?'block':'none';
       document.getElementById('wu-ccol-g').style.display=document.getElementById('wu-col').value==='custom'?'block':'none';
@@ -795,10 +794,9 @@ function wireControls(){
   document.getElementById('nt-btn').addEventListener('click',calcNutrition);
 }
 
-// ── LOCALSTORAGE ───────────────────────────────────────────────────────────
 function saveInputs(){
-  const ex=document.getElementById('wu-exercise').value;
-  const data={inUnit:wuInUnit,outUnit:wuOutUnit,wuMode,
+  var ex=document.getElementById('wu-exercise').value;
+  var data={inUnit:wuInUnit,outUnit:wuOutUnit,wuMode:wuMode,
     lw:document.getElementById('wu-lw').value,lr:document.getElementById('wu-lr').value,
     lrpe:document.getElementById('wu-lrpe').value,gr:document.getElementById('wu-gr').value,
     grpe:document.getElementById('wu-grpe').value,mw:document.getElementById('wu-mw').value,
@@ -811,10 +809,10 @@ function saveInputs(){
 }
 function loadInputs(){
   try{
-    const nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
-    if(nt.bwUnit){ntBWUnit=nt.bwUnit;const tog=document.getElementById('nt-bw-tog');
-      if(tog)tog.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit));
-      const lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
+    var nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
+    if(nt.bwUnit){ntBWUnit=nt.bwUnit;var tog=document.getElementById('nt-bw-tog');
+      if(tog)tog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit);});
+      var lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
     if(nt.bw)document.getElementById('nt-bw').value=nt.bw;
     if(nt.p)document.getElementById('nt-p').value=nt.p;
     if(nt.c)document.getElementById('nt-c').value=nt.c;
@@ -825,18 +823,18 @@ function loadInputs(){
 }
 function loadExerciseInputs(ex){
   try{
-    const d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
+    var d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
     if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);
-      const lbl=d.inUnit==='kg'?'kg':'lbs';
-      const lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
-      const mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;}
+      var lbl=d.inUnit==='kg'?'kg':'lbs';
+      var lw=document.getElementById('wu-lw-unit');if(lw)lw.textContent=lbl;
+      var mw=document.getElementById('wu-mw-unit');if(mw)mw.textContent=lbl;}
     if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
     if(d.wuMode){
       wuMode=d.wuMode;
       document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';
       document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';
       document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';
-      document.querySelectorAll('.mtog .mbtn').forEach(b=>{
+      document.querySelectorAll('.mtog .mbtn').forEach(function(b){
         b.classList.toggle('active',
           (b.textContent.trim().toLowerCase().includes('rpe')&&d.wuMode==='rpe')||
           (b.textContent.trim().toLowerCase().includes('manual')&&d.wuMode==='manual'));
@@ -852,81 +850,116 @@ function loadExerciseInputs(ex){
   }catch(e){}
 }
 
-// ── WARMUP PLATE COUNT ─────────────────────────────────────────────────────
 function showWuPlateCount(weightKg,label){
-  const barKg=getWuBarKg(),colKg=getWuColKg(),isKg=wuOutUnit==='kg';
-  const perSideKg=Math.max(0,(weightKg-barKg-colKg*2))/2;
-  const availPlates=PLATES.filter(p=>isKg||p.kg<25);
-  let rem=perSideKg;const loaded=[];
-  availPlates.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
-  const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
+  var barKg=getWuBarKg(),colKg=getWuColKg(),isKg=wuOutUnit==='kg';
+  var perSideKg=Math.max(0,(weightKg-barKg-colKg*2))/2;
+  var availPlates=PLATES.filter(function(p){return isKg||p.kg<25;});
+  var rem=perSideKg,loaded=[];
+  availPlates.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  var counts={};loaded.forEach(function(p){counts[p.kg]=(counts[p.kg]||0)+1;});
   document.getElementById('wu-plate-label').textContent=label;
-  document.getElementById('wu-plate-bar-lbl').textContent=barKg+'kg bar'+(colKg>0?` + collars`:'');
-  document.getElementById('wu-plate-cards').innerHTML=
-    Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
-      const pl=PLATES.find(p=>p.kg==kg);
-      const disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
-      const lbl=isKg?'kg/side':'lbs/side';
-      return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${disp}</div><div class="ml">${lbl}</div></div>`;
-    }).join('')||`<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only (${isKg?barKg+'kg':Math.round(barKg*2.20462)+'lbs'})</div>`;
+  document.getElementById('wu-plate-bar-lbl').textContent=barKg+'kg bar'+(colKg>0?' + collars':'');
+  var html=Object.keys(counts).sort(function(a,b){return b-a;}).map(function(kg){
+    var pl=PLATES.filter(function(p){return p.kg==kg;})[0];
+    var disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
+    return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[kg]+'x'+disp+'</div><div class="ml">'+(isKg?'kg':'lbs')+'/side</div></div>';
+  }).join('');
+  document.getElementById('wu-plate-cards').innerHTML=html||'<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only ('+barKg+'kg)</div>';
   document.getElementById('wu-plate-panel').style.display='block';
 }
 
-// ── WARMUP ─────────────────────────────────────────────────────────────────
 function calcWarmup(){
-  // Reset feel state on new generate
   feelAdj=0;
-  ['worse','normal','better'].forEach(x=>{document.getElementById('feel-'+x).className='feel-btn';});
+  ['worse','normal','better'].forEach(function(x){document.getElementById('feel-'+x).className='feel-btn';});
   document.getElementById('feel-adj-text').textContent='';
   document.getElementById('wu-adj-note').style.display='none';
 
-  const isKgIn=wuInUnit==='kg',isKg=wuOutUnit==='kg',scheme=SCHEMES[document.getElementById('wu-exercise').value];
-  let targetKg,goalReps,goalRPE='—',e1rmKg=null;
+  var exKey=document.getElementById('wu-exercise').value;
+  var scheme=SCHEMES[exKey];
+  var isKgIn=wuInUnit==='kg',isKg=wuOutUnit==='kg';
+  var targetKg,goalReps,goalRPE='—',e1rmKg=null;
+
   if(wuMode==='rpe'){
-    const lw=parseFloat(document.getElementById('wu-lw').value),lr=parseInt(document.getElementById('wu-lr').value),lrpe=parseFloat(document.getElementById('wu-lrpe').value);
-    goalReps=parseInt(document.getElementById('wu-gr').value);goalRPE=parseFloat(document.getElementById('wu-grpe').value);
+    var lw=parseFloat(document.getElementById('wu-lw').value);
+    var lr=parseInt(document.getElementById('wu-lr').value);
+    var lrpe=parseFloat(document.getElementById('wu-lrpe').value);
+    goalReps=parseInt(document.getElementById('wu-gr').value);
+    goalRPE=parseFloat(document.getElementById('wu-grpe').value);
     if(!lw||!lr)return;
-    const lwKg=isKgIn?lw:lw/2.20462;e1rmKg=lwKg/rpeF(lr,lrpe);
-    const raw=e1rmKg*rpeF(goalReps,goalRPE);
+    var lwKg=isKgIn?lw:lw/2.20462;
+    e1rmKg=lwKg/rpeF(lr,lrpe);
+    var raw=e1rmKg*rpeF(goalReps,goalRPE);
     targetKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
     document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs';
   } else {
-    const mw=parseFloat(document.getElementById('wu-mw').value);goalReps=parseInt(document.getElementById('wu-mr').value);if(!mw)return;
+    var mw=parseFloat(document.getElementById('wu-mw').value);
+    goalReps=parseInt(document.getElementById('wu-mr').value);
+    if(!mw)return;
     targetKg=isKgIn?mw:mw/2.20462;
   }
 
-  // Store base values for feel adjustment
   baseTargetKg=targetKg;baseGoalReps=goalReps;baseGoalRPE=goalRPE;baseE1rmKg=e1rmKg;
 
-  const tLbs=targetKg*2.20462;
-  const topD=isKg?targetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  const topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg';
+  var tLbs=targetKg*2.20462;
+  var topD=isKg?targetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
+  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg';
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
   document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';
   document.getElementById('wu-res').style.display='block';
 
-  const barKg=getWuBarKg();
-  const s2r=Math.max(goalReps,5),setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
-  const s2Lbs=targetKg*scheme.pcts[2]*2.20462;
-  let s1Kg=null,s1Skip=false;
-  if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;else if(s2Lbs>=250)s1Kg=155/2.20462;else s1Skip=true;
-  warmupSets=[];const rows=[];
-  rows.push(`<tr class="prep-row"><td>PREP</td><td colspan="3">${scheme.prep}</td></tr>`);
-  if(s1Skip){rows.push(`<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>`);}
-  else{
-    const d=dW(s1Kg,isKg,barKg),wkg=dWKg(s1Kg,isKg,barKg),n=scheme.note(1);
-    rows.push(`<tr onclick="showWuPlateCount(${wkg},'S1 — ${d}')"><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${setReps[1]}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
-    warmupSets.push({label:'S1',weightDisp:d,weightKg:wkg,reps:setReps[1],note:n});
+  var barKg=getWuBarKg();
+  var s2r=Math.max(goalReps,5);
+  var setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
+  var s2Lbs=targetKg*scheme.pcts[2]*2.20462;
+  var s1Kg=null,s1Skip=false;
+  if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;
+  else if(s2Lbs>=250)s1Kg=155/2.20462;
+  else s1Skip=true;
+
+  warmupSets=[];
+  var rows=[];
+  rows.push('<tr class="prep-row"><td>PREP</td><td colspan="3">'+scheme.prep+'</td></tr>');
+
+  if(s1Skip){
+    rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>');
+  } else {
+    var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg),n1=scheme.note(1);
+    rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1 \u2014 '+d1+'\')">'
+      +'<td style="font-family:var(--mono)">S1</td>'
+      +'<td style="font-family:var(--mono)">'+d1+'</td>'
+      +'<td style="font-family:var(--mono)">'+setReps[1]+'</td>'
+      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+n1+'</td></tr>');
+    warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setReps[1],note:n1});
   }
-  ['S2','S3','S4','S5','S6'].forEach((lbl,i)=>{
-    const sn=i+2,raw=targetKg*scheme.pcts[sn],d=dW(raw,isKg,barKg),wkg=dWKg(raw,isKg,barKg),n=scheme.note(sn),r=setReps[sn];
-    rows.push(`<tr onclick="showWuPlateCount(${wkg},'${lbl} — ${d}')"><td style="font-family:var(--mono)">${lbl}</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${r}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
+
+  var setRestKeys={2:'',3:'',4:'s4',5:'s5',6:'s6'};
+  ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
+    var sn=i+2;
+    var rawW=targetKg*scheme.pcts[sn];
+    var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
+    var n=scheme.note(sn),r=setReps[sn];
+    var restKey=setRestKeys[sn];
+    var rest=restKey?REST[exKey][restKey]:'';
+    var noteCell=n+(n&&rest?' · ':'')+restTag(rest,false);
+    rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+' \u2014 '+d+'\')">'
+      +'<td style="font-family:var(--mono)">'+lbl+'</td>'
+      +'<td style="font-family:var(--mono)">'+d+'</td>'
+      +'<td style="font-family:var(--mono)">'+r+'</td>'
+      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+noteCell+'</td></tr>');
     warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
   });
-  const tl=goalRPE!=='—'?`@RPE ${goalRPE}`:'';
-  rows.push(`<tr class="ts" onclick="showWuPlateCount(${targetKg},'TOP SET — ${topD}')"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${tl}</td></tr>`);
+
+  var rpeVal=goalRPE!=='—'?parseFloat(goalRPE):7;
+  var topRest=getTopRest(exKey,rpeVal);
+  var tl=goalRPE!=='—'?'@RPE '+goalRPE:'';
+  var topNoteCell=tl+(tl?' · ':'')+restTag(topRest,true);
+
+  rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET \u2014 '+topD+'\')">'
+    +'<td>TOP SET</td><td>'+topD+'</td><td>'+goalReps+'</td>'
+    +'<td style="font-size:11px">'+topNoteCell+'</td></tr>');
   warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
+
   document.getElementById('wu-tbody').innerHTML=rows.join('');
   document.getElementById('wu-plate-panel').style.display='none';
   document.getElementById('wu-feel-wrap').style.display='block';
@@ -934,78 +967,81 @@ function calcWarmup(){
   saveInputs();
 }
 
-// ── PLATE LOADER ───────────────────────────────────────────────────────────
 function populatePicker(){
-  const pk=document.getElementById('pl-pick');pk.innerHTML='';
-  const valid=warmupSets.filter(s=>s.weightKg>0);
+  var pk=document.getElementById('pl-pick');pk.innerHTML='';
+  var valid=warmupSets.filter(function(s){return s.weightKg>0;});
   if(!valid.length){pk.innerHTML='<option value="">— Generate warmups first —</option>';return;}
-  valid.forEach(s=>{const o=document.createElement('option');o.value=warmupSets.indexOf(s);o.textContent=s.label+' — '+s.weightDisp+' × '+s.reps+' reps';pk.appendChild(o);});
+  valid.forEach(function(s){
+    var o=document.createElement('option');
+    o.value=warmupSets.indexOf(s);
+    o.textContent=s.label+' — '+s.weightDisp+' x '+s.reps+' reps';
+    pk.appendChild(o);
+  });
   pk.selectedIndex=0;pickWarmupSet();
 }
 function pickWarmupSet(){
-  const idx=document.getElementById('pl-pick').value;if(idx===''||!warmupSets[idx])return;
-  const s=warmupSets[idx];
+  var idx=document.getElementById('pl-pick').value;if(idx===''||!warmupSets[idx])return;
+  var s=warmupSets[idx];
   document.getElementById('pl-sinfo').style.display='block';
-  document.getElementById('pl-sw').textContent=s.weightDisp+' × '+s.reps+' reps';
+  document.getElementById('pl-sw').textContent=s.weightDisp+' x '+s.reps+' reps';
   document.getElementById('pl-sd').textContent=s.note||s.label;
   lastKg=s.weightKg;renderPlates(s.weightKg);
 }
-function mkPlate(p){return`<div class="plate" style="width:${pW(p.kg)}px;height:${pH(p.kg)}px;background:${p.color};border:1px solid ${p.border}"></div>`;}
-function mkCollar(){return`<div class="collar"></div>`;}
+function mkPlate(p){return '<div class="plate" style="width:'+pW(p.kg)+'px;height:'+pH(p.kg)+'px;background:'+p.color+';border:1px solid '+p.border+'"></div>';}
+function mkCollar(){return '<div class="collar"></div>';}
 function renderPlates(totalKg){
   lastKg=totalKg;
-  const barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
-  const isKg=plOutUnit==='kg',totLbs=totalKg*2.20462;
-  let rem=perSideKg;const loaded=[];
-  const availPlates=PLATES.filter(p=>isKg||p.kg<25);
-  availPlates.forEach(p=>{while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
-  const counts={};loaded.forEach(p=>{counts[p.kg]=(counts[p.kg]||0)+1;});
-  let sHTML=Object.entries(counts).sort((a,b)=>b[0]-a[0]).map(([kg,n])=>{
-    const pl=PLATES.find(p=>p.kg==kg);
-    const disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
-    const lbl=isKg?'kg/side':'lbs/side';
-    return`<div class="mc" style="border-left:3px solid ${pl?pl.color:'#333'}"><div class="mv">${n}×${disp}</div><div class="ml">${lbl}</div></div>`;
+  var barKg=getBarKg(),colKg=getColKg(),perSideKg=Math.max(0,(totalKg-barKg-colKg*2))/2;
+  var isKg=plOutUnit==='kg',totLbs=totalKg*2.20462;
+  var rem=perSideKg,loaded=[];
+  var availPlates=PLATES.filter(function(p){return isKg||p.kg<25;});
+  availPlates.forEach(function(p){while(rem>=p.kg-0.01){loaded.push(p);rem-=p.kg;}});
+  var counts={};loaded.forEach(function(p){counts[p.kg]=(counts[p.kg]||0)+1;});
+  var sHTML=Object.keys(counts).sort(function(a,b){return b-a;}).map(function(kg){
+    var pl=PLATES.filter(function(p){return p.kg==kg;})[0];
+    var disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
+    return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[kg]+'x'+disp+'</div><div class="ml">'+(isKg?'kg':'lbs')+'/side</div></div>';
   }).join('');
-  if(colKg>0){const colDisp=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+=`<div class="mc" style="border-left:3px solid #666"><div class="mv">2×${colDisp}</div><div class="ml">collars</div></div>`;}
+  if(colKg>0){var colDisp=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+colDisp+'</div><div class="ml">collars</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
-  document.getElementById('pl-total').textContent=isKg?totalKg.toFixed(2).replace(/\.?0+$/,'')+' kg':totLbs.toFixed(1)+' lbs';
-  document.getElementById('pl-total-alt').textContent=isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(2).replace(/\.?0+$/,'')+' kg';
-  document.getElementById('pl-conv').textContent='Bar: '+barKg+'kg'+(colKg>0?` + 2 collars @ ${colKg}kg ea`:'')+' | '+perSideKg.toFixed(2).replace(/\.?0+$/,'')+' kg per side';
-  const colHTML=colKg>0?mkCollar():'';
-  const leftPlates=[...loaded].reverse().map(mkPlate).join('');
-  const rightPlates=loaded.map(mkPlate).join('');
-  const diag=document.getElementById('pl-bar-diagram');
-  diag.innerHTML=`<div class="bar-assy">
-    <div class="bar-sleeve"></div>
-    <div style="display:flex;align-items:center">${leftPlates}</div>
-    ${colHTML}<div class="bar-shaft"></div>${colHTML}
-    <div style="display:flex;align-items:center">${rightPlates}</div>
-    <div class="bar-sleeve"></div>
-  </div>${!loaded.length?`<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: ${barKg}kg</div>`:''}`;
+  document.getElementById('pl-total').textContent=isKg?totalKg.toFixed(1)+' kg':totLbs.toFixed(1)+' lbs';
+  document.getElementById('pl-total-alt').textContent=isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(1)+' kg';
+  document.getElementById('pl-conv').textContent='Bar: '+barKg+'kg'+(colKg>0?' + 2 collars @ '+colKg+'kg ea':'')+' | '+perSideKg.toFixed(2)+' kg per side';
+  var colHTML=colKg>0?mkCollar():'';
+  var leftPlates=loaded.slice().reverse().map(mkPlate).join('');
+  var rightPlates=loaded.map(mkPlate).join('');
+  var diag=document.getElementById('pl-bar-diagram');
+  diag.innerHTML='<div class="bar-assy">'
+    +'<div class="bar-sleeve"></div>'
+    +'<div style="display:flex;align-items:center">'+leftPlates+'</div>'
+    +colHTML+'<div class="bar-shaft"></div>'+colHTML
+    +'<div style="display:flex;align-items:center">'+rightPlates+'</div>'
+    +'<div class="bar-sleeve"></div>'
+    +'</div>'
+    +(!loaded.length?'<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: '+barKg+'kg</div>':'');
 }
 
-// ── NUTRITION ──────────────────────────────────────────────────────────────
 function rn(x){return Math.round(x);}
 function calcNutrition(){
-  const P=parseFloat(document.getElementById('nt-p').value)||165;
-  const C=parseFloat(document.getElementById('nt-c').value)||380;
-  const F=parseFloat(document.getElementById('nt-f').value)||60;
-  const bwRaw=parseFloat(document.getElementById('nt-bw').value)||68;
-  const BW=ntBWUnit==='lbs'?bwRaw/2.20462:bwRaw;
-  const timing=document.getElementById('nt-t').value;
-  const cals=Math.round(P*4+C*4+F*9);
-  const hi=cals>=2500;
+  var P=parseFloat(document.getElementById('nt-p').value)||165;
+  var C=parseFloat(document.getElementById('nt-c').value)||380;
+  var F=parseFloat(document.getElementById('nt-f').value)||60;
+  var bwRaw=parseFloat(document.getElementById('nt-bw').value)||68;
+  var BW=ntBWUnit==='lbs'?bwRaw/2.20462:bwRaw;
+  var timing=document.getElementById('nt-t').value;
+  var cals=Math.round(P*4+C*4+F*9);
+  var hi=cals>=2500;
   document.getElementById('nt-cal').textContent=cals;
   document.getElementById('nt-po').textContent=P+'g';
   document.getElementById('nt-co').textContent=C+'g';
   document.getElementById('nt-fo').textContent=F+'g';
-  const p6=P/6,p7=P/7,pp=hi?p7:p6;
-  const preWO_lo=timing==='late'?BW*1.33:BW;
-  const midWO_lo=30;
-  const LC=C-preWO_lo-midWO_lo;
-  const m=(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls=false)=>
-    ({meal,badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note,ls});
-  let meals=[];
+  var p6=P/6,p7=P/7,pp=hi?p7:p6;
+  var preWO_lo=timing==='late'?BW*1.33:BW;
+  var LC=C-preWO_lo-30;
+  var m=function(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls){
+    return {meal:meal,badge:badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note:note,ls:ls||false};
+  };
+  var meals=[];
   if(timing==='early'){
     meals=[
       m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
@@ -1015,9 +1051,9 @@ function calcNutrition(){
       m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate — protein + starchy carbs + veggies.'),
       m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),
       m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true),
+      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true)
     ];
-  }else if(timing==='late'){
+  } else if(timing==='late'){
     meals=[
       m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs — fuel loading before your session.'),
       m('Pre-Workout',true,0,10,BW*1.33,BW*2,0,5,'Carb-forward. Eat 60 min before training.'),
@@ -1025,9 +1061,9 @@ function calcNutrition(){
       m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),
       m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),
       m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),
-      m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true),
+      m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true)
     ];
-  }else if(timing==='afternoon'){
+  } else if(timing==='afternoon'){
     meals=[
       m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),
       m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
@@ -1036,9 +1072,9 @@ function calcNutrition(){
       m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30–60 min before training.'),
       m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),
       m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish — prioritize protein + carbs post-session.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
+      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)
     ];
-  }else{
+  } else {
     meals=[
       m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),
       m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),
@@ -1047,14 +1083,14 @@ function calcNutrition(){
       m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs 30–60 min before. Keep it light.'),
       m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),
       m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb — winding down before sleep.'),
-      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true),
+      m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)
     ];
   }
-  const visible=meals.filter(x=>!(x.ls&&!hi));
+  var visible=meals.filter(function(x){return !(x.ls&&!hi);});
   document.getElementById('nt-meals').innerHTML=visible.map(function(x){
     var badge=x.badge?'<div class="wbadge">Workout</div>':'';
     var cls=x.badge?'wk':'nm';
-    return'<div class="meal-card '+cls+'">'
+    return '<div class="meal-card '+cls+'">'
       +'<div class="meal-header"><div class="meal-name">'+x.meal+'</div>'+badge+'</div>'
       +'<div class="meal-macros">'
       +'<div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'&ndash;'+x.pHi+'g</div></div>'
@@ -1066,13 +1102,12 @@ function calcNutrition(){
   }).join('');
 }
 
-// ── SUPPLEMENTS ────────────────────────────────────────────────────────────
-let suppBWUnit='lbs';
+var suppBWUnit='lbs';
 function setSuppBWU(u,el){
   suppBWUnit=u;
-  el.parentElement.querySelectorAll('.ubtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===u));
+  el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('supp-bw-lbl').textContent=u;
-  const cur=parseFloat(document.getElementById('supp-bw').value);
+  var cur=parseFloat(document.getElementById('supp-bw').value);
   if(!isNaN(cur)){document.getElementById('supp-bw').value=u==='kg'?Math.round(cur/2.20462*10)/10:Math.round(cur*2.20462*10)/10;}
   ntBWUnit=u;
   var ntTog=document.getElementById('nt-bw-tog');
@@ -1080,11 +1115,11 @@ function setSuppBWU(u,el){
   var ntLbl=document.getElementById('nt-bw-unit');if(ntLbl)ntLbl.textContent=u;
   syncSuppToNT();
 }
-function getSuppBWLbs(){const v=parseFloat(document.getElementById('supp-bw').value)||185;return suppBWUnit==='kg'?v*2.20462:v;}
+function getSuppBWLbs(){var v=parseFloat(document.getElementById('supp-bw').value)||185;return suppBWUnit==='kg'?v*2.20462:v;}
 function getSuppBracket(lbs){return lbs<=130?0:lbs<=175?1:2;}
 function bracketBar(b){
-  const labels=['≤130lbs','130–175lbs','175+lbs'];
-  return'<div class="bracket-bar">'+labels.map(function(l,i){return'<div class="bseg'+(i===b?' on':'')+'">' +l+'</div>';}).join('')+'</div>';
+  var labels=['<=130lbs','130-175lbs','175+lbs'];
+  return '<div class="bracket-bar">'+labels.map(function(l,i){return '<div class="bseg'+(i===b?' on':'')+'">'+l+'</div>';}).join('')+'</div>';
 }
 function suppCard(s,b){
   var dose=s.scaled?s.doses[b]:s.dose;
@@ -1092,8 +1127,8 @@ function suppCard(s,b){
   var tag=s.scaled?'<span class="supp-tag wt">Weight-scaled</span>':'<span class="supp-tag ft">Fixed dose</span>';
   var bar=s.scaled?bracketBar(b):'';
   var note=s.note?'<div class="supp-note">'+s.note+'</div>':'';
-  var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop →</a>':'';
-  return'<div class="supp-card '+cls+'">'
+  var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop &#8594;</a>':'';
+  return '<div class="supp-card '+cls+'">'
     +'<div class="supp-header"><div class="supp-name">'+s.name+'</div>'+tag+'</div>'
     +'<div class="supp-body">'
     +'<div class="supp-dose">'+dose+'</div>'
@@ -1105,17 +1140,17 @@ function calcSupps(){
   var lbs=getSuppBWLbs(),b=getSuppBracket(lbs);
   var SUPPS=[
     {name:'Creatine Monohydrate',scaled:true,doses:['5g','7.5g','10g'],form:'Monohydrate form',timing:'Post-workout or anytime daily — consistency matters more than timing',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
-    {name:'Vitamin D3 + K2',scaled:true,doses:['3,000 IU','4,000 IU','5,000 IU'],form:'D3 always paired with K2 (MK-7 form) · K2: 100–200mcg',timing:'With a fat-containing meal for best absorption',note:null,link:'https://amzn.to/4qIn6Li'},
-    {name:'Magnesium Glycinate',scaled:false,dose:'200–400mg',form:'Glycinate form for absorption',timing:'Before bed',note:'Start at 200mg. If sleep quality is poor or you wake frequently, increase to 400mg. Most find their sweet spot within 1–2 weeks.',link:'https://amzn.to/49fQwdU'},
+    {name:'Vitamin D3 + K2',scaled:true,doses:['3,000 IU','4,000 IU','5,000 IU'],form:'D3 always paired with K2 (MK-7 form) · K2: 100-200mcg',timing:'With a fat-containing meal for best absorption',note:null,link:'https://amzn.to/4qIn6Li'},
+    {name:'Magnesium Glycinate',scaled:false,dose:'200-400mg',form:'Glycinate form for absorption',timing:'Before bed',note:'Start at 200mg. If sleep quality is poor or you wake frequently, increase to 400mg. Most find their sweet spot within 1-2 weeks.',link:'https://amzn.to/49fQwdU'},
     {name:'Omega-3 (EPA+DHA)',scaled:true,doses:['2g','3g','4g'],form:'EPA+DHA combined — not total fish oil weight',timing:'With a fat-containing meal',note:null,link:'https://amzn.to/4qsf3lW'},
     {name:'Whey Protein',scaled:false,dose:'As needed',form:'Whey isolate — to hit daily protein target',timing:'Post-workout or to close daily protein gap',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
-    {name:'Casein Protein',scaled:false,dose:'As needed',form:'Micellar casein — slow release overnight',timing:'Pre-bed meal to support overnight recovery',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
+    {name:'Casein Protein',scaled:false,dose:'As needed',form:'Micellar casein — slow release overnight',timing:'Pre-bed meal to support overnight recovery',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'}
   ];
-  document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div><div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
+  document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div>'
+    +'<div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
   try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}
 }
 
-// ── RECOMMENDED GEAR ───────────────────────────────────────────────────────
 function buildGear(){
   var GEAR=[
     {name:'Trioral (Electrolytes)',link:'https://amzn.to/49vQPjt'},
@@ -1125,12 +1160,12 @@ function buildGear(){
     {name:'Chalk',link:'https://amzn.to/4jCf3gS'},
     {name:'Lifting Wrist Straps',link:'https://amzn.to/3LdGKQq'},
     {name:'Caffeine Energy Gum',link:'https://amzn.to/4jCf5Fw'},
-    {name:'Rythmhealth — Home Blood Testing',link:'https://rythmhealth.com',code:'RIFE341K',discount:'$20 off'},
+    {name:'Rythmhealth — Home Blood Testing',link:'https://rythmhealth.com',code:'RIFE341K',discount:'$20 off'}
   ];
   document.getElementById('gear-grid').innerHTML=GEAR.map(function(g){
     var codeRow=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> — '+g.discount+'</div>':'';
-    var shopLabel=g.code?'Shop Rythmhealth ↗':'Shop on Amazon ↗';
-    return'<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+codeRow+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+shopLabel+'</a></div>';
+    var shopLabel=g.code?'Shop Rythmhealth &#8599;':'Shop on Amazon &#8599;';
+    return '<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+codeRow+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+shopLabel+'</a></div>';
   }).join('');
 }
 
@@ -1159,13 +1194,12 @@ document.getElementById('wu-exercise').addEventListener('change',function(){
   document.getElementById('wu-plate-panel').style.display='none';
   document.getElementById('wu-res').style.display='none';
   document.getElementById('wu-feel-wrap').style.display='none';
-  document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(\'DM Mono\',monospace)">Enter inputs and click Generate</td></tr>';
+  document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>';
   warmupSets=[];baseTargetKg=null;
 });
-document.getElementById('nt-btn').addEventListener('click',()=>setTimeout(saveInputs,100),true);
+document.getElementById('nt-btn').addEventListener('click',function(){setTimeout(saveInputs,100);},true);
 </script>
 
-<!-- Cookie consent banner -->
 <div id="cookie-banner" style="display:none">
   <span>This site uses cookies for analytics to understand how lifters use the tool. No personal data is sold or shared. <a href="https://www.iubenda.com/privacy-policy/your-id" target="_blank">Privacy policy</a></span>
   <button id="cookie-accept" onclick="acceptCookies()">Got it</button>
