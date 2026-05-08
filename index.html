@@ -617,6 +617,35 @@ const RPE_I={10:0,9.5:1,9:2,8.5:3,8:4,7.5:5,7:6,6.5:7,6:8,5.5:9,5:10,4.5:11,4:12
 function rpeF(reps,rpe){const r=Math.min(10,Math.max(1,Math.round(reps)));const row=RPE_T[r];if(!row)return 0.8;const i=RPE_I[parseFloat(rpe)];return i!==undefined?row[i]:row[0];}
 
 // ── WARMUP SCHEMES ─────────────────────────────────────────────────────────
+// ── REST TIMES ─────────────────────────────────────────────────────────────
+const REST={
+  bench:{
+    s4:'1:00–1:30',s5:'1:30–2:30',s6:'2:00–3:00',
+    top:[{max:6,'r':'1:00–1:30'},{max:7,'r':'1:30–2:30'},{max:8,'r':'2:00–3:00'},{max:8.5,'r':'2:30–4:00'},{max:10,'r':'3:00–5:30'}]
+  },
+  squat:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,'r':'1:30–2:00'},{max:7,'r':'2:30–3:30'},{max:8,'r':'3:00–4:30'},{max:8.5,'r':'4:00–5:30'},{max:10,'r':'5:00–7:00'}]
+  },
+  sumo:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,'r':'1:30–2:00'},{max:7,'r':'3:00–5:00'},{max:8,'r':'3:30–5:30'},{max:8.5,'r':'4:00–6:30'},{max:10,'r':'5:00–8:00'}]
+  },
+  conv:{
+    s4:'1:30–2:00',s5:'2:30–3:30',s6:'3:30–5:00',
+    top:[{max:6,'r':'1:30–2:00'},{max:7,'r':'3:00–5:00'},{max:8,'r':'3:30–5:30'},{max:8.5,'r':'4:00–6:30'},{max:10,'r':'5:00–8:00'}]
+  },
+};
+function getTopRest(ex,rpe){
+  const buckets=REST[ex].top;
+  for(let i=0;i<buckets.length;i++){if(rpe<=buckets[i].max)return buckets[i].r;}
+  return buckets[buckets.length-1].r;
+}
+function restTag(txt){
+  if(!txt)return '';
+  return `<span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#6b6b6b;white-space:nowrap">REST ${txt}</span>`;
+}
+
 const SCHEMES={
   squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:_=>''},
   bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:_=>''},
@@ -694,10 +723,14 @@ function applyFeelAdj(){
   // update top set row in table
   const tl=baseGoalRPE!=='—'?`@RPE ${baseGoalRPE}`:'';
   const topDLabel=feelAdj!==0?topD+' (adjusted)':topD;
+  const exNow=document.getElementById('wu-exercise').value;
+  const rpeNow=baseGoalRPE!=='—'?parseFloat(baseGoalRPE):7;
+  const topRestNow=getTopRest(exNow,rpeNow);
+  const adjNoteCell=tl+' · '+restTag(topRestNow);
   const lastRow=document.querySelector('#wu-tbody tr.ts');
   if(lastRow){
     lastRow.cells[1].textContent=topDLabel;
-    lastRow.cells[3].textContent=tl;
+    lastRow.cells[3].innerHTML=adjNoteCell;
     lastRow.onclick=function(){showWuPlateCount(adjustedTargetKg,'TOP SET — '+topDLabel);};
   }
   // update warmupSets top set entry
@@ -925,7 +958,7 @@ function calcWarmup(){
     warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
   });
   const tl=goalRPE!=='—'?`@RPE ${goalRPE}`:'';
-  rows.push(`<tr class="ts" onclick="showWuPlateCount(${targetKg},'TOP SET — ${topD}')"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${tl}</td></tr>`);
+  rows.push(`<tr class="ts" onclick="showWuPlateCount(${targetKg},'TOP SET — ${topD}')"><td>TOP SET</td><td>${topD}</td><td>${goalReps}</td><td style="font-size:11px">${topNoteCell}</td></tr>`);
   warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
   document.getElementById('wu-tbody').innerHTML=rows.join('');
   document.getElementById('wu-plate-panel').style.display='none';
