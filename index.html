@@ -607,8 +607,8 @@ function rpeF(reps,rpe){
 var SCHEMES={
   squat:{prep:'Barbell Twist Sequence — Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.94],note:function(){return '';}},
   bench:{prep:'Bar — 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:function(){return '';}},
-  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(s){return s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':'';}},
-  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:function(s){return s<=2?'pause reps':s===3?'pause first half of reps':s===4?'pause first rep':'';}}
+  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(){return '';}},
+  conv:{prep:'RDL with bar — 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.91],note:function(){return '';}}
 };
 
 var REST={
@@ -929,7 +929,7 @@ function calcWarmup(){
       +'<td style="font-family:var(--mono)">S1</td>'
       +'<td style="font-family:var(--mono)">'+d1+'</td>'
       +'<td style="font-family:var(--mono)">'+setReps[1]+'</td>'
-      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+n1+'</td></tr>');
+      +'<td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">'+n1cell+'</td></tr>');
     warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setReps[1],note:n1});
   }
 
@@ -941,7 +941,8 @@ function calcWarmup(){
     var n=scheme.note(sn),r=setReps[sn];
     var restKey=setRestKeys[sn];
     var rest=restKey?REST[exKey][restKey]:'';
-    var noteCell=n+(n&&rest?' · ':'')+restTag(rest,false);
+    var noRestTag=!restKey?'<span class="rest-tag">NO REST</span>':'';
+    var noteCell=n+(n&&rest?' · ':'')+restTag(rest,false)+noRestTag;
     rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+' \u2014 '+d+'\')">'
       +'<td style="font-family:var(--mono)">'+lbl+'</td>'
       +'<td style="font-family:var(--mono)">'+d+'</td>'
