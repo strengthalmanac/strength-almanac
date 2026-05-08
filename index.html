@@ -630,10 +630,10 @@ let feelAdj=0; // RPE adjustment from feel check: -0.5, 0, +0.5
 let baseTargetKg=null, baseGoalReps=null, baseGoalRPE=null, baseE1rmKg=null;
 Object.defineProperty(window,'gUnit',{get:()=>plOutUnit});
 
-function rwKg(r){const ps=Math.max(0,(r-20))/2;return 20+Math.round(ps/1.25)*1.25*2;}
-function rwLb(r){const ps=Math.max(0,(r-45))/2;return 45+Math.round(ps/2.5)*2.5*2;}
-function dW(kg,isKg){return isKg?rwKg(kg).toFixed(1)+' kg':rwLb(kg*2.20462).toFixed(1)+' lbs';}
-function dWKg(kg,isKg){return isKg?rwKg(kg):rwLb(kg*2.20462)/2.20462;}
+function rwKg(r,barKg){const b=barKg||20;const ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
+function rwLb(r,barLb){const b=barLb||45;const ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
+function dW(kg,isKg,barKg){const b=barKg||20;return isKg?rwKg(kg,b).toFixed(2).replace(/\.?0+$/,'')+' kg':rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lbs';}
+function dWKg(kg,isKg,barKg){const b=barKg||20;return isKg?rwKg(kg,b):rwLb(kg*2.20462,b*2.20462)/2.20462;}
 
 // Warmup bar/collar
 function getWuBarKg(){const v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
@@ -691,16 +691,17 @@ function applyFeelAdj(){
   if(adjNote){adjEl.style.display='block';adjEl.textContent=adjNote;}
   else{adjEl.style.display='none';}
   // update top set row in table
-  const tl=baseGoalRPE!=='—'?`@RPE ${parseFloat(baseGoalRPE)+feelAdj}${feelAdj!==0?' (adjusted)':''}`:'';
+  const tl=baseGoalRPE!=='—'?`@RPE ${baseGoalRPE}`:'';
+  const topDLabel=feelAdj!==0?topD+' (adjusted)':topD;
   const lastRow=document.querySelector('#wu-tbody tr.ts');
   if(lastRow){
-    lastRow.cells[1].textContent=topD;
+    lastRow.cells[1].textContent=topDLabel;
     lastRow.cells[3].textContent=tl;
-    lastRow.onclick=function(){showWuPlateCount(adjustedTargetKg,'TOP SET — '+topD);};
+    lastRow.onclick=function(){showWuPlateCount(adjustedTargetKg,'TOP SET — '+topDLabel);};
   }
   // update warmupSets top set entry
   const tsIdx=warmupSets.findIndex(s=>s.label==='TOP SET');
-  if(tsIdx>=0){warmupSets[tsIdx].weightDisp=topD;warmupSets[tsIdx].weightKg=adjustedTargetKg;warmupSets[tsIdx].note=tl;}
+  if(tsIdx>=0){warmupSets[tsIdx].weightDisp=topDLabel;warmupSets[tsIdx].weightKg=adjustedTargetKg;warmupSets[tsIdx].note=tl;}
   if(plMode==='warmup')populatePicker();
 }
 
@@ -904,6 +905,7 @@ function calcWarmup(){
   document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';
   document.getElementById('wu-res').style.display='block';
 
+  const barKg=getWuBarKg();
   const s2r=Math.max(goalReps,5),setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
   const s2Lbs=targetKg*scheme.pcts[2]*2.20462;
   let s1Kg=null,s1Skip=false;
@@ -912,12 +914,12 @@ function calcWarmup(){
   rows.push(`<tr class="prep-row"><td>PREP</td><td colspan="3">${scheme.prep}</td></tr>`);
   if(s1Skip){rows.push(`<tr class="skip-row"><td>S1</td><td>Skip</td><td>—</td><td></td></tr>`);}
   else{
-    const d=dW(s1Kg,isKg),wkg=dWKg(s1Kg,isKg),n=scheme.note(1);
+    const d=dW(s1Kg,isKg,barKg),wkg=dWKg(s1Kg,isKg,barKg),n=scheme.note(1);
     rows.push(`<tr onclick="showWuPlateCount(${wkg},'S1 — ${d}')"><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${setReps[1]}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
     warmupSets.push({label:'S1',weightDisp:d,weightKg:wkg,reps:setReps[1],note:n});
   }
   ['S2','S3','S4','S5','S6'].forEach((lbl,i)=>{
-    const sn=i+2,raw=targetKg*scheme.pcts[sn],d=dW(raw,isKg),wkg=dWKg(raw,isKg),n=scheme.note(sn),r=setReps[sn];
+    const sn=i+2,raw=targetKg*scheme.pcts[sn],d=dW(raw,isKg,barKg),wkg=dWKg(raw,isKg,barKg),n=scheme.note(sn),r=setReps[sn];
     rows.push(`<tr onclick="showWuPlateCount(${wkg},'${lbl} — ${d}')"><td style="font-family:var(--mono)">${lbl}</td><td style="font-family:var(--mono)">${d}</td><td style="font-family:var(--mono)">${r}</td><td style="font-family:var(--mono);color:#6b6b6b;font-size:11px">${n}</td></tr>`);
     warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:n});
   });
