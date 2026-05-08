@@ -461,9 +461,10 @@
         </div>
         <div id="pl-summ" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:6px"></div>
         <div class="rbox" style="margin-top:12px">
-          <div class="rlbl">Per Side (plates only)</div>
-          <div style="font-family:var(--display);font-size:48px;color:#e74c3c;line-height:1" id="pl-ps">—</div>
-          <div style="margin-top:6px;font-size:10px;letter-spacing:1px;color:#d9d4c8" id="pl-conv">—</div>
+          <div class="rlbl">Total Weight on Bar</div>
+          <div style="font-family:var(--display);font-size:48px;color:#e74c3c;line-height:1" id="pl-total">—</div>
+          <div style="font-family:var(--display);font-size:24px;color:#6b6b6b;line-height:1;margin-top:4px" id="pl-total-alt">—</div>
+          <div style="margin-top:8px;font-size:10px;letter-spacing:1px;color:#6b6b6b;border-top:1px solid #2a2a2a;padding-top:8px" id="pl-conv">—</div>
         </div>
       </div>
       <div>
@@ -967,11 +968,9 @@ function renderPlates(totalKg){
   }).join('');
   if(colKg>0){const colDisp=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+=`<div class="mc" style="border-left:3px solid #666"><div class="mv">2×${colDisp}</div><div class="ml">collars</div></div>`;}
   document.getElementById('pl-summ').innerHTML=sHTML;
-  document.getElementById('pl-ps').textContent=isKg?perSideKg.toFixed(2)+' kg':(perSideKg*2.20462).toFixed(1)+' lbs';
-  document.getElementById('pl-conv').textContent=
-    (isKg?totalKg.toFixed(2)+' kg':totLbs.toFixed(1)+' lbs')+
-    ' = '+(isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(2)+' kg')+
-    ' | Bar: '+barKg+'kg'+(colKg>0?` + 2 collars @ ${colKg}kg ea`:'');
+  document.getElementById('pl-total').textContent=isKg?totalKg.toFixed(2).replace(/\.?0+$/,'')+' kg':totLbs.toFixed(1)+' lbs';
+  document.getElementById('pl-total-alt').textContent=isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(2).replace(/\.?0+$/,'')+' kg';
+  document.getElementById('pl-conv').textContent='Bar: '+barKg+'kg'+(colKg>0?` + 2 collars @ ${colKg}kg ea`:'')+' | '+perSideKg.toFixed(2).replace(/\.?0+$/,'')+' kg per side';
   const colHTML=colKg>0?mkCollar():'';
   const leftPlates=[...loaded].reverse().map(mkPlate).join('');
   const rightPlates=loaded.map(mkPlate).join('');
