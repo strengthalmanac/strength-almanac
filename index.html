@@ -303,9 +303,8 @@
           <div class="g2">
             <div class="fg"><div class="fl">Bar Type</div>
               <select id="wu-bar">
-                <option value="20">Standard Olympic (20kg)</option>
-                <option value="15">Women's Olympic (15kg)</option>
-                <option value="11.3">Junior / Curl (11.3kg)</option>
+                <option value="20">Standard (20kg)</option>
+                <option value="25">Squat Bar (25kg)</option>
                 <option value="custom">Custom</option>
               </select>
             </div>
@@ -314,9 +313,7 @@
           <div class="g2">
             <div class="fg"><div class="fl">Collar Type</div>
               <select id="wu-col">
-                <option value="0">No Collars (0kg)</option>
-                <option value="0.45">Thin Spin (~0.45kg ea)</option>
-                <option value="1.1">Standard Clamp (~1.1kg ea)</option>
+                <option value="0">None (0kg)</option>
                 <option value="2.5">Competition (2.5kg ea)</option>
                 <option value="custom">Custom</option>
               </select>
@@ -406,9 +403,8 @@
         <div class="g2">
           <div class="fg"><div class="fl">Bar Type</div>
             <select id="pl-bar">
-              <option value="20">Standard Olympic (20kg)</option>
-              <option value="15">Women's Olympic (15kg)</option>
-              <option value="11.3">Junior / Curl (11.3kg)</option>
+              <option value="20">Standard (20kg)</option>
+              <option value="25">Squat Bar (25kg)</option>
               <option value="custom">Custom</option>
             </select>
           </div>
@@ -417,9 +413,7 @@
         <div class="g2">
           <div class="fg"><div class="fl">Collar Type</div>
             <select id="pl-col">
-              <option value="0">No Collars (0kg)</option>
-              <option value="0.45">Thin Spin (~0.45kg ea)</option>
-              <option value="1.1">Standard Clamp (~1.1kg ea)</option>
+              <option value="0">None (0kg)</option>
               <option value="2.5">Competition (2.5kg ea)</option>
               <option value="custom">Custom</option>
             </select>
@@ -825,6 +819,7 @@ function showWuPlateCount(weightKg,label){
     var disp=isKg?kg+'kg':Math.round(kg*2.20462)+'lbs';
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[kg]+'x'+disp+'</div><div class="ml">'+(isKg?'kg':'lbs')+'/side</div></div>';
   }).join('');
+  if(colKg>0){var cd=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';html+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+cd+'</div><div class="ml">collars</div></div>';}
   document.getElementById('wu-plate-cards').innerHTML=html||'<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only ('+barKg+'kg)</div>';
   document.getElementById('wu-plate-panel').style.display='block';
 }
