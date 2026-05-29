@@ -625,7 +625,11 @@ var suppBWUnit='lbs';
 
 function rwKg(r,b){b=b||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
 function rwLb(r,b){b=b||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
-function dW(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b).toFixed(1)+' kg':rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lbs';}
+function dW(kg,isKg,barKg){
+  var b=barKg||20;
+  if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg <span style="color:#aaa">('+(r*2.20462).toFixed(1)+' lb)</span>';}
+  else{var rl=rwLb(kg*2.20462,b*2.20462);return rl.toFixed(1)+' lb <span style="color:#aaa">('+(rl/2.20462).toFixed(1)+' kg)</span>';}
+}
 function dWKg(kg,isKg,barKg){var b=barKg||20;return isKg?rwKg(kg,b):rwLb(kg*2.20462,b*2.20462)/2.20462;}
 function getWuBarKg(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
 function getWuColKg(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
@@ -662,8 +666,9 @@ function applyFeelAdj(){
     adjNote=(diff>=0?'+ ':'-')+diffD+' from original';
   }
   var tLbs=adjKg*2.20462;
-  var topD=isKg?adjKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(adjKg).toFixed(1)+' kg';
+  var topD,topA;
+  if(isKg){topD=rwKg(adjKg).toFixed(1)+' kg';topA=(rwKg(adjKg)*2.20462).toFixed(1)+' lbs';}
+  else{topD=rwLb(tLbs).toFixed(1)+' lbs';topA=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
   var adjEl=document.getElementById('wu-adj-note');
@@ -729,6 +734,7 @@ function switchTab(id,el){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');
+  try{localStorage.setItem('tsa-last-tab',id);}catch(e){}
 }
 function setWuMode(m,el){
   wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
@@ -769,6 +775,7 @@ function wireControls(){
 
 function saveInputs(){
   var ex=document.getElementById('wu-exercise').value;
+  try{localStorage.setItem('tsa-last-ex',ex);}catch(e){}
   try{localStorage.setItem('tsa-wu-'+ex,JSON.stringify({inUnit:wuInUnit,outUnit:wuOutUnit,wuMode:wuMode,lw:document.getElementById('wu-lw').value,lr:document.getElementById('wu-lr').value,lrpe:document.getElementById('wu-lrpe').value,gr:document.getElementById('wu-gr').value,grpe:document.getElementById('wu-grpe').value,mw:document.getElementById('wu-mw').value,mr:document.getElementById('wu-mr').value}));}catch(e){}
   try{localStorage.setItem('tsa-nt',JSON.stringify({p:document.getElementById('nt-p').value,c:document.getElementById('nt-c').value,f:document.getElementById('nt-f').value,t:document.getElementById('nt-t').value,bw:document.getElementById('nt-bw').value,bwUnit:ntBWUnit}));}catch(e){}
 }
@@ -782,6 +789,9 @@ function loadInputs(){
     if(nt.f)document.getElementById('nt-f').value=nt.f;
     if(nt.t)document.getElementById('nt-t').value=nt.t;
   }catch(e){}
+  var lastEx='';
+  try{lastEx=localStorage.getItem('tsa-last-ex')||'';}catch(e){}
+  if(lastEx)document.getElementById('wu-exercise').value=lastEx;
   loadExerciseInputs(document.getElementById('wu-exercise').value);
 }
 function loadExerciseInputs(ex){
@@ -852,8 +862,10 @@ function calcWarmup(){
   baseTargetKg=targetKg;baseGoalReps=goalReps;baseGoalRPE=goalRPE;baseE1rmKg=e1rmKg;
 
   var tLbs=targetKg*2.20462;
-  var topD=isKg?targetKg.toFixed(1)+' kg':rwLb(tLbs).toFixed(1)+' lbs';
-  var topA=isKg?rwLb(tLbs).toFixed(1)+' lbs':rwKg(targetKg).toFixed(1)+' kg';
+  var topPrimary,topSecondary;
+  if(isKg){topPrimary=rwKg(targetKg).toFixed(1)+' kg';topSecondary=(rwKg(targetKg)*2.20462).toFixed(1)+' lbs';}
+  else{topPrimary=rwLb(tLbs).toFixed(1)+' lbs';topSecondary=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
+  var topD=topPrimary,topA=topSecondary;
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
   document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';
@@ -956,7 +968,7 @@ function renderPlates(totalKg){
   if(colKg>0){var cd=isKg?colKg+'kg':Math.round(colKg*2.20462*10)/10+'lbs';sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+cd+'</div><div class="ml">collars</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
   document.getElementById('pl-total').textContent=isKg?totalKg.toFixed(1)+' kg':totLbs.toFixed(1)+' lbs';
-  document.getElementById('pl-total-alt').textContent=isKg?totLbs.toFixed(1)+' lbs':totalKg.toFixed(1)+' kg';
+  document.getElementById('pl-total-alt').textContent=isKg?(totalKg*2.20462).toFixed(1)+' lbs':(totLbs/2.20462).toFixed(1)+' kg';
   document.getElementById('pl-conv').textContent='Bar: '+barKg+'kg'+(colKg>0?' + 2 collars @ '+colKg+'kg ea':'')+' | '+perSideKg.toFixed(2)+' kg per side';
   var colHTML=colKg>0?mkCollar():'';
   var lp=loaded.slice().reverse().map(mkPlate).join('');
@@ -1077,7 +1089,21 @@ try{
 
 wireControls();
 loadInputs();
+try{
+  var lastTab=localStorage.getItem('tsa-last-tab');
+  if(lastTab&&document.getElementById('tab-'+lastTab)){
+    var tabEls=document.querySelectorAll('.tab');
+    var tabMap={warmup:0,plates:1,nutrition:2,supps:3,products:4};
+    if(tabMap[lastTab]!==undefined){
+      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+      document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+      tabEls[tabMap[lastTab]].classList.add('active');
+      document.getElementById('tab-'+lastTab).classList.add('active');
+    }
+  }
+}catch(e){}
 document.getElementById('wu-exercise').addEventListener('change',function(){
+  try{localStorage.setItem('tsa-last-ex',this.value);}catch(e){}
   loadExerciseInputs(this.value);
   document.getElementById('wu-plate-panel').style.display='none';
   document.getElementById('wu-res').style.display='none';
