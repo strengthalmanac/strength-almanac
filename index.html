@@ -302,23 +302,15 @@
         <div class="barsetup-body" id="barsetup-body">
           <div class="g2">
             <div class="fg"><div class="fl">Bar Type</div>
-              <select id="wu-bar">
-                <option value="20">Standard (20kg)</option>
-                <option value="25">Squat Bar (25kg)</option>
-                <option value="custom">Custom</option>
-              </select>
+              <select id="wu-bar"></select>
             </div>
-            <div class="fg" id="wu-cbar-g" style="display:none"><div class="fl">Custom Bar (kg)</div><input type="number" id="wu-cbar" value="20" min="1" step="0.1"></div>
+            <div class="fg" id="wu-cbar-g" style="display:none"><div class="fl">Custom Bar</div><input type="number" id="wu-cbar" value="45" min="1" step="0.1"></div>
           </div>
           <div class="g2">
             <div class="fg"><div class="fl">Collar Type</div>
-              <select id="wu-col">
-                <option value="0">None (0kg)</option>
-                <option value="2.5">Competition (2.5kg ea)</option>
-                <option value="custom">Custom</option>
-              </select>
+              <select id="wu-col"></select>
             </div>
-            <div class="fg" id="wu-ccol-g" style="display:none"><div class="fl">Custom Collar (kg ea)</div><input type="number" id="wu-ccol" value="1" min="0" step="0.05"></div>
+            <div class="fg" id="wu-ccol-g" style="display:none"><div class="fl">Custom Collar (ea)</div><input type="number" id="wu-ccol" value="2.5" min="0" step="0.05"></div>
           </div>
         </div>
         <div id="wu-res" style="display:none" class="rbox">
@@ -629,7 +621,6 @@ function populatePlBarOptions(){
   var isKg=plOutUnit==='kg';
   var barSel=document.getElementById('pl-bar');
   var colSel=document.getElementById('pl-col');
-  var prevBar=barSel.value,prevCol=colSel.value;
   if(isKg){
     barSel.innerHTML='<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option><option value="custom">Custom</option>';
     colSel.innerHTML='<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>';
@@ -640,6 +631,22 @@ function populatePlBarOptions(){
     colSel.innerHTML='<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
     document.getElementById('pl-cbar').value=45;
     document.getElementById('pl-ccol').value=5.5;
+  }
+}
+function populateWuBarOptions(){
+  var isKg=wuOutUnit==='kg';
+  var barSel=document.getElementById('wu-bar');
+  var colSel=document.getElementById('wu-col');
+  if(isKg){
+    barSel.innerHTML='<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option><option value="custom">Custom</option>';
+    colSel.innerHTML='<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>';
+    document.getElementById('wu-cbar').value=20;
+    document.getElementById('wu-ccol').value=2.5;
+  } else {
+    barSel.innerHTML='<option value="45">Standard (45lb)</option><option value="55">Squat Bar (55lb)</option><option value="custom">Custom</option>';
+    colSel.innerHTML='<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
+    document.getElementById('wu-cbar').value=45;
+    document.getElementById('wu-ccol').value=5.5;
   }
 }
 
@@ -662,8 +669,12 @@ function dWKg(kg,isKg,barKg){
   if(isKg)return rwKg(kg,b);
   var barLb=b*2.20462;return rwLb(kg*2.20462,barLb)/2.20462;
 }
-function getWuBarKg(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||20:parseFloat(v);}
-function getWuColKg(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
+// warmup bar/collar — return value in ACTIVE output unit (dropdown is unit-native)
+function getWuBarActive(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||(wuOutUnit==='kg'?20:45):parseFloat(v);}
+function getWuColActive(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
+// kg-equivalent of warmup bar (for target rounding which stores kg)
+function getWuBarKg(){var a=getWuBarActive();return wuOutUnit==='kg'?a:a/2.20462;}
+function getWuColKg(){var a=getWuColActive();return wuOutUnit==='kg'?a:a/2.20462;}
 // plate-loader bar/collar — return value in ACTIVE output unit (dropdown is unit-native)
 function getBarKg(){var v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||(plOutUnit==='kg'?20:45):parseFloat(v);}
 function getColKg(){var v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
@@ -736,7 +747,7 @@ function setInputUnit(u,el){
   var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;
   var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;
 }
-function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);saveInputs();if(warmupSets.length)calcWarmup();}
+function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);populateWuBarOptions();saveInputs();if(warmupSets.length)calcWarmup();}
 function setBWUnit(u,el){
   ntBWUnit=u;
   el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
@@ -855,6 +866,7 @@ function loadInputs(){
   try{lastEx=localStorage.getItem('tsa-last-ex')||'';}catch(e){}
   if(lastEx)document.getElementById('wu-exercise').value=lastEx;
   loadExerciseInputs(document.getElementById('wu-exercise').value);
+  populateWuBarOptions();
 }
 function loadExerciseInputs(ex){
   try{
@@ -1167,6 +1179,7 @@ try{
 
 wireControls();
 populatePlBarOptions();
+populateWuBarOptions();
 loadInputs();
 try{
   var lastTab=localStorage.getItem('tsa-last-tab');
