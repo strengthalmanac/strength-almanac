@@ -301,8 +301,18 @@
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
           <span class="barsetup-arrow" id="barsetup-arrow">&#9658;</span>
           <span>Bar Setup</span>
+          <span onclick="event.stopPropagation();toggleManageBars('wu')" style="margin-left:auto;font-size:9px;color:var(--red);border:1px solid var(--red);padding:3px 8px;letter-spacing:1px">MANAGE BARS</span>
         </div>
         <div class="barsetup-body" id="barsetup-body">
+          <div id="wu-managebars" style="display:none;background:#fff;border:1px solid #c8c2b4;padding:12px;margin-bottom:10px">
+            <div class="fl" style="margin-bottom:8px">Saved Custom Bars</div>
+            <div id="wu-savedbars-list" style="margin-bottom:10px"></div>
+            <div class="g2" style="margin-bottom:8px">
+              <div><div class="fl">Bar Name</div><input type="text" id="wu-newbar-name" placeholder="e.g. SSB" style="width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:13px;padding:8px 12px;outline:none;border-radius:0"></div>
+              <div><div class="fl">Weight (<span class="wu-bar-unit">kg</span>)</div><input type="number" id="wu-newbar-wt" placeholder="20" min="1" step="0.1"></div>
+            </div>
+            <button onclick="saveCustomBar('wu')" style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:8px 14px;cursor:pointer;width:100%">+ Save Bar</button>
+          </div>
           <div class="g2">
             <div class="fg"><div class="fl">Bar Type</div>
               <select id="wu-bar"></select>
@@ -394,7 +404,19 @@
             <div class="sw" id="pl-sw">-</div><div class="sd" id="pl-sd">-</div>
           </div>
         </div>
-        <div class="idiv" style="border-top:var(--border);margin-top:8px">Bar Setup</div>
+        <div class="idiv" style="border-top:var(--border);margin-top:8px;display:flex;align-items:center">
+          <span>Bar Setup</span>
+          <span onclick="toggleManageBars('pl')" style="margin-left:auto;font-size:9px;color:var(--red);border:1px solid var(--red);padding:3px 8px;letter-spacing:1px;cursor:pointer">MANAGE BARS</span>
+        </div>
+        <div id="pl-managebars" style="display:none;background:#fff;border:1px solid #c8c2b4;padding:12px;margin-bottom:10px">
+          <div class="fl" style="margin-bottom:8px">Saved Custom Bars</div>
+          <div id="pl-savedbars-list" style="margin-bottom:10px"></div>
+          <div class="g2" style="margin-bottom:8px">
+            <div><div class="fl">Bar Name</div><input type="text" id="pl-newbar-name" placeholder="e.g. SSB" style="width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:13px;padding:8px 12px;outline:none;border-radius:0"></div>
+            <div><div class="fl">Weight (<span class="pl-bar-unit">kg</span>)</div><input type="number" id="pl-newbar-wt" placeholder="20" min="1" step="0.1"></div>
+          </div>
+          <button onclick="saveCustomBar('pl')" style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:8px 14px;cursor:pointer;width:100%">+ Save Bar</button>
+        </div>
         <div class="g2">
           <div class="fg"><div class="fl">Bar Type</div>
             <select id="pl-bar"></select>
@@ -633,37 +655,84 @@ function nearestFullReps(exKey,targetPct,setRepsFull){
 }
 
 // Populate plate-loader bar/collar dropdowns based on active output unit
+// ── CUSTOM BARS (stored in kg internally) ──────────────────────────────────
+function getSavedBars(){
+  try{return JSON.parse(localStorage.getItem('tsa-custom-bars')||'[]');}catch(e){return [];}
+}
+function setSavedBars(arr){
+  try{localStorage.setItem('tsa-custom-bars',JSON.stringify(arr));}catch(e){}
+}
+function barOptionsHTML(isKg){
+  var unit=isKg?'kg':'lb';
+  var std=isKg?'<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option>':'<option value="45">Standard (45lb)</option><option value="55">Squat Bar (55lb)</option>';
+  var saved=getSavedBars().map(function(b){
+    var disp=isKg?(Math.round(b.kg*10)/10)+'kg':(Math.round(b.kg*2.20462*10)/10)+'lb';
+    return '<option value="saved:'+b.id+'">'+b.name+' ('+disp+')</option>';
+  }).join('');
+  return std+saved+'<option value="custom">Custom (one-time)</option>';
+}
+function collarOptionsHTML(isKg){
+  return isKg?'<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>':'<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
+}
 function populatePlBarOptions(){
   var isKg=plOutUnit==='kg';
-  var barSel=document.getElementById('pl-bar');
-  var colSel=document.getElementById('pl-col');
-  if(isKg){
-    barSel.innerHTML='<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option><option value="custom">Custom</option>';
-    colSel.innerHTML='<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>';
-    document.getElementById('pl-cbar').value=20;
-    document.getElementById('pl-ccol').value=2.5;
-  } else {
-    barSel.innerHTML='<option value="45">Standard (45lb)</option><option value="55">Squat Bar (55lb)</option><option value="custom">Custom</option>';
-    colSel.innerHTML='<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
-    document.getElementById('pl-cbar').value=45;
-    document.getElementById('pl-ccol').value=5.5;
-  }
+  var bs=document.getElementById('pl-bar'),cs=document.getElementById('pl-col');
+  var prev=bs.value;
+  bs.innerHTML=barOptionsHTML(isKg);
+  cs.innerHTML=collarOptionsHTML(isKg);
+  if(prev&&bs.querySelector('option[value="'+prev+'"]'))bs.value=prev;
+  document.getElementById('pl-cbar').value=isKg?20:45;
+  document.getElementById('pl-ccol').value=isKg?2.5:5.5;
+  var pu=document.querySelector('.pl-bar-unit');if(pu)pu.textContent=isKg?'kg':'lb';
+  renderSavedBarsList('pl');
 }
 function populateWuBarOptions(){
   var isKg=wuOutUnit==='kg';
-  var barSel=document.getElementById('wu-bar');
-  var colSel=document.getElementById('wu-col');
-  if(isKg){
-    barSel.innerHTML='<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option><option value="custom">Custom</option>';
-    colSel.innerHTML='<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>';
-    document.getElementById('wu-cbar').value=20;
-    document.getElementById('wu-ccol').value=2.5;
-  } else {
-    barSel.innerHTML='<option value="45">Standard (45lb)</option><option value="55">Squat Bar (55lb)</option><option value="custom">Custom</option>';
-    colSel.innerHTML='<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
-    document.getElementById('wu-cbar').value=45;
-    document.getElementById('wu-ccol').value=5.5;
-  }
+  var bs=document.getElementById('wu-bar'),cs=document.getElementById('wu-col');
+  var prev=bs.value;
+  bs.innerHTML=barOptionsHTML(isKg);
+  cs.innerHTML=collarOptionsHTML(isKg);
+  if(prev&&bs.querySelector('option[value="'+prev+'"]'))bs.value=prev;
+  document.getElementById('wu-cbar').value=isKg?20:45;
+  document.getElementById('wu-ccol').value=isKg?2.5:5.5;
+  var wu=document.querySelector('.wu-bar-unit');if(wu)wu.textContent=isKg?'kg':'lb';
+  renderSavedBarsList('wu');
+}
+function toggleManageBars(prefix){
+  var el=document.getElementById(prefix+'-managebars');
+  el.style.display=el.style.display==='none'?'block':'none';
+  renderSavedBarsList(prefix);
+}
+function renderSavedBarsList(prefix){
+  var list=document.getElementById(prefix+'-savedbars-list');
+  if(!list)return;
+  var bars=getSavedBars();
+  var isKg=(prefix==='wu'?wuOutUnit:plOutUnit)==='kg';
+  if(!bars.length){list.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:#aaa">No saved bars yet.</div>';return;}
+  list.innerHTML=bars.map(function(b){
+    var disp=isKg?(Math.round(b.kg*10)/10)+' kg':(Math.round(b.kg*2.20462*10)/10)+' lb';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ede9e0;font-family:var(--mono);font-size:11px">'
+      +'<span>'+b.name+' <span style="color:#aaa">('+disp+')</span></span>'
+      +'<span onclick="deleteCustomBar(\''+b.id+'\')" style="color:var(--red);cursor:pointer;font-size:14px;padding:0 6px">&times;</span></div>';
+  }).join('');
+}
+function saveCustomBar(prefix){
+  var name=document.getElementById(prefix+'-newbar-name').value.trim();
+  var wt=parseFloat(document.getElementById(prefix+'-newbar-wt').value);
+  if(!name||!wt||wt<=0){return;}
+  var isKg=(prefix==='wu'?wuOutUnit:plOutUnit)==='kg';
+  var kg=isKg?wt:wt/2.20462;
+  var bars=getSavedBars();
+  bars.push({id:'b'+Date.now(),name:name,kg:kg});
+  setSavedBars(bars);
+  document.getElementById(prefix+'-newbar-name').value='';
+  document.getElementById(prefix+'-newbar-wt').value='';
+  populateWuBarOptions();populatePlBarOptions();
+}
+function deleteCustomBar(id){
+  var bars=getSavedBars().filter(function(b){return b.id!==id;});
+  setSavedBars(bars);
+  populateWuBarOptions();populatePlBarOptions();
 }
 
 function rwKg(r,b){b=b||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
@@ -685,14 +754,31 @@ function dWKg(kg,isKg,barKg){
   if(isKg)return rwKg(kg,b);
   var barLb=b*2.20462;return rwLb(kg*2.20462,barLb)/2.20462;
 }
-// warmup bar/collar — return value in ACTIVE output unit (dropdown is unit-native)
-function getWuBarActive(){var v=document.getElementById('wu-bar').value;return v==='custom'?parseFloat(document.getElementById('wu-cbar').value)||(wuOutUnit==='kg'?20:45):parseFloat(v);}
+// warmup bar — return value in ACTIVE output unit
+function getWuBarActive(){
+  var v=document.getElementById('wu-bar').value;
+  if(v==='custom')return parseFloat(document.getElementById('wu-cbar').value)||(wuOutUnit==='kg'?20:45);
+  if(v.indexOf('saved:')===0){
+    var id=v.split(':')[1];var bars=getSavedBars();
+    for(var i=0;i<bars.length;i++){if(bars[i].id===id)return wuOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}
+    return wuOutUnit==='kg'?20:45;
+  }
+  return parseFloat(v);
+}
 function getWuColActive(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
-// kg-equivalent of warmup bar (for target rounding which stores kg)
 function getWuBarKg(){var a=getWuBarActive();return wuOutUnit==='kg'?a:a/2.20462;}
 function getWuColKg(){var a=getWuColActive();return wuOutUnit==='kg'?a:a/2.20462;}
-// plate-loader bar/collar — return value in ACTIVE output unit (dropdown is unit-native)
-function getBarKg(){var v=document.getElementById('pl-bar').value;return v==='custom'?parseFloat(document.getElementById('pl-cbar').value)||(plOutUnit==='kg'?20:45):parseFloat(v);}
+// plate-loader bar — return value in ACTIVE output unit
+function getBarKg(){
+  var v=document.getElementById('pl-bar').value;
+  if(v==='custom')return parseFloat(document.getElementById('pl-cbar').value)||(plOutUnit==='kg'?20:45);
+  if(v.indexOf('saved:')===0){
+    var id=v.split(':')[1];var bars=getSavedBars();
+    for(var i=0;i<bars.length;i++){if(bars[i].id===id)return plOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}
+    return plOutUnit==='kg'?20:45;
+  }
+  return parseFloat(v);
+}
 function getColKg(){var v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
 
 function toggleBarSetup(){
