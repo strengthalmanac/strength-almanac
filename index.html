@@ -294,12 +294,10 @@
             <div class="fg"><div class="fl">Top Set Reps</div><input type="number" id="wu-mr" value="3" min="1" max="10"></div>
           </div>
         </div>
-        <div class="fl" style="margin-bottom:6px">Warmup Length</div>
-        <div class="mtog" id="wu-length-tog">
-          <div class="mbtn active" onclick="setWuLength('full',this)">Full Warmup</div>
-          <div class="mbtn" onclick="setWuLength('fast',this)">Fast Warmup</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="genbtn" id="wu-btn-full" style="margin-top:0 !important;flex:1">FULL WARMUP</button>
+          <button class="genbtn" id="wu-btn-fast" style="margin-top:0 !important;flex:1;background-color:#3a3a3a !important;border-color:#1a1a1a !important">FAST WARMUP</button>
         </div>
-        <button class="genbtn" id="wu-btn">GENERATE WARMUP</button>
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
           <span class="barsetup-arrow" id="barsetup-arrow">&#9658;</span>
           <span>Bar Setup</span>
@@ -622,11 +620,6 @@ var wuLength='full';
 var feelAdj=0,baseTargetKg=null,baseGoalReps=null,baseGoalRPE=null,baseE1rmKg=null;
 var suppBWUnit='lbs';
 
-function setWuLength(m,el){
-  wuLength=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
-  if(warmupSets.length)calcWarmup();
-  try{localStorage.setItem('tsa-wu-length',m);}catch(e){}
-}
 // find rep count from full scheme whose % is nearest to target %
 function nearestFullReps(exKey,targetPct,setRepsFull){
   var pcts=SCHEMES[exKey].pcts;
@@ -865,7 +858,8 @@ function wireControls(){
       document.getElementById('wu-ccol-g').style.display=document.getElementById('wu-col').value==='custom'?'block':'none';
     });
   });
-  document.getElementById('wu-btn').addEventListener('click',calcWarmup);
+  document.getElementById('wu-btn-full').addEventListener('click',function(){wuLength='full';calcWarmup();});
+  document.getElementById('wu-btn-fast').addEventListener('click',function(){wuLength='fast';calcWarmup();});
   document.getElementById('nt-btn').addEventListener('click',calcNutrition);
 }
 
@@ -1253,16 +1247,6 @@ try{
 wireControls();
 populatePlBarOptions();
 populateWuBarOptions();
-try{
-  var savedLen=localStorage.getItem('tsa-wu-length');
-  if(savedLen==='fast'||savedLen==='full'){
-    wuLength=savedLen;
-    var lt=document.getElementById('wu-length-tog');
-    if(lt)lt.querySelectorAll('.mbtn').forEach(function(b){
-      b.classList.toggle('active',(b.textContent.toLowerCase().includes('fast')&&savedLen==='fast')||(b.textContent.toLowerCase().includes('full')&&savedLen==='full'));
-    });
-  }
-}catch(e){}
 loadInputs();
 try{
   var lastTab=localStorage.getItem('tsa-last-tab');
