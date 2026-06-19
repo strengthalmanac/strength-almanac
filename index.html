@@ -209,15 +209,62 @@
     </div>
   </div>
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('warmup',this)">Warmup Calculator</div>
+    <div class="tab active" onclick="switchTab('home',this)">Home</div>
+    <div class="tab" onclick="switchTab('warmup',this)">Warmup Calculator</div>
     <div class="tab" onclick="switchTab('plates',this)">Plate Loader</div>
     <div class="tab" onclick="switchTab('nutrition',this)">Nutrition Timing</div>
     <div class="tab" onclick="switchTab('supps',this)">Supplements</div>
     <div class="tab" onclick="switchTab('products',this)">Recommended Gear</div>
   </div>
 
+  <!-- HOME -->
+  <div id="tab-home" class="panel active">
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:24px">
+      <img src="coach.png" alt="The Strength Almanac coach" style="width:200px;max-width:100%;border:2px solid var(--ink);flex-shrink:0" onerror="this.style.display='none'">
+      <div style="flex:1;min-width:240px">
+        <div style="font-family:var(--display);font-size:30px;letter-spacing:1px;line-height:1.05;margin-bottom:12px">Built by a lifter with over a decade in the gym.</div>
+        <p style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:10px">I'm a competitive powerlifter and strength coach. These aren't generic calculators. They're my actual coaching systems. Warmup loading, plate math, nutrition timing, and supplementation, all in one place.</p>
+        <p style="font-size:14px;color:var(--ink);line-height:1.7;font-weight:600;margin-bottom:10px">No filler. No nonsense. Just what works.</p>
+        <p style="font-size:14px;color:var(--ink2);line-height:1.7">Want custom programming or meet prep? <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-weight:600">Apply through the link.</a> Otherwise, use the tools and <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-weight:600">follow me on Instagram!</a></p>
+      </div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:12px;border-top:2px solid var(--ink);padding-top:16px">The Tools</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
+        <div style="font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px">Warmup Calculator</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.6">Plug in your last session or a target weight and get a full warmup ramp built from real loading percentages, with rest times that scale to the lift and your RPE. Full or fast options depending on your time.</div>
+      </div>
+      <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
+        <div style="font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px">Plate Loader</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.6">Enter any weight and see exactly what to load, plate by plate, in kg or lbs. Handles custom bars and collars.</div>
+      </div>
+      <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
+        <div style="font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px">Nutrition Timing</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.6">Takes your daily macros and spreads them across the day around your training window, so you're fueled when it matters.</div>
+      </div>
+      <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
+        <div style="font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px">Supplements</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.6">Bodyweight-scaled dosing for the supplements actually worth taking. No fairy dust.</div>
+      </div>
+      <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
+        <div style="font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px">Recommended Gear</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.6">The equipment I actually use and trust, nothing I wouldn't put in my own bag.</div>
+      </div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin:24px 0 12px;border-top:2px solid var(--ink);padding-top:16px">Save It As An App</div>
+    <div style="background:var(--ink);color:var(--paper);padding:16px 20px">
+      <p style="font-family:var(--mono);font-size:12px;line-height:1.8;margin-bottom:10px">Add The Strength Almanac to your home screen and it runs like a real app — no app store, no download.</p>
+      <div style="font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--paper3)">
+        <div style="margin-bottom:8px"><span style="color:var(--red2);font-weight:600">iPhone / iPad:</span> Tap the Share button, then "Add to Home Screen" (in Chrome: Share &#8594; View More &#8594; Add to Home Screen).</div>
+        <div><span style="color:var(--red2);font-weight:600">Android:</span> Tap the &#8942; menu, then "Add to Home screen" / "Install app".</div>
+      </div>
+    </div>
+  </div>
+
   <!-- WARMUP -->
-  <div id="tab-warmup" class="panel active">
+  <div id="tab-warmup" class="panel">
     <div class="g2">
       <div>
         <div class="g2" style="margin-bottom:14px">
@@ -1338,7 +1385,7 @@ try{
   var lastTab=localStorage.getItem('tsa-last-tab');
   if(lastTab&&document.getElementById('tab-'+lastTab)){
     var tabEls=document.querySelectorAll('.tab');
-    var tabMap={warmup:0,plates:1,nutrition:2,supps:3,products:4};
+    var tabMap={home:0,warmup:1,plates:2,nutrition:3,supps:4,products:5};
     if(tabMap[lastTab]!==undefined){
       document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
       document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
