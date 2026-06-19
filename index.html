@@ -294,6 +294,11 @@
             <div class="fg"><div class="fl">Top Set Reps</div><input type="number" id="wu-mr" value="3" min="1" max="10"></div>
           </div>
         </div>
+        <div class="fl" style="margin-bottom:6px">Warmup Length</div>
+        <div class="mtog" id="wu-length-tog">
+          <div class="mbtn active" onclick="setWuLength('full',this)">Full Warmup</div>
+          <div class="mbtn" onclick="setWuLength('fast',this)">Fast Warmup</div>
+        </div>
         <button class="genbtn" id="wu-btn">GENERATE WARMUP</button>
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
           <span class="barsetup-arrow" id="barsetup-arrow">&#9658;</span>
@@ -589,10 +594,10 @@ function rpeF(reps,rpe){
 }
 
 var SCHEMES={
-  squat:{prep:'Barbell Twist Sequence - Bar',pcts:[null,null,0.44,0.66,0.77,0.87,0.945],note:function(s){return s<=3?'':''}},
-  bench:{prep:'Bar - 1-2 sets of 10 (half close grip, half comp grip)',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],note:function(s){return ''}},
-  sumo:{prep:'Sumo Prep Sequence',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],note:function(s){return ''}},
-  conv:{prep:'RDL with bar - 10 reps',pcts:[null,null,0.50,0.60,0.71,0.83,0.92],note:function(s){return ''}}
+  squat:{prep:'Bar x 10',pcts:[null,null,0.44,0.66,0.77,0.87,0.945],fast:[0.30,0.60,0.85,0.945]},
+  bench:{prep:'Bar x 10',pcts:[null,null,0.55,0.66,0.77,0.88,0.95],fast:[0.40,0.65,0.87,0.95]},
+  sumo:{prep:'Sumo RDL x 10 with bar',pcts:[null,null,0.55,0.66,0.77,0.87,0.94],fast:[0.35,0.63,0.85,0.94]},
+  conv:{prep:'RDL x 10 with bar',pcts:[null,null,0.50,0.60,0.71,0.83,0.92],fast:[0.40,0.65,0.82,0.92]}
 };
 
 var REST={
@@ -613,8 +618,26 @@ function restTagTop(txt){return txt?'<span class="rest-tag-top">REST '+txt+'</sp
 
 var wuInUnit='lbs',wuOutUnit='lbs',ntBWUnit='lbs',plInUnit='lbs',plOutUnit='lbs';
 var wuMode='rpe',plMode='warmup',warmupSets=[],lastActive=null;
+var wuLength='full';
 var feelAdj=0,baseTargetKg=null,baseGoalReps=null,baseGoalRPE=null,baseE1rmKg=null;
 var suppBWUnit='lbs';
+
+function setWuLength(m,el){
+  wuLength=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
+  if(warmupSets.length)calcWarmup();
+  try{localStorage.setItem('tsa-wu-length',m);}catch(e){}
+}
+// find rep count from full scheme whose % is nearest to target %
+function nearestFullReps(exKey,targetPct,setRepsFull){
+  var pcts=SCHEMES[exKey].pcts;
+  var bestSn=2,bestDiff=999;
+  for(var sn=2;sn<=6;sn++){
+    if(pcts[sn]==null)continue;
+    var d=Math.abs(pcts[sn]-targetPct);
+    if(d<bestDiff){bestDiff=d;bestSn=sn;}
+  }
+  return setRepsFull[bestSn];
+}
 
 // Populate plate-loader bar/collar dropdowns based on active output unit
 function populatePlBarOptions(){
@@ -906,7 +929,7 @@ function showWuPlateCount(weightKg,label){
     var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';
   }).join('');
-  if(col>0){html+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collars</div></div>';}
+  if(col>0){html+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
   document.getElementById('wu-plate-cards').innerHTML=html||'<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only ('+bar.toFixed(bar%1?1:0)+unit+')</div>';
   document.getElementById('wu-plate-panel').style.display='block';
 }
@@ -955,44 +978,94 @@ function calcWarmup(){
 
   var barKg=getWuBarKg();
   var s2r=Math.max(goalReps,5);
-  var setReps={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
-  var s2Lbs=targetKg*scheme.pcts[2]*2.20462;
-  var s1Kg=null,s1Skip=false;
-  if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;
-  else if(s2Lbs>=250)s1Kg=155/2.20462;
-  else s1Skip=true;
+  var setRepsFull={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
 
   warmupSets=[];
   var rows=[];
-  rows.push('<tr class="prep-row"><td>PREP</td><td colspan="3">'+scheme.prep+'</td></tr>');
+  // PREP / Set 0 — always the bar, movement specific
+  rows.push('<tr class="prep-row"><td>BAR</td><td colspan="3">'+scheme.prep+'</td></tr>');
 
-  if(s1Skip){
-    rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
+  if(wuLength==='full'){
+    var s2Lbs=targetKg*scheme.pcts[2]*2.20462;
+    var s1Kg=null,s1Skip=false;
+    if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;
+    else if(s2Lbs>=250)s1Kg=155/2.20462;
+    else s1Skip=true;
+
+    if(s1Skip){
+      rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
+    } else {
+      var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
+      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
+        +'<td style="font-family:var(--mono)">S1</td>'
+        +'<td style="font-family:var(--mono)">'+d1+'</td>'
+        +'<td style="font-family:var(--mono)">'+setRepsFull[1]+'</td>'
+        +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
+      warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setRepsFull[1],note:''});
+    }
+
+    var setRestMap={2:null,3:null,4:'s4',5:'s5',6:'s6'};
+    ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
+      var sn=i+2;
+      var rawW=targetKg*scheme.pcts[sn];
+      var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
+      var r=setRepsFull[sn];
+      var rk=setRestMap[sn];
+      var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
+      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
+        +'<td style="font-family:var(--mono)">'+lbl+'</td>'
+        +'<td style="font-family:var(--mono)">'+d+'</td>'
+        +'<td style="font-family:var(--mono)">'+r+'</td>'
+        +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
+      warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
+    });
   } else {
-    var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
-    rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
-      +'<td style="font-family:var(--mono)">S1</td>'
-      +'<td style="font-family:var(--mono)">'+d1+'</td>'
-      +'<td style="font-family:var(--mono)">'+setReps[1]+'</td>'
-      +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
-    warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setReps[1],note:''});
-  }
+    // FAST: 4 working sets, rest starts at the set crossing 70%, reps matched by nearest full %
+    var fast=scheme.fast;
+    var s1Lbs=targetKg*fast[0]*2.20462;
+    var s1Kg=null,s1Skip=false;
+    if(s1Lbs>165&&s1Lbs<250)s1Kg=135/2.20462;
+    else if(s1Lbs>=250)s1Kg=155/2.20462;
+    else s1Skip=true;
 
-  var setRestMap={2:null,3:null,4:'s4',5:'s5',6:'s6'};
-  ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
-    var sn=i+2;
-    var rawW=targetKg*scheme.pcts[sn];
-    var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
-    var r=setReps[sn];
-    var rk=setRestMap[sn];
-    var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
-    rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
-      +'<td style="font-family:var(--mono)">'+lbl+'</td>'
-      +'<td style="font-family:var(--mono)">'+d+'</td>'
-      +'<td style="font-family:var(--mono)">'+r+'</td>'
-      +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
-    warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
-  });
+    if(s1Skip){
+      rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
+    } else {
+      var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
+      var r1=nearestFullReps(exKey,fast[0],setRepsFull);
+      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
+        +'<td style="font-family:var(--mono)">S1</td>'
+        +'<td style="font-family:var(--mono)">'+d1+'</td>'
+        +'<td style="font-family:var(--mono)">'+r1+'</td>'
+        +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
+      warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:r1,note:''});
+    }
+
+    var fastLabels=['S2','S3','S4','S5'];
+    // rest scaling: map each fast set to nearest full rest key by %
+    var restKeyFor=function(pct){
+      if(pct<0.70)return null;
+      // pick s4/s5/s6 by nearest full pct among 4,5,6
+      var opts=[{k:'s4',p:SCHEMES[exKey].pcts[4]},{k:'s5',p:SCHEMES[exKey].pcts[5]},{k:'s6',p:SCHEMES[exKey].pcts[6]}];
+      var best=opts[0],bd=999;
+      for(var j=0;j<opts.length;j++){var dd=Math.abs(opts[j].p-pct);if(dd<bd){bd=dd;best=opts[j];}}
+      return best.k;
+    };
+    fast.forEach(function(pct,i){
+      var lbl=fastLabels[i];
+      var rawW=targetKg*pct;
+      var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
+      var r=nearestFullReps(exKey,pct,setRepsFull);
+      var rk=restKeyFor(pct);
+      var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
+      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
+        +'<td style="font-family:var(--mono)">'+lbl+'</td>'
+        +'<td style="font-family:var(--mono)">'+d+'</td>'
+        +'<td style="font-family:var(--mono)">'+r+'</td>'
+        +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
+      warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
+    });
+  }
 
   var rpeVal=goalRPE!=='—'?parseFloat(goalRPE):7;
   var topRest=getTopRest(exKey,rpeVal);
@@ -1054,7 +1127,7 @@ function renderPlates(totalActive){
     var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';
   }).join('');
-  if(col>0){sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">2x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collars</div></div>';}
+  if(col>0){sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
   var conv=isKg?(snapped*2.20462):(snapped/2.20462);
   document.getElementById('pl-total').textContent=snapped.toFixed(snapped%1?1:1)+' '+unit;
@@ -1180,6 +1253,16 @@ try{
 wireControls();
 populatePlBarOptions();
 populateWuBarOptions();
+try{
+  var savedLen=localStorage.getItem('tsa-wu-length');
+  if(savedLen==='fast'||savedLen==='full'){
+    wuLength=savedLen;
+    var lt=document.getElementById('wu-length-tog');
+    if(lt)lt.querySelectorAll('.mbtn').forEach(function(b){
+      b.classList.toggle('active',(b.textContent.toLowerCase().includes('fast')&&savedLen==='fast')||(b.textContent.toLowerCase().includes('full')&&savedLen==='full'));
+    });
+  }
+}catch(e){}
 loadInputs();
 try{
   var lastTab=localStorage.getItem('tsa-last-tab');
