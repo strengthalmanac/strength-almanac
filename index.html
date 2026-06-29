@@ -776,7 +776,23 @@ function applyFeelAdj(){
   var lastRow=document.querySelector('#wu-tbody tr.ts');
   if(lastRow){lastRow.cells[1].textContent=topDLabel;lastRow.cells[3].innerHTML=adjCell;lastRow.onclick=function(){showWuPlateCount(adjKg,'TOP SET');};}
   for(var i=0;i<warmupSets.length;i++){if(warmupSets[i].label==='TOP SET'){warmupSets[i].weightDisp=stripHTML(topDLabel);warmupSets[i].weightKg=adjKg;warmupSets[i].note=tl;break;}}
-  if(plMode==='warmup')populatePicker();
+  // if the plate panel is open on the top set, refresh it
+  if(document.getElementById('wu-plate-panel').style.display==='block'&&document.getElementById('wu-plate-label').textContent==='TOP SET'){
+    showWuPlateCount(adjKg,'TOP SET');
+  }
+  // refresh plate loader tab, preserving current picker selection
+  if(plMode==='warmup'){
+    var pk=document.getElementById('pl-pick');
+    var curIdx=pk.value;
+    var curLabel=(curIdx!==''&&warmupSets[curIdx])?warmupSets[curIdx].label:null;
+    populatePicker();
+    if(curLabel){
+      for(var k=0;k<pk.options.length;k++){
+        var optIdx=pk.options[k].value;
+        if(warmupSets[optIdx]&&warmupSets[optIdx].label===curLabel){pk.selectedIndex=k;pickWarmupSet();break;}
+      }
+    }
+  }
 }
 
 function setToggle(id,unit){var t=document.getElementById(id);if(!t)return;t.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit);});}
