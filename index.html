@@ -822,10 +822,26 @@ function wireControls(){
   });
   ['wu-bar','wu-col','wu-cbar','wu-ccol'].forEach(function(id){
     var el=document.getElementById(id);if(!el)return;
-    el.addEventListener('change',function(){
+    var handler=function(){
       document.getElementById('wu-cbar-g').style.display=document.getElementById('wu-bar').value==='custom'?'block':'none';
       document.getElementById('wu-ccol-g').style.display=document.getElementById('wu-col').value==='custom'?'block':'none';
-    });
+      if(warmupSets.length){
+        // capture active feel before regen
+        var activeFeel=null;
+        ['worse','normal','better'].forEach(function(x){if(document.getElementById('feel-'+x).className.indexOf('active')>=0)activeFeel=x;});
+        var panelOpen=document.getElementById('wu-plate-panel').style.display==='block';
+        var panelLabel=document.getElementById('wu-plate-label').textContent;
+        calcWarmup();
+        if(activeFeel)setFeel(activeFeel);
+        // reopen plate panel on the same set if it was showing
+        if(panelOpen&&panelLabel){
+          var s=null;for(var i=0;i<warmupSets.length;i++){if(warmupSets[i].label===panelLabel){s=warmupSets[i];break;}}
+          if(s)showWuPlateCount(s.weightKg,s.label);
+        }
+      }
+    };
+    el.addEventListener('change',handler);
+    el.addEventListener('input',function(){if(id==='wu-cbar'||id==='wu-ccol')handler();});
   });
   document.getElementById('wu-btn-full').addEventListener('click',function(){wuLength='full';calcWarmup();});
   document.getElementById('wu-btn-fast').addEventListener('click',function(){wuLength='fast';calcWarmup();});
