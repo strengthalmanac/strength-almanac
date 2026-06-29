@@ -63,8 +63,8 @@
     .panel.active{display:block;}
     .fl{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;margin-bottom:4px;}
     .fg{margin-bottom:14px;}
-    input[type=number],select{width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:14px;padding:8px 12px;color:var(--ink);outline:none;-webkit-appearance:none;appearance:none;border-radius:0;}
-    input[type=number]:focus,select:focus{border-color:var(--ink);background:#fff;}
+    input[type=number],input[type=text],select{width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:14px;padding:8px 12px;color:var(--ink);outline:none;-webkit-appearance:none;appearance:none;border-radius:0;}
+    input[type=number]:focus,input[type=text]:focus,select:focus{border-color:var(--ink);background:#fff;}
     .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
     .idiv{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:2px;text-transform:uppercase;padding:8px 0 4px;border-top:var(--border);margin-top:4px;margin-bottom:2px;}
@@ -149,6 +149,7 @@
     .no-rest-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#aaa;white-space:nowrap;}
     .rest-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#6b6b6b;white-space:nowrap;}
     .rest-tag-top{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,0.7);white-space:nowrap;}
+    .manage-btn{margin-left:auto;font-size:9px;color:var(--red);border:1px solid var(--red);padding:3px 8px;letter-spacing:1px;cursor:pointer;}
     .supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
     .supp-card{background:#fff;border:1px solid #c8c2b4;overflow:hidden;}
     .supp-card.scaled{border-left:4px solid #c0392b;}
@@ -228,7 +229,6 @@
         <p style="font-size:14px;color:var(--ink2);line-height:1.7">Want custom programming or meet prep? <a href="https://docs.google.com/forms/d/1KrbqLWOsQX2ETlIRgSQHhCZ_5smrK3QziCFW6EMXUX8/edit" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-weight:600">Apply through the link.</a> Otherwise, use the tools and <a href="https://www.instagram.com/the_strength_almanac/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-weight:600">follow me on Instagram!</a></p>
       </div>
     </div>
-
     <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:12px;border-top:2px solid var(--ink);padding-top:16px">Save It As An App</div>
     <div style="background:var(--ink);color:var(--paper);padding:16px 20px">
       <p style="font-family:var(--mono);font-size:12px;line-height:1.8;margin-bottom:10px">Add The Strength Almanac to your home screen and it runs like a real app — no app store, no download.</p>
@@ -237,7 +237,6 @@
         <div><span style="color:var(--red2);font-weight:600">Android:</span> Tap the &#8942; menu, then "Add to Home screen" / "Install app".</div>
       </div>
     </div>
-
     <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin:24px 0 12px;border-top:2px solid var(--ink);padding-top:16px">The Tools</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div style="background:var(--paper2);border:var(--border);border-left:3px solid var(--red);padding:12px 14px">
@@ -348,28 +347,24 @@
         <div class="barsetup-toggle" onclick="toggleBarSetup()">
           <span class="barsetup-arrow" id="barsetup-arrow">&#9658;</span>
           <span>Bar Setup</span>
-          <span onclick="event.stopPropagation();toggleManageBars('wu')" style="margin-left:auto;font-size:9px;color:var(--red);border:1px solid var(--red);padding:3px 8px;letter-spacing:1px">MANAGE BARS</span>
+          <span class="manage-btn" onclick="event.stopPropagation();toggleManageBars('wu')">MANAGE BARS</span>
         </div>
         <div class="barsetup-body" id="barsetup-body">
           <div id="wu-managebars" style="display:none;background:#fff;border:1px solid #c8c2b4;padding:12px;margin-bottom:10px">
             <div class="fl" style="margin-bottom:8px">Saved Custom Bars</div>
             <div id="wu-savedbars-list" style="margin-bottom:10px"></div>
             <div class="g2" style="margin-bottom:8px">
-              <div><div class="fl">Bar Name</div><input type="text" id="wu-newbar-name" placeholder="e.g. SSB" style="width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:13px;padding:8px 12px;outline:none;border-radius:0"></div>
+              <div><div class="fl">Bar Name</div><input type="text" id="wu-newbar-name" placeholder="e.g. SSB"></div>
               <div><div class="fl">Weight (<span class="wu-bar-unit">kg</span>)</div><input type="number" id="wu-newbar-wt" placeholder="20" min="1" step="0.1"></div>
             </div>
             <button onclick="saveCustomBar('wu')" style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:8px 14px;cursor:pointer;width:100%">+ Save Bar</button>
           </div>
           <div class="g2">
-            <div class="fg"><div class="fl">Bar Type</div>
-              <select id="wu-bar"></select>
-            </div>
+            <div class="fg"><div class="fl">Bar Type</div><select id="wu-bar"></select></div>
             <div class="fg" id="wu-cbar-g" style="display:none"><div class="fl">Custom Bar</div><input type="number" id="wu-cbar" value="45" min="1" step="0.1"></div>
           </div>
           <div class="g2">
-            <div class="fg"><div class="fl">Collar Type</div>
-              <select id="wu-col"></select>
-            </div>
+            <div class="fg"><div class="fl">Collar Type</div><select id="wu-col"></select></div>
             <div class="fg" id="wu-ccol-g" style="display:none"><div class="fl">Custom Collar (ea)</div><input type="number" id="wu-ccol" value="2.5" min="0" step="0.05"></div>
           </div>
         </div>
@@ -453,27 +448,23 @@
         </div>
         <div class="idiv" style="border-top:var(--border);margin-top:8px;display:flex;align-items:center">
           <span>Bar Setup</span>
-          <span onclick="toggleManageBars('pl')" style="margin-left:auto;font-size:9px;color:var(--red);border:1px solid var(--red);padding:3px 8px;letter-spacing:1px;cursor:pointer">MANAGE BARS</span>
+          <span class="manage-btn" onclick="toggleManageBars('pl')">MANAGE BARS</span>
         </div>
         <div id="pl-managebars" style="display:none;background:#fff;border:1px solid #c8c2b4;padding:12px;margin-bottom:10px">
           <div class="fl" style="margin-bottom:8px">Saved Custom Bars</div>
           <div id="pl-savedbars-list" style="margin-bottom:10px"></div>
           <div class="g2" style="margin-bottom:8px">
-            <div><div class="fl">Bar Name</div><input type="text" id="pl-newbar-name" placeholder="e.g. SSB" style="width:100%;border:var(--border);background:var(--paper2);font-family:var(--mono);font-size:13px;padding:8px 12px;outline:none;border-radius:0"></div>
+            <div><div class="fl">Bar Name</div><input type="text" id="pl-newbar-name" placeholder="e.g. SSB"></div>
             <div><div class="fl">Weight (<span class="pl-bar-unit">kg</span>)</div><input type="number" id="pl-newbar-wt" placeholder="20" min="1" step="0.1"></div>
           </div>
           <button onclick="saveCustomBar('pl')" style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:8px 14px;cursor:pointer;width:100%">+ Save Bar</button>
         </div>
         <div class="g2">
-          <div class="fg"><div class="fl">Bar Type</div>
-            <select id="pl-bar"></select>
-          </div>
+          <div class="fg"><div class="fl">Bar Type</div><select id="pl-bar"></select></div>
           <div class="fg" id="pl-cbar-g" style="display:none"><div class="fl">Custom Bar</div><input type="number" id="pl-cbar" value="45" min="1" step="0.1"></div>
         </div>
         <div class="g2">
-          <div class="fg"><div class="fl">Collar Type</div>
-            <select id="pl-col"></select>
-          </div>
+          <div class="fg"><div class="fl">Collar Type</div><select id="pl-col"></select></div>
           <div class="fg" id="pl-ccol-g" style="display:none"><div class="fl">Custom Collar (ea)</div><input type="number" id="pl-ccol" value="2.5" min="0" step="0.05"></div>
         </div>
         <div id="pl-summ" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:6px"></div>
@@ -492,13 +483,13 @@
         <div style="margin-top:14px">
           <div class="fl" style="margin-bottom:8px">IPF/IWF Plate Colors</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-family:var(--mono);font-size:10px">
-            <div><span class="lsw" style="background:#c0392b"></span>25kg / 55lbs</div>
-            <div><span class="lsw" style="background:#1a5fa8"></span>20kg / 45lbs</div>
-            <div><span class="lsw" style="background:#e8c020"></span>15kg / 35lbs</div>
-            <div><span class="lsw" style="background:#27a84a"></span>10kg / 25lbs</div>
-            <div><span class="lsw" style="background:#e4e4e4;border:1px solid #aaa"></span>5kg / 10lbs</div>
-            <div><span class="lsw" style="background:#333"></span>2.5kg / 5lbs</div>
-            <div><span class="lsw" style="background:#a8b4bc"></span>1.25kg / 2.5lbs</div>
+            <div><span class="lsw" style="background:#c0392b"></span>25kg / 55lb</div>
+            <div><span class="lsw" style="background:#1a5fa8"></span>20kg / 45lb</div>
+            <div><span class="lsw" style="background:#e8c020"></span>15kg / 35lb</div>
+            <div><span class="lsw" style="background:#27a84a"></span>10kg / 25lb</div>
+            <div><span class="lsw" style="background:#e4e4e4;border:1px solid #aaa"></span>5kg / 10lb</div>
+            <div><span class="lsw" style="background:#333"></span>2.5kg / 5lb</div>
+            <div><span class="lsw" style="background:#a8b4bc"></span>1.25kg / 2.5lb</div>
             <div><span class="lsw" style="background:#666"></span>Collar</div>
           </div>
         </div>
@@ -630,14 +621,8 @@ var PLATES_LB=[
   {w:2.5,color:'#a8b4bc',border:'#8a9298'}
 ];
 function plateSet(isKg){return isKg?PLATES_KG:PLATES_LB;}
-function pH(w,isKg){
-  if(isKg)return w>=25?72:w>=20?62:w>=15?52:w>=10?42:w>=5?30:w>=2.5?22:16;
-  return w>=45?72:w>=35?60:w>=25?50:w>=10?38:w>=5?26:18;
-}
-function pWd(w,isKg){
-  if(isKg)return w>=10?16:w>=5?14:w>=2.5?12:10;
-  return w>=25?16:w>=10?13:w>=5?11:10;
-}
+function pH(w,isKg){if(isKg)return w>=25?72:w>=20?62:w>=15?52:w>=10?42:w>=5?30:w>=2.5?22:16;return w>=45?72:w>=35?60:w>=25?50:w>=10?38:w>=5?26:18;}
+function pWd(w,isKg){if(isKg)return w>=10?16:w>=5?14:w>=2.5?12:10;return w>=25?16:w>=10?13:w>=5?11:10;}
 
 var RPE_T={
   1:[1,0.97775,0.955,0.9385,0.922,0.907,0.892,0.8772,0.863,0.85,0.837,0.824,0.811],
@@ -652,13 +637,7 @@ var RPE_T={
   10:[0.739,0.723,0.707,0.6935,0.68,0.6665,0.653,0.6395,0.626,0.6125,0.599,0.5855,0.572]
 };
 var RPE_I={10:0,9.5:1,9:2,8.5:3,8:4,7.5:5,7:6,6.5:7,6:8,5.5:9,5:10,4.5:11,4:12};
-function rpeF(reps,rpe){
-  var r=Math.min(10,Math.max(1,Math.round(reps)));
-  var row=RPE_T[r];
-  if(!row)return 0.8;
-  var i=RPE_I[parseFloat(rpe)];
-  return i!==undefined?row[i]:row[0];
-}
+function rpeF(reps,rpe){var r=Math.min(10,Math.max(1,Math.round(reps)));var row=RPE_T[r];if(!row)return 0.8;var i=RPE_I[parseFloat(rpe)];return i!==undefined?row[i]:row[0];}
 
 var SCHEMES={
   squat:{prep:'Bar x 10',pcts:[null,null,0.44,0.66,0.77,0.87,0.945],fast:[0.30,0.60,0.85,0.945]},
@@ -673,319 +652,171 @@ var REST={
   sumo:{s4:'1:30-2:00',s5:'2:30-3:30',s6:'3:30-5:00',top:[{max:6,r:'1:30-2:00'},{max:7,r:'3:00-5:00'},{max:8,r:'3:30-5:30'},{max:8.5,r:'4:00-6:30'},{max:10,r:'5:00-8:00'}]},
   conv:{s4:'1:30-2:00',s5:'2:30-3:30',s6:'3:30-5:00',top:[{max:6,r:'1:30-2:00'},{max:7,r:'3:00-5:00'},{max:8,r:'3:30-5:30'},{max:8.5,r:'4:00-6:30'},{max:10,r:'5:00-8:00'}]}
 };
-
-function getTopRest(ex,rpe){
-  var b=REST[ex].top;
-  for(var i=0;i<b.length;i++){if(rpe<=b[i].max)return b[i].r;}
-  return b[b.length-1].r;
-}
+function getTopRest(ex,rpe){var b=REST[ex].top;for(var i=0;i<b.length;i++){if(rpe<=b[i].max)return b[i].r;}return b[b.length-1].r;}
 function noRestTag(){return '<span class="no-rest-tag">NO REST</span>';}
-function restTag(txt){return txt?'<span class="rest-tag">REST '+txt+'</span>':'';}
-function restTagTop(txt){return txt?'<span class="rest-tag-top">REST '+txt+'</span>':'';}
+function restTag(t){return t?'<span class="rest-tag">REST '+t+'</span>':'';}
+function restTagTop(t){return t?'<span class="rest-tag-top">REST '+t+'</span>':'';}
+function stripHTML(s){return String(s).replace(/<[^>]*>/g,'');}
 
 var wuInUnit='lbs',wuOutUnit='lbs',ntBWUnit='lbs',plInUnit='lbs',plOutUnit='lbs';
-var wuMode='rpe',plMode='warmup',warmupSets=[],lastActive=null;
-var wuLength='full';
+var wuMode='rpe',plMode='warmup',warmupSets=[],lastActive=null,wuLength='full';
 var feelAdj=0,baseTargetKg=null,baseGoalReps=null,baseGoalRPE=null,baseE1rmKg=null;
 var suppBWUnit='lbs';
 
-// find rep count from full scheme whose % is nearest to target %
-function nearestFullReps(exKey,targetPct,setRepsFull){
-  var pcts=SCHEMES[exKey].pcts;
-  var bestSn=2,bestDiff=999;
-  for(var sn=2;sn<=6;sn++){
-    if(pcts[sn]==null)continue;
-    var d=Math.abs(pcts[sn]-targetPct);
-    if(d<bestDiff){bestDiff=d;bestSn=sn;}
-  }
-  return setRepsFull[bestSn];
-}
+function rwKg(r,b){b=b||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
+function rwLb(r,b){b=b||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
+function dWplain(kg,isKg,barKg){var b=barKg||20;if(isKg)return rwKg(kg,b).toFixed(1)+' kg';return rwLb(kg*2.20462,b*2.20462).toFixed(1)+' lb';}
+function dW(kg,isKg,barKg){var b=barKg||20;if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg <span style="color:#aaa">('+(r*2.20462).toFixed(1)+' lb)</span>';}var rl=rwLb(kg*2.20462,b*2.20462);return rl.toFixed(1)+' lb <span style="color:#aaa">('+(rl/2.20462).toFixed(1)+' kg)</span>';}
+function dWKg(kg,isKg,barKg){var b=barKg||20;if(isKg)return rwKg(kg,b);return rwLb(kg*2.20462,b*2.20462)/2.20462;}
 
-// Populate plate-loader bar/collar dropdowns based on active output unit
-// ── CUSTOM BARS (stored in kg internally) ──────────────────────────────────
-function getSavedBars(){
-  try{return JSON.parse(localStorage.getItem('tsa-custom-bars')||'[]');}catch(e){return [];}
-}
-function setSavedBars(arr){
-  try{localStorage.setItem('tsa-custom-bars',JSON.stringify(arr));}catch(e){}
-}
+// ── CUSTOM BARS ──
+function getSavedBars(){try{return JSON.parse(localStorage.getItem('tsa-custom-bars')||'[]');}catch(e){return [];}}
+function setSavedBars(a){try{localStorage.setItem('tsa-custom-bars',JSON.stringify(a));}catch(e){}}
 function barOptionsHTML(isKg){
-  var unit=isKg?'kg':'lb';
   var std=isKg?'<option value="20">Standard (20kg)</option><option value="25">Squat Bar (25kg)</option>':'<option value="45">Standard (45lb)</option><option value="55">Squat Bar (55lb)</option>';
-  var saved=getSavedBars().map(function(b){
-    var disp=isKg?(Math.round(b.kg*10)/10)+'kg':(Math.round(b.kg*2.20462*10)/10)+'lb';
-    return '<option value="saved:'+b.id+'">'+b.name+' ('+disp+')</option>';
-  }).join('');
+  var saved=getSavedBars().map(function(b){var disp=isKg?(Math.round(b.kg*10)/10)+'kg':(Math.round(b.kg*2.20462*10)/10)+'lb';return '<option value="saved:'+b.id+'">'+b.name+' ('+disp+')</option>';}).join('');
   return std+saved+'<option value="custom">Custom (one-time)</option>';
 }
-function collarOptionsHTML(isKg){
-  return isKg?'<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>':'<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';
-}
+function collarOptionsHTML(isKg){return isKg?'<option value="0">None (0kg)</option><option value="2.5">Competition (2.5kg ea)</option><option value="custom">Custom</option>':'<option value="0">None (0lb)</option><option value="5.5">Competition (5.5lb ea)</option><option value="custom">Custom</option>';}
 function populatePlBarOptions(){
   var isKg=plOutUnit==='kg';
   var bs=document.getElementById('pl-bar'),cs=document.getElementById('pl-col');
   var prev=bs.value;
-  bs.innerHTML=barOptionsHTML(isKg);
-  cs.innerHTML=collarOptionsHTML(isKg);
+  bs.innerHTML=barOptionsHTML(isKg);cs.innerHTML=collarOptionsHTML(isKg);
   if(prev&&bs.querySelector('option[value="'+prev+'"]'))bs.value=prev;
   document.getElementById('pl-cbar').value=isKg?20:45;
   document.getElementById('pl-ccol').value=isKg?2.5:5.5;
-  var pu=document.querySelector('.pl-bar-unit');if(pu)pu.textContent=isKg?'kg':'lb';
+  var u=document.querySelector('.pl-bar-unit');if(u)u.textContent=isKg?'kg':'lb';
   renderSavedBarsList('pl');
 }
 function populateWuBarOptions(){
   var isKg=wuOutUnit==='kg';
   var bs=document.getElementById('wu-bar'),cs=document.getElementById('wu-col');
   var prev=bs.value;
-  bs.innerHTML=barOptionsHTML(isKg);
-  cs.innerHTML=collarOptionsHTML(isKg);
+  bs.innerHTML=barOptionsHTML(isKg);cs.innerHTML=collarOptionsHTML(isKg);
   if(prev&&bs.querySelector('option[value="'+prev+'"]'))bs.value=prev;
   document.getElementById('wu-cbar').value=isKg?20:45;
   document.getElementById('wu-ccol').value=isKg?2.5:5.5;
-  var wu=document.querySelector('.wu-bar-unit');if(wu)wu.textContent=isKg?'kg':'lb';
+  var u=document.querySelector('.wu-bar-unit');if(u)u.textContent=isKg?'kg':'lb';
   renderSavedBarsList('wu');
 }
-function toggleManageBars(prefix){
-  var el=document.getElementById(prefix+'-managebars');
-  el.style.display=el.style.display==='none'?'block':'none';
-  renderSavedBarsList(prefix);
-}
+function toggleManageBars(prefix){var el=document.getElementById(prefix+'-managebars');el.style.display=el.style.display==='none'?'block':'none';renderSavedBarsList(prefix);}
 function renderSavedBarsList(prefix){
-  var list=document.getElementById(prefix+'-savedbars-list');
-  if(!list)return;
-  var bars=getSavedBars();
-  var isKg=(prefix==='wu'?wuOutUnit:plOutUnit)==='kg';
+  var list=document.getElementById(prefix+'-savedbars-list');if(!list)return;
+  var bars=getSavedBars();var isKg=(prefix==='wu'?wuOutUnit:plOutUnit)==='kg';
   if(!bars.length){list.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:#aaa">No saved bars yet.</div>';return;}
-  list.innerHTML=bars.map(function(b){
-    var disp=isKg?(Math.round(b.kg*10)/10)+' kg':(Math.round(b.kg*2.20462*10)/10)+' lb';
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ede9e0;font-family:var(--mono);font-size:11px">'
-      +'<span>'+b.name+' <span style="color:#aaa">('+disp+')</span></span>'
-      +'<span onclick="deleteCustomBar(\''+b.id+'\')" style="color:var(--red);cursor:pointer;font-size:14px;padding:0 6px">&times;</span></div>';
-  }).join('');
+  list.innerHTML=bars.map(function(b){var disp=isKg?(Math.round(b.kg*10)/10)+' kg':(Math.round(b.kg*2.20462*10)/10)+' lb';return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ede9e0;font-family:var(--mono);font-size:11px"><span>'+b.name+' <span style="color:#aaa">('+disp+')</span></span><span onclick="deleteCustomBar(\''+b.id+'\')" style="color:var(--red);cursor:pointer;font-size:14px;padding:0 6px">&times;</span></div>';}).join('');
 }
 function saveCustomBar(prefix){
   var name=document.getElementById(prefix+'-newbar-name').value.trim();
   var wt=parseFloat(document.getElementById(prefix+'-newbar-wt').value);
-  if(!name||!wt||wt<=0){return;}
+  if(!name||!wt||wt<=0)return;
   var isKg=(prefix==='wu'?wuOutUnit:plOutUnit)==='kg';
   var kg=isKg?wt:wt/2.20462;
-  var bars=getSavedBars();
-  bars.push({id:'b'+Date.now(),name:name,kg:kg});
-  setSavedBars(bars);
-  document.getElementById(prefix+'-newbar-name').value='';
-  document.getElementById(prefix+'-newbar-wt').value='';
+  var bars=getSavedBars();bars.push({id:'b'+Date.now(),name:name,kg:kg});setSavedBars(bars);
+  document.getElementById(prefix+'-newbar-name').value='';document.getElementById(prefix+'-newbar-wt').value='';
   populateWuBarOptions();populatePlBarOptions();
 }
-function deleteCustomBar(id){
-  var bars=getSavedBars().filter(function(b){return b.id!==id;});
-  setSavedBars(bars);
-  populateWuBarOptions();populatePlBarOptions();
-}
+function deleteCustomBar(id){var bars=getSavedBars().filter(function(b){return b.id!==id;});setSavedBars(bars);populateWuBarOptions();populatePlBarOptions();}
 
-function rwKg(r,b){b=b||20;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/1.25)*1.25*2;}
-function rwLb(r,b){b=b||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5)*2.5*2;}
-// returns nearest loadable total in the ACTIVE unit; input value is in active unit
-function snapLoadable(val,isKg,barInActiveUnit){
-  return isKg?rwKg(val,barInActiveUnit):rwLb(val,barInActiveUnit);
-}
-// plain-text loadable weight in output unit (no HTML)
-function dWplain(kg,isKg,barKg){
-  var b=barKg||20;
-  if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg';}
-  var rl=rwLb(kg*2.20462,b*2.20462);return rl.toFixed(1)+' lb';
-}
-// HTML version with grey inline conversion (for table cells only)
-function dW(kg,isKg,barKg){
-  var b=barKg||20;
-  if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg <span style="color:#aaa">('+(r*2.20462).toFixed(1)+' lb)</span>';}
-  var rl=rwLb(kg*2.20462,b*2.20462);
-  return rl.toFixed(1)+' lb <span style="color:#aaa">('+(rl/2.20462).toFixed(1)+' kg)</span>';
-}
-function dWKg(kg,isKg,barKg){
-  var b=barKg||20;
-  if(isKg)return rwKg(kg,b);
-  var barLb=b*2.20462;return rwLb(kg*2.20462,barLb)/2.20462;
-}
-// warmup bar — return value in ACTIVE output unit
+// ── BAR/COLLAR GETTERS ──
 function getWuBarActive(){
   var v=document.getElementById('wu-bar').value;
   if(v==='custom')return parseFloat(document.getElementById('wu-cbar').value)||(wuOutUnit==='kg'?20:45);
-  if(v.indexOf('saved:')===0){
-    var id=v.split(':')[1];var bars=getSavedBars();
-    for(var i=0;i<bars.length;i++){if(bars[i].id===id)return wuOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}
-    return wuOutUnit==='kg'?20:45;
-  }
+  if(v.indexOf('saved:')===0){var id=v.split(':')[1];var bars=getSavedBars();for(var i=0;i<bars.length;i++){if(bars[i].id===id)return wuOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}return wuOutUnit==='kg'?20:45;}
   return parseFloat(v);
 }
 function getWuColActive(){var v=document.getElementById('wu-col').value;return v==='custom'?parseFloat(document.getElementById('wu-ccol').value)||0:parseFloat(v);}
 function getWuBarKg(){var a=getWuBarActive();return wuOutUnit==='kg'?a:a/2.20462;}
 function getWuColKg(){var a=getWuColActive();return wuOutUnit==='kg'?a:a/2.20462;}
-// plate-loader bar — return value in ACTIVE output unit
-function getBarKg(){
+function getBarActive(){
   var v=document.getElementById('pl-bar').value;
   if(v==='custom')return parseFloat(document.getElementById('pl-cbar').value)||(plOutUnit==='kg'?20:45);
-  if(v.indexOf('saved:')===0){
-    var id=v.split(':')[1];var bars=getSavedBars();
-    for(var i=0;i<bars.length;i++){if(bars[i].id===id)return plOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}
-    return plOutUnit==='kg'?20:45;
-  }
+  if(v.indexOf('saved:')===0){var id=v.split(':')[1];var bars=getSavedBars();for(var i=0;i<bars.length;i++){if(bars[i].id===id)return plOutUnit==='kg'?bars[i].kg:bars[i].kg*2.20462;}return plOutUnit==='kg'?20:45;}
   return parseFloat(v);
 }
-function getColKg(){var v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
+function getColActive(){var v=document.getElementById('pl-col').value;return v==='custom'?parseFloat(document.getElementById('pl-ccol').value)||0:parseFloat(v);}
 
-function toggleBarSetup(){
-  var body=document.getElementById('barsetup-body');
-  var arrow=document.getElementById('barsetup-arrow');
-  body.classList.toggle('open');
-  arrow.classList.toggle('open',body.classList.contains('open'));
-}
+function toggleBarSetup(){var b=document.getElementById('barsetup-body');var a=document.getElementById('barsetup-arrow');b.classList.toggle('open');a.classList.toggle('open',b.classList.contains('open'));}
 
+// ── FEEL CHECK ──
 function setFeel(f){
   ['worse','normal','better'].forEach(function(x){document.getElementById('feel-'+x).className='feel-btn'+(f===x?' active-'+x:'');});
-  var adjText=document.getElementById('feel-adj-text');
-  if(f==='worse'){feelAdj=-0.5;adjText.textContent='Down - listen to your body.';adjText.style.color='#6b6b6b';}
-  else if(f==='better'){feelAdj=0.5;adjText.textContent='Up - push it.';adjText.style.color='var(--red)';}
-  else{feelAdj=0;adjText.textContent='No adjustment.';adjText.style.color='var(--ink3)';}
+  var t=document.getElementById('feel-adj-text');
+  if(f==='worse'){feelAdj=-0.5;t.textContent='Down - listen to your body.';t.style.color='#6b6b6b';}
+  else if(f==='better'){feelAdj=0.5;t.textContent='Up - push it.';t.style.color='var(--red)';}
+  else{feelAdj=0;t.textContent='No adjustment.';t.style.color='var(--ink3)';}
   applyFeelAdj();
 }
-
 function applyFeelAdj(){
   if(baseTargetKg===null)return;
-  var isKg=wuOutUnit==='kg';
-  var adjKg=baseTargetKg;
-  var adjNote='';
+  var isKg=wuOutUnit==='kg';var adjKg=baseTargetKg;var adjNote='';
   if(feelAdj!==0&&baseE1rmKg!==null&&baseGoalReps!==null){
     var adjRPE=Math.min(10,Math.max(5,parseFloat(baseGoalRPE)+feelAdj));
     var raw=baseE1rmKg*rpeF(baseGoalReps,adjRPE);
     adjKg=isKg?rwKg(raw):rwLb(raw*2.20462)/2.20462;
     var diff=adjKg-baseTargetKg;
-    var diffD=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lbs';
-    adjNote=(diff>=0?'+ ':'-')+diffD+' from original';
+    var diffD=isKg?Math.abs(diff).toFixed(1)+' kg':Math.abs(diff*2.20462).toFixed(1)+' lb';
+    adjNote=(diff>=0?'+ ':'- ')+diffD+' from original';
   }
   var tLbs=adjKg*2.20462;
   var topD,topA;
-  if(isKg){topD=rwKg(adjKg).toFixed(1)+' kg';topA=(rwKg(adjKg)*2.20462).toFixed(1)+' lbs';}
-  else{topD=rwLb(tLbs).toFixed(1)+' lbs';topA=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
+  if(isKg){topD=rwKg(adjKg).toFixed(1)+' kg';topA=(rwKg(adjKg)*2.20462).toFixed(1)+' lb';}
+  else{topD=rwLb(tLbs).toFixed(1)+' lb';topA=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
   document.getElementById('wu-top').textContent=topD;
   document.getElementById('wu-alt').textContent=topA;
-  var adjEl=document.getElementById('wu-adj-note');
-  if(adjNote){adjEl.style.display='block';adjEl.textContent=adjNote;}
-  else{adjEl.style.display='none';}
-  var tl=baseGoalRPE!=='—'?'@RPE '+baseGoalRPE:'';
+  var ae=document.getElementById('wu-adj-note');
+  if(adjNote){ae.style.display='block';ae.textContent=adjNote;}else{ae.style.display='none';}
+  var tl=baseGoalRPE!=='-'?'@RPE '+baseGoalRPE:'';
   var topDLabel=feelAdj!==0?topD+' (adjusted)':topD;
   var exNow=document.getElementById('wu-exercise').value;
-  var rpeNow=baseGoalRPE!=='—'?parseFloat(baseGoalRPE):7;
+  var rpeNow=baseGoalRPE!=='-'?parseFloat(baseGoalRPE):7;
   var topRestNow=getTopRest(exNow,rpeNow);
   var adjCell=tl+(tl?' · ':'')+restTagTop(topRestNow);
   var lastRow=document.querySelector('#wu-tbody tr.ts');
-  if(lastRow){
-    lastRow.cells[1].textContent=topDLabel;
-    lastRow.cells[3].innerHTML=adjCell;
-    lastRow.onclick=function(){showWuPlateCount(adjKg,'TOP SET - '+topDLabel);};
-  }
-  for(var i=0;i<warmupSets.length;i++){
-    if(warmupSets[i].label==='TOP SET'){
-      warmupSets[i].weightDisp=topDLabel;warmupSets[i].weightKg=adjKg;warmupSets[i].note=tl;break;
-    }
-  }
+  if(lastRow){lastRow.cells[1].textContent=topDLabel;lastRow.cells[3].innerHTML=adjCell;lastRow.onclick=function(){showWuPlateCount(adjKg,'TOP SET');};}
+  for(var i=0;i<warmupSets.length;i++){if(warmupSets[i].label==='TOP SET'){warmupSets[i].weightDisp=stripHTML(topDLabel);warmupSets[i].weightKg=adjKg;warmupSets[i].note=tl;break;}}
   if(plMode==='warmup')populatePicker();
 }
 
-function setToggle(id,unit){
-  var t=document.getElementById(id);if(!t)return;
-  t.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit);});
-}
-function setInputUnit(u,el){
-  wuInUnit=u;setToggle('wu-in-tog',u);saveInputs();
-  var lbl=u==='kg'?'kg':'lbs';
-  var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;
-  var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;
-}
-function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);populateWuBarOptions();saveInputs();if(warmupSets.length)calcWarmup();}
+function setToggle(id,unit){var t=document.getElementById(id);if(!t)return;t.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===unit);});}
+function setInputUnit(u,el){wuInUnit=u;setToggle('wu-in-tog',u);saveWuInputs();var lbl=u==='kg'?'kg':'lbs';var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;}
+function setOutputUnit(u,el){wuOutUnit=u;setToggle('wu-out-tog',u);populateWuBarOptions();saveWuInputs();if(warmupSets.length)calcWarmup();}
 function setBWUnit(u,el){
-  ntBWUnit=u;
-  el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  ntBWUnit=u;el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('nt-bw-unit').textContent=u;
   var cur=parseFloat(document.getElementById('nt-bw').value);
   if(!isNaN(cur))document.getElementById('nt-bw').value=u==='lbs'?Math.round(cur*2.20462*10)/10:Math.round(cur/2.20462*10)/10;
-  suppBWUnit=u;
-  var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
-  var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=u;
-  syncBWToSupp();
+  suppBWUnit=u;var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=u;syncBWToSupp();
 }
-function syncBWToSupp(){
-  var v=parseFloat(document.getElementById('nt-bw').value);if(isNaN(v))return;
-  var el=document.getElementById('supp-bw');if(!el)return;
-  var kg=ntBWUnit==='kg'?v:v/2.20462;
-  el.value=suppBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;
-}
-function syncSuppToNT(){
-  var v=parseFloat(document.getElementById('supp-bw').value);if(isNaN(v))return;
-  var el=document.getElementById('nt-bw');if(!el)return;
-  var kg=suppBWUnit==='kg'?v:v/2.20462;
-  el.value=ntBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;
-}
+function syncBWToSupp(){var v=parseFloat(document.getElementById('nt-bw').value);if(isNaN(v))return;var el=document.getElementById('supp-bw');if(!el)return;var kg=ntBWUnit==='kg'?v:v/2.20462;el.value=suppBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;}
+function syncSuppToNT(){var v=parseFloat(document.getElementById('supp-bw').value);if(isNaN(v))return;var el=document.getElementById('nt-bw');if(!el)return;var kg=suppBWUnit==='kg'?v:v/2.20462;el.value=ntBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;}
+
 function setPlInputUnit(u,el){plInUnit=u;setToggle('pl-in-tog',u);rerender();savePlState();}
-function setPlOutputUnit(u,el){
-  plOutUnit=u;setToggle('pl-out-tog',u);
-  populatePlBarOptions();
-  if(lastActive!==null){rerender();}
-  savePlState();
-}
-function setPlMode(m,el){
-  plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
-  document.getElementById('pl-man').style.display=m==='manual'?'block':'none';
-  document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';
-  if(m==='warmup')populatePicker();else rerender();
-  savePlState();
-}
-function rerender(){
-  var isKg=plOutUnit==='kg';
-  if(plMode==='warmup'){
-    var idx=document.getElementById('pl-pick').value;
-    if(idx!==''&&warmupSets[idx]){
-      var kg=warmupSets[idx].weightKg;
-      renderPlates(isKg?kg:kg*2.20462);
-    }
-  } else {
-    var v=parseFloat(document.getElementById('pl-w').value);
-    if(v>0){
-      // input is in plInUnit; convert to active output unit
-      var inKg=plInUnit==='kg'?v:v/2.20462;
-      renderPlates(isKg?inKg:inKg*2.20462);
-    }
-  }
-}
+function setPlOutputUnit(u,el){plOutUnit=u;setToggle('pl-out-tog',u);populatePlBarOptions();rerender();savePlState();}
 function switchTab(id,el){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');
   try{localStorage.setItem('tsa-last-tab',id);}catch(e){}
 }
-function setWuMode(m,el){
-  wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
-  document.getElementById('wu-rpe').style.display=m==='rpe'?'block':'none';
-  document.getElementById('wu-man').style.display=m==='manual'?'block':'none';
-  document.getElementById('wu-e1rm-row').style.display=m==='rpe'?'block':'none';
-}
-function setPlMode(m,el){
-  plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
-  document.getElementById('pl-man').style.display=m==='manual'?'block':'none';
-  document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';
-  if(m==='warmup')populatePicker();else if(lastKg!==null)renderPlates(lastKg);
-}
+function setWuMode(m,el){wuMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');document.getElementById('wu-rpe').style.display=m==='rpe'?'block':'none';document.getElementById('wu-man').style.display=m==='manual'?'block':'none';document.getElementById('wu-e1rm-row').style.display=m==='rpe'?'block':'none';}
+function setPlMode(m,el){plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');document.getElementById('pl-man').style.display=m==='manual'?'block':'none';document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';if(m==='warmup')populatePicker();else rerender();savePlState();}
+
 function rerender(){
-  if(plMode==='warmup'){var idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx])renderPlates(warmupSets[idx].weightKg);}
-  else{var v=parseFloat(document.getElementById('pl-w').value);if(v>0){var kg=plInUnit==='kg'?v:v/2.20462;lastKg=kg;renderPlates(kg);}}
+  var isKg=plOutUnit==='kg';
+  if(plMode==='warmup'){var idx=document.getElementById('pl-pick').value;if(idx!==''&&warmupSets[idx]){var kg=warmupSets[idx].weightKg;renderPlates(isKg?kg:kg*2.20462);}}
+  else{var v=parseFloat(document.getElementById('pl-w').value);if(v>0){var inKg=plInUnit==='kg'?v:v/2.20462;renderPlates(isKg?inKg:inKg*2.20462);}}
 }
+
 function wireControls(){
   ['pl-bar','pl-col','pl-cbar','pl-ccol','pl-w','pl-pick'].forEach(function(id){
     var el=document.getElementById(id);if(!el)return;
     el.addEventListener('change',function(){
       document.getElementById('pl-cbar-g').style.display=document.getElementById('pl-bar').value==='custom'?'block':'none';
       document.getElementById('pl-ccol-g').style.display=document.getElementById('pl-col').value==='custom'?'block':'none';
-      if(id==='pl-pick')pickWarmupSet();else rerender();
-      savePlState();
+      if(id==='pl-pick')pickWarmupSet();else rerender();savePlState();
     });
     el.addEventListener('input',function(){if(id==='pl-w'||id==='pl-cbar'||id==='pl-ccol'){rerender();savePlState();}});
   });
@@ -999,57 +830,84 @@ function wireControls(){
   document.getElementById('wu-btn-full').addEventListener('click',function(){wuLength='full';calcWarmup();});
   document.getElementById('wu-btn-fast').addEventListener('click',function(){wuLength='fast';calcWarmup();});
   document.getElementById('nt-btn').addEventListener('click',calcNutrition);
+  document.getElementById('supp-btn').addEventListener('click',calcSupps);
+  document.getElementById('nt-bw').addEventListener('input',function(){syncBWToSupp();});
+  document.getElementById('supp-bw').addEventListener('input',function(){syncSuppToNT();try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}});
+  document.getElementById('wu-exercise').addEventListener('change',function(){
+    try{localStorage.setItem('tsa-last-ex',this.value);}catch(e){}
+    loadExerciseInputs(this.value);
+    document.getElementById('wu-plate-panel').style.display='none';
+    document.getElementById('wu-res').style.display='none';
+    document.getElementById('wu-feel-wrap').style.display='none';
+    document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>';
+    warmupSets=[];baseTargetKg=null;
+  });
 }
 
-function saveInputs(){
+// ── PLATE STATE PERSISTENCE ──
+function savePlState(){
+  try{localStorage.setItem('tsa-pl',JSON.stringify({inUnit:plInUnit,outUnit:plOutUnit,mode:plMode,w:document.getElementById('pl-w').value,bar:document.getElementById('pl-bar').value,col:document.getElementById('pl-col').value,cbar:document.getElementById('pl-cbar').value,ccol:document.getElementById('pl-ccol').value}));}catch(e){}
+}
+function loadPlState(){
+  var d={};try{d=JSON.parse(localStorage.getItem('tsa-pl')||'{}');}catch(e){}
+  if(d.outUnit){plOutUnit=d.outUnit;setToggle('pl-out-tog',d.outUnit);}
+  if(d.inUnit){plInUnit=d.inUnit;setToggle('pl-in-tog',d.inUnit);}
+  populatePlBarOptions();
+  if(d.bar&&document.getElementById('pl-bar').querySelector('option[value="'+d.bar+'"]'))document.getElementById('pl-bar').value=d.bar;
+  if(d.col&&document.getElementById('pl-col').querySelector('option[value="'+d.col+'"]'))document.getElementById('pl-col').value=d.col;
+  if(d.cbar)document.getElementById('pl-cbar').value=d.cbar;
+  if(d.ccol)document.getElementById('pl-ccol').value=d.ccol;
+  document.getElementById('pl-cbar-g').style.display=document.getElementById('pl-bar').value==='custom'?'block':'none';
+  document.getElementById('pl-ccol-g').style.display=document.getElementById('pl-col').value==='custom'?'block':'none';
+  if(d.w)document.getElementById('pl-w').value=d.w;
+  if(d.mode){
+    plMode=d.mode;
+    document.getElementById('pl-man').style.display=d.mode==='manual'?'block':'none';
+    document.getElementById('pl-wu').style.display=d.mode==='warmup'?'block':'none';
+    document.querySelectorAll('#tab-plates .mtog .mbtn').forEach(function(b){b.classList.toggle('active',(b.textContent.toLowerCase().includes('manual')&&d.mode==='manual')||(b.textContent.toLowerCase().includes('warmup')&&d.mode==='warmup'));});
+  }
+}
+
+// ── WARMUP INPUT PERSISTENCE ──
+function saveWuInputs(){
   var ex=document.getElementById('wu-exercise').value;
   try{localStorage.setItem('tsa-last-ex',ex);}catch(e){}
   try{localStorage.setItem('tsa-wu-'+ex,JSON.stringify({inUnit:wuInUnit,outUnit:wuOutUnit,wuMode:wuMode,lw:document.getElementById('wu-lw').value,lr:document.getElementById('wu-lr').value,lrpe:document.getElementById('wu-lrpe').value,gr:document.getElementById('wu-gr').value,grpe:document.getElementById('wu-grpe').value,mw:document.getElementById('wu-mw').value,mr:document.getElementById('wu-mr').value}));}catch(e){}
   try{localStorage.setItem('tsa-nt',JSON.stringify({p:document.getElementById('nt-p').value,c:document.getElementById('nt-c').value,f:document.getElementById('nt-f').value,t:document.getElementById('nt-t').value,bw:document.getElementById('nt-bw').value,bwUnit:ntBWUnit}));}catch(e){}
 }
 function loadInputs(){
-  try{
-    var nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');
-    if(nt.bwUnit){ntBWUnit=nt.bwUnit;var tog=document.getElementById('nt-bw-tog');if(tog)tog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit);});var lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
-    if(nt.bw)document.getElementById('nt-bw').value=nt.bw;
-    if(nt.p)document.getElementById('nt-p').value=nt.p;
-    if(nt.c)document.getElementById('nt-c').value=nt.c;
-    if(nt.f)document.getElementById('nt-f').value=nt.f;
-    if(nt.t)document.getElementById('nt-t').value=nt.t;
-  }catch(e){}
-  var lastEx='';
-  try{lastEx=localStorage.getItem('tsa-last-ex')||'';}catch(e){}
+  var nt={};try{nt=JSON.parse(localStorage.getItem('tsa-nt')||'{}');}catch(e){}
+  if(nt.bwUnit){ntBWUnit=nt.bwUnit;var tog=document.getElementById('nt-bw-tog');if(tog)tog.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===nt.bwUnit);});var lbl=document.getElementById('nt-bw-unit');if(lbl)lbl.textContent=nt.bwUnit;}
+  if(nt.bw)document.getElementById('nt-bw').value=nt.bw;
+  if(nt.p)document.getElementById('nt-p').value=nt.p;
+  if(nt.c)document.getElementById('nt-c').value=nt.c;
+  if(nt.f)document.getElementById('nt-f').value=nt.f;
+  if(nt.t)document.getElementById('nt-t').value=nt.t;
+  var lastEx='';try{lastEx=localStorage.getItem('tsa-last-ex')||'';}catch(e){}
   if(lastEx)document.getElementById('wu-exercise').value=lastEx;
   loadExerciseInputs(document.getElementById('wu-exercise').value);
   populateWuBarOptions();
 }
 function loadExerciseInputs(ex){
-  try{
-    var d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');
-    if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);var lbl=d.inUnit==='kg'?'kg':'lbs';var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;}
-    if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
-    if(d.wuMode){wuMode=d.wuMode;document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';document.querySelectorAll('.mtog .mbtn').forEach(function(b){b.classList.toggle('active',(b.textContent.toLowerCase().includes('rpe')&&d.wuMode==='rpe')||(b.textContent.toLowerCase().includes('manual')&&d.wuMode==='manual'));});}
-    if(d.lw)document.getElementById('wu-lw').value=d.lw;
-    if(d.lr)document.getElementById('wu-lr').value=d.lr;
-    if(d.lrpe)document.getElementById('wu-lrpe').value=d.lrpe;
-    if(d.gr)document.getElementById('wu-gr').value=d.gr;
-    if(d.grpe)document.getElementById('wu-grpe').value=d.grpe;
-    if(d.mw)document.getElementById('wu-mw').value=d.mw;
-    if(d.mr)document.getElementById('wu-mr').value=d.mr;
-  }catch(e){}
+  var d={};try{d=JSON.parse(localStorage.getItem('tsa-wu-'+ex)||'{}');}catch(e){}
+  if(d.inUnit){wuInUnit=d.inUnit;setToggle('wu-in-tog',d.inUnit);var lbl=d.inUnit==='kg'?'kg':'lbs';var a=document.getElementById('wu-lw-unit');if(a)a.textContent=lbl;var b=document.getElementById('wu-mw-unit');if(b)b.textContent=lbl;}
+  if(d.outUnit){wuOutUnit=d.outUnit;setToggle('wu-out-tog',d.outUnit);}
+  if(d.wuMode){wuMode=d.wuMode;document.getElementById('wu-rpe').style.display=d.wuMode==='rpe'?'block':'none';document.getElementById('wu-man').style.display=d.wuMode==='manual'?'block':'none';document.getElementById('wu-e1rm-row').style.display=d.wuMode==='rpe'?'block':'none';document.querySelectorAll('#tab-warmup .mtog .mbtn').forEach(function(b){if(b.textContent.toLowerCase().includes('rpe')||b.textContent.toLowerCase().includes('manual'))b.classList.toggle('active',(b.textContent.toLowerCase().includes('rpe')&&d.wuMode==='rpe')||(b.textContent.toLowerCase().includes('manual')&&d.wuMode==='manual'));});}
+  if(d.lw)document.getElementById('wu-lw').value=d.lw;
+  if(d.lr)document.getElementById('wu-lr').value=d.lr;
+  if(d.lrpe)document.getElementById('wu-lrpe').value=d.lrpe;
+  if(d.gr)document.getElementById('wu-gr').value=d.gr;
+  if(d.grpe)document.getElementById('wu-grpe').value=d.grpe;
+  if(d.mw)document.getElementById('wu-mw').value=d.mw;
+  if(d.mr)document.getElementById('wu-mr').value=d.mr;
 }
 
 function showWuPlateCount(weightKg,label){
   var isKg=wuOutUnit==='kg';
-  var colKgRaw=getWuColKg();
-  // work in active unit
-  var barKg=getWuBarKg();
+  var barKg=getWuBarKg(),colKgRaw=getWuColKg();
   var total,bar,col,plates,unit;
-  if(isKg){
-    total=weightKg;bar=barKg;col=colKgRaw;plates=PLATES_KG;unit='kg';
-  } else {
-    total=weightKg*2.20462;bar=barKg*2.20462;col=colKgRaw*2.20462;plates=PLATES_LB;unit='lb';
-  }
+  if(isKg){total=weightKg;bar=barKg;col=colKgRaw;plates=PLATES_KG;unit='kg';}
+  else{total=weightKg*2.20462;bar=barKg*2.20462;col=colKgRaw*2.20462;plates=PLATES_LB;unit='lb';}
   var perSide=Math.max(0,(total-bar-col*2))/2;
   var rem=perSide,loaded=[];
   plates.forEach(function(p){while(rem>=p.w-0.02){loaded.push(p);rem=Math.round((rem-p.w)*1000)/1000;}});
@@ -1057,19 +915,19 @@ function showWuPlateCount(weightKg,label){
   document.getElementById('wu-plate-label').textContent=label;
   document.getElementById('wu-plate-bar-lbl').textContent=bar.toFixed(bar%1?1:0)+unit+' bar'+(col>0?' + collars':'');
   var keys=Object.keys(counts).sort(function(a,b){return b-a;});
-  var html=keys.map(function(w){
-    var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}
-    return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';
-  }).join('');
+  var html=keys.map(function(w){var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';}).join('');
   if(col>0){html+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
-  // ── LOAD VALIDATION GUARD ──
   var loadedSum=0;loaded.forEach(function(p){loadedSum+=p.w;});
   var rebuilt=bar+col*2+loadedSum*2;
-  if(Math.abs(rebuilt-total)>0.05){
-    html+='<div style="grid-column:1/-1;font-family:var(--mono);font-size:10px;color:#e74c3c;padding-top:6px">&#9888; Load mismatch: plates total '+rebuilt.toFixed(1)+unit+', target '+total.toFixed(1)+unit+'</div>';
-  }
+  if(Math.abs(rebuilt-total)>0.05){html+='<div style="grid-column:1/-1;font-family:var(--mono);font-size:10px;color:#e74c3c;padding-top:6px">&#9888; Load mismatch: plates total '+rebuilt.toFixed(1)+unit+', target '+total.toFixed(1)+unit+'</div>';}
   document.getElementById('wu-plate-cards').innerHTML=html||'<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only ('+bar.toFixed(bar%1?1:0)+unit+')</div>';
   document.getElementById('wu-plate-panel').style.display='block';
+}
+
+function nearestFullReps(exKey,targetPct,setRepsFull){
+  var pcts=SCHEMES[exKey].pcts;var bestSn=2,bestDiff=999;
+  for(var sn=2;sn<=6;sn++){if(pcts[sn]==null)continue;var d=Math.abs(pcts[sn]-targetPct);if(d<bestDiff){bestDiff=d;bestSn=sn;}}
+  return setRepsFull[bestSn];
 }
 
 function calcWarmup(){
@@ -1081,7 +939,7 @@ function calcWarmup(){
   var exKey=document.getElementById('wu-exercise').value;
   var scheme=SCHEMES[exKey];
   var isKgIn=wuInUnit==='kg',isKg=wuOutUnit==='kg';
-  var targetKg,goalReps,goalRPE='—',e1rmKg=null;
+  var targetKg,goalReps,goalRPE='-',e1rmKg=null;
 
   if(wuMode==='rpe'){
     var lw=parseFloat(document.getElementById('wu-lw').value);
@@ -1094,7 +952,7 @@ function calcWarmup(){
     e1rmKg=lwKg/rpeF(lr,lrpe);
     var rawT=e1rmKg*rpeF(goalReps,goalRPE);
     targetKg=isKg?rwKg(rawT):rwLb(rawT*2.20462)/2.20462;
-    document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lbs';
+    document.getElementById('wu-e1rm').textContent=isKg?e1rmKg.toFixed(1)+' kg':Math.round(e1rmKg*2.20462)+' lb';
   } else {
     var mw=parseFloat(document.getElementById('wu-mw').value);
     goalReps=parseInt(document.getElementById('wu-mr').value);
@@ -1106,11 +964,10 @@ function calcWarmup(){
 
   var tLbs=targetKg*2.20462;
   var topPrimary,topSecondary;
-  if(isKg){topPrimary=rwKg(targetKg).toFixed(1)+' kg';topSecondary=(rwKg(targetKg)*2.20462).toFixed(1)+' lbs';}
-  else{topPrimary=rwLb(tLbs).toFixed(1)+' lbs';topSecondary=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
-  var topD=topPrimary,topA=topSecondary;
-  document.getElementById('wu-top').textContent=topD;
-  document.getElementById('wu-alt').textContent=topA;
+  if(isKg){topPrimary=rwKg(targetKg).toFixed(1)+' kg';topSecondary=(rwKg(targetKg)*2.20462).toFixed(1)+' lb';}
+  else{topPrimary=rwLb(tLbs).toFixed(1)+' lb';topSecondary=(rwLb(tLbs)/2.20462).toFixed(1)+' kg';}
+  document.getElementById('wu-top').textContent=topPrimary;
+  document.getElementById('wu-alt').textContent=topSecondary;
   document.getElementById('wu-e1rm-row').style.display=e1rmKg?'block':'none';
   document.getElementById('wu-res').style.display='block';
 
@@ -1118,170 +975,111 @@ function calcWarmup(){
   var s2r=Math.max(goalReps,5);
   var setRepsFull={1:s2r,2:s2r,3:s2r-1,4:s2r-2,5:Math.ceil(goalReps/2),6:Math.ceil(goalReps/2)};
 
-  warmupSets=[];
-  var rows=[];
-  // PREP / Set 0 — always the bar, movement specific
+  warmupSets=[];var rows=[];
   rows.push('<tr class="prep-row"><td>BAR</td><td colspan="3">'+scheme.prep+'</td></tr>');
 
   if(wuLength==='full'){
     var s2Lbs=targetKg*scheme.pcts[2]*2.20462;
     var s1Kg=null,s1Skip=false;
-    if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;
-    else if(s2Lbs>=250)s1Kg=155/2.20462;
-    else s1Skip=true;
-
-    if(s1Skip){
-      rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
-    } else {
+    if(s2Lbs>165&&s2Lbs<250)s1Kg=135/2.20462;else if(s2Lbs>=250)s1Kg=155/2.20462;else s1Skip=true;
+    if(s1Skip){rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');}
+    else{
       var d1=dW(s1Kg,isKg,barKg),d1p=dWplain(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
-      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
-        +'<td style="font-family:var(--mono)">S1</td>'
-        +'<td style="font-family:var(--mono)">'+d1+'</td>'
-        +'<td style="font-family:var(--mono)">'+setRepsFull[1]+'</td>'
-        +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
+      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')"><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">'+d1+'</td><td style="font-family:var(--mono)">'+setRepsFull[1]+'</td><td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
       warmupSets.push({label:'S1',weightDisp:d1p,weightKg:wkg1,reps:setRepsFull[1],note:''});
     }
-
     var setRestMap={2:null,3:null,4:'s4',5:'s5',6:'s6'};
     ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
-      var sn=i+2;
-      var rawW=targetKg*scheme.pcts[sn];
+      var sn=i+2;var rawW=targetKg*scheme.pcts[sn];
       var d=dW(rawW,isKg,barKg),dp=dWplain(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
-      var r=setRepsFull[sn];
-      var rk=setRestMap[sn];
+      var r=setRepsFull[sn];var rk=setRestMap[sn];
       var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
-      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
-        +'<td style="font-family:var(--mono)">'+lbl+'</td>'
-        +'<td style="font-family:var(--mono)">'+d+'</td>'
-        +'<td style="font-family:var(--mono)">'+r+'</td>'
-        +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
+      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')"><td style="font-family:var(--mono)">'+lbl+'</td><td style="font-family:var(--mono)">'+d+'</td><td style="font-family:var(--mono)">'+r+'</td><td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
       warmupSets.push({label:lbl,weightDisp:dp,weightKg:wkg,reps:r,note:''});
     });
   } else {
-    // FAST: 4 working sets, rest starts at the set crossing 70%, reps matched by nearest full %
     var fast=scheme.fast;
     var s1Lbs=targetKg*fast[0]*2.20462;
     var s1Kg=null,s1Skip=false;
-    if(s1Lbs>165&&s1Lbs<250)s1Kg=135/2.20462;
-    else if(s1Lbs>=250)s1Kg=155/2.20462;
-    else s1Skip=true;
-
-    if(s1Skip){
-      rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
-    } else {
-      var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
+    if(s1Lbs>165&&s1Lbs<250)s1Kg=135/2.20462;else if(s1Lbs>=250)s1Kg=155/2.20462;else s1Skip=true;
+    if(s1Skip){rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');}
+    else{
+      var d1=dW(s1Kg,isKg,barKg),d1p=dWplain(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
       var r1=nearestFullReps(exKey,fast[0],setRepsFull);
-      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
-        +'<td style="font-family:var(--mono)">S1</td>'
-        +'<td style="font-family:var(--mono)">'+d1+'</td>'
-        +'<td style="font-family:var(--mono)">'+r1+'</td>'
-        +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
-      warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:r1,note:''});
+      rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')"><td style="font-family:var(--mono)">S1</td><td style="font-family:var(--mono)">'+d1+'</td><td style="font-family:var(--mono)">'+r1+'</td><td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
+      warmupSets.push({label:'S1',weightDisp:d1p,weightKg:wkg1,reps:r1,note:''});
     }
-
     var fastLabels=['S2','S3','S4','S5'];
-    // rest scaling: map each fast set to nearest full rest key by %
-    var restKeyFor=function(pct){
-      if(pct<0.70)return null;
-      // pick s4/s5/s6 by nearest full pct among 4,5,6
-      var opts=[{k:'s4',p:SCHEMES[exKey].pcts[4]},{k:'s5',p:SCHEMES[exKey].pcts[5]},{k:'s6',p:SCHEMES[exKey].pcts[6]}];
-      var best=opts[0],bd=999;
-      for(var j=0;j<opts.length;j++){var dd=Math.abs(opts[j].p-pct);if(dd<bd){bd=dd;best=opts[j];}}
-      return best.k;
-    };
+    var restKeyFor=function(pct){if(pct<0.70)return null;var opts=[{k:'s4',p:SCHEMES[exKey].pcts[4]},{k:'s5',p:SCHEMES[exKey].pcts[5]},{k:'s6',p:SCHEMES[exKey].pcts[6]}];var best=opts[0],bd=999;for(var j=0;j<opts.length;j++){var dd=Math.abs(opts[j].p-pct);if(dd<bd){bd=dd;best=opts[j];}}return best.k;};
     fast.forEach(function(pct,i){
-      var lbl=fastLabels[i];
-      var rawW=targetKg*pct;
-      var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
-      var r=nearestFullReps(exKey,pct,setRepsFull);
-      var rk=restKeyFor(pct);
+      var lbl=fastLabels[i];var rawW=targetKg*pct;
+      var d=dW(rawW,isKg,barKg),dp=dWplain(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
+      var r=nearestFullReps(exKey,pct,setRepsFull);var rk=restKeyFor(pct);
       var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
-      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')">'
-        +'<td style="font-family:var(--mono)">'+lbl+'</td>'
-        +'<td style="font-family:var(--mono)">'+d+'</td>'
-        +'<td style="font-family:var(--mono)">'+r+'</td>'
-        +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
-      warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
+      rows.push('<tr onclick="showWuPlateCount('+wkg+',\''+lbl+'\')"><td style="font-family:var(--mono)">'+lbl+'</td><td style="font-family:var(--mono)">'+d+'</td><td style="font-family:var(--mono)">'+r+'</td><td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
+      warmupSets.push({label:lbl,weightDisp:dp,weightKg:wkg,reps:r,note:''});
     });
   }
 
-  var rpeVal=goalRPE!=='—'?parseFloat(goalRPE):7;
+  var rpeVal=goalRPE!=='-'?parseFloat(goalRPE):7;
   var topRest=getTopRest(exKey,rpeVal);
-  var tl=goalRPE!=='—'?'@RPE '+goalRPE:'';
+  var tl=goalRPE!=='-'?'@RPE '+goalRPE:'';
   var topCell=tl+(tl?' · ':'')+restTagTop(topRest);
-
-  rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET\')">'
-    +'<td>TOP SET</td><td>'+topD+'</td><td>'+goalReps+'</td>'
-    +'<td style="font-size:11px">'+topCell+'</td></tr>');
+  rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET\')"><td>TOP SET</td><td>'+topPrimary+'</td><td>'+goalReps+'</td><td style="font-size:11px">'+topCell+'</td></tr>');
   warmupSets.push({label:'TOP SET',weightDisp:topPrimary,weightKg:targetKg,reps:goalReps,note:tl});
 
   document.getElementById('wu-tbody').innerHTML=rows.join('');
   document.getElementById('wu-plate-panel').style.display='none';
   document.getElementById('wu-feel-wrap').style.display='block';
   if(plMode==='warmup')populatePicker();
-  saveInputs();
+  saveWuInputs();
 }
 
 function populatePicker(){
   var pk=document.getElementById('pl-pick');pk.innerHTML='';
   var valid=warmupSets.filter(function(s){return s.weightKg>0;});
   if(!valid.length){pk.innerHTML='<option value="">- Generate warmups first -</option>';return;}
-  valid.forEach(function(s){
-    var o=document.createElement('option');
-    o.value=warmupSets.indexOf(s);
-    o.textContent=s.label+' - '+s.weightDisp+' x '+s.reps+' reps';
-    pk.appendChild(o);
-  });
+  valid.forEach(function(s){var o=document.createElement('option');o.value=warmupSets.indexOf(s);o.textContent=s.label+' - '+stripHTML(s.weightDisp)+' x '+s.reps+' reps';pk.appendChild(o);});
   pk.selectedIndex=0;pickWarmupSet();
 }
 function pickWarmupSet(){
   var idx=document.getElementById('pl-pick').value;if(idx===''||!warmupSets[idx])return;
   var s=warmupSets[idx];
   document.getElementById('pl-sinfo').style.display='block';
-  document.getElementById('pl-sw').textContent=s.weightDisp+' x '+s.reps+' reps';
+  document.getElementById('pl-sw').textContent=stripHTML(s.weightDisp)+' x '+s.reps+' reps';
   document.getElementById('pl-sd').textContent=s.label;
-  var isKg=plOutUnit==='kg';
-  renderPlates(isKg?s.weightKg:s.weightKg*2.20462);
+  var isKg=plOutUnit==='kg';renderPlates(isKg?s.weightKg:s.weightKg*2.20462);
 }
 function mkPlate(p,isKg){return '<div class="plate" style="width:'+pWd(p.w,isKg)+'px;height:'+pH(p.w,isKg)+'px;background:'+p.color+';border:1px solid '+p.border+'"></div>';}
 function mkCollar(){return '<div class="collar"></div>';}
-// renderPlates takes a total in the ACTIVE output unit
 function renderPlates(totalActive){
   lastActive=totalActive;
   var isKg=plOutUnit==='kg';
-  var bar=getBarKg();          // already in active unit (see getter)
-  var col=getColKg();          // already in active unit
-  var plates=plateSet(isKg);
-  var unit=isKg?'kg':'lb';
-  // snap total to nearest loadable in active unit
-  var step=isKg?2.5:5; // smallest total increment
+  var bar=getBarActive(),col=getColActive();
+  var plates=plateSet(isKg);var unit=isKg?'kg':'lb';
+  var step=isKg?2.5:5;
   var snapped=bar+Math.round(Math.max(0,(totalActive-bar))/step)*step;
   var perSide=Math.max(0,(snapped-bar-col*2))/2;
   var rem=perSide,loaded=[];
   plates.forEach(function(p){while(rem>=p.w-0.02){loaded.push(p);rem=Math.round((rem-p.w)*1000)/1000;}});
   var counts={};loaded.forEach(function(p){counts[p.w]=(counts[p.w]||0)+1;});
   var keys=Object.keys(counts).sort(function(a,b){return b-a;});
-  var sHTML=keys.map(function(w){
-    var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}
-    return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';
-  }).join('');
+  var sHTML=keys.map(function(w){var pl=null;for(var i=0;i<plates.length;i++){if(plates[i].w==w){pl=plates[i];break;}}return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';}).join('');
   if(col>0){sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
-  // ── LOAD VALIDATION GUARD ──
   var loadedSum=0;loaded.forEach(function(p){loadedSum+=p.w;});
   var rebuilt=bar+col*2+loadedSum*2;
   var mismatch=Math.abs(rebuilt-snapped)>0.05;
   var conv=isKg?(snapped*2.20462):(snapped/2.20462);
-  document.getElementById('pl-total').textContent=snapped.toFixed(snapped%1?1:1)+' '+unit;
+  document.getElementById('pl-total').textContent=snapped.toFixed(1)+' '+unit;
   document.getElementById('pl-total-alt').textContent=conv.toFixed(1)+' '+(isKg?'lb':'kg');
-  var convLine='Bar: '+bar.toFixed(bar%1?1:0)+unit+(col>0?' + 2 collars @ '+(Math.round(col*10)/10)+unit+' ea':'')+' | '+(Math.round(perSide*100)/100)+unit+' per side';
+  var convLine='Bar: '+bar.toFixed(bar%1?1:0)+unit+(col>0?' + collars @ '+(Math.round(col*10)/10)+unit+' ea':'')+' | '+(Math.round(perSide*100)/100)+unit+' per side';
   if(mismatch){convLine='<span style="color:#e74c3c">&#9888; Load mismatch: plates total '+rebuilt.toFixed(1)+unit+', target '+snapped.toFixed(1)+unit+'</span><br>'+convLine;}
   document.getElementById('pl-conv').innerHTML=convLine;
   var colHTML=col>0?mkCollar():'';
   var lp=loaded.slice().reverse().map(function(p){return mkPlate(p,isKg);}).join('');
   var rp=loaded.map(function(p){return mkPlate(p,isKg);}).join('');
-  document.getElementById('pl-bar-diagram').innerHTML='<div class="bar-assy"><div class="bar-sleeve"></div><div style="display:flex;align-items:center">'+lp+'</div>'+colHTML+'<div class="bar-shaft"></div>'+colHTML+'<div style="display:flex;align-items:center">'+rp+'</div><div class="bar-sleeve"></div></div>'
-    +(!loaded.length?'<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: '+bar.toFixed(bar%1?1:0)+unit+'</div>':'');
+  document.getElementById('pl-bar-diagram').innerHTML='<div class="bar-assy"><div class="bar-sleeve"></div><div style="display:flex;align-items:center">'+lp+'</div>'+colHTML+'<div class="bar-shaft"></div>'+colHTML+'<div style="display:flex;align-items:center">'+rp+'</div><div class="bar-sleeve"></div></div>'+(!loaded.length?'<div style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:12px">Bar only: '+bar.toFixed(bar%1?1:0)+unit+'</div>':'');
 }
 
 function rn(x){return Math.round(x);}
@@ -1292,62 +1090,42 @@ function calcNutrition(){
   var bwRaw=parseFloat(document.getElementById('nt-bw').value)||68;
   var BW=ntBWUnit==='lbs'?bwRaw/2.20462:bwRaw;
   var timing=document.getElementById('nt-t').value;
-  var cals=Math.round(P*4+C*4+F*9);
-  var hi=cals>=2500;
+  var cals=Math.round(P*4+C*4+F*9);var hi=cals>=2500;
   document.getElementById('nt-cal').textContent=cals;
   document.getElementById('nt-po').textContent=P+'g';
   document.getElementById('nt-co').textContent=C+'g';
   document.getElementById('nt-fo').textContent=F+'g';
   var p6=P/6,p7=P/7,pp=hi?p7:p6;
-  var preWO_lo=timing==='late'?BW*1.33:BW;
-  var LC=C-preWO_lo-30;
+  var preWO_lo=timing==='late'?BW*1.33:BW;var LC=C-preWO_lo-30;
   function m(meal,badge,pLo,pHi,cLo,cHi,fLo,fHi,note,ls){return {meal:meal,badge:badge,pLo:rn(pLo),pHi:rn(pHi),cLo:rn(cLo),cHi:rn(cHi),fLo:rn(fLo),fHi:rn(fHi),note:note,ls:ls||false};}
   var meals=[];
-  if(timing==='early'){meals=[m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate - protein + starchy carbs + veggies.'),m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb. Keep it simple.'),m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true)];}
+  if(timing==='early'){meals=[m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs only if session exceeds 60 minutes.'),m('Breakfast / Post-Workout',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Prioritize protein + moderate carbs to kick off recovery.'),m('Snack 1',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Light protein or whole fruit.'),m('Lunch',false,hi?p7*.9:p6,pp*1.8,LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.35,'Balanced plate - protein + starchy carbs + veggies.'),m('Snack 2',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.15),0,F*.03,'Protein-heavy, low carb.'),m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.36),F*(hi?.25:.30),F*.33,'Protein + veggies + moderate carbs.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein or cottage cheese before bed.',true)];}
   else if(timing==='late'){meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Moderate carbs - fuel loading before your session.'),m('Pre-Workout',true,0,10,BW*1.33,BW*2,0,5,'Carb-forward. Eat 60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Simple carbs if session exceeds 60 minutes.'),m('Lunch / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.22:.20),LC*.33,F*(hi?.25:.30),F*.35,'Prioritize carb replenishment post-session.'),m('Snack 1',false,pp*.8,pp*1.5,LC*.10,LC*.20,0,F*.03,'Protein + light carbs.'),m('Dinner',false,pp*.9,pp*(hi?1.8:1.4),LC*.10,LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Protein + veggies. Taper carbs toward evening.'),m('Snack 2',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein before bed.',true)];}
-  else if(timing==='afternoon'){meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward - largest carb meal, fuels afternoon session.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before training.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish - prioritize protein + carbs post-session.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
-  else{meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day - peak energy window.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs 30-60 min before. Keep it light.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed for long sessions.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb - winding down before sleep.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
+  else if(timing==='afternoon'){meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal to start the day.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Carb-forward - largest carb meal.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel. Easy to digest.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs + optional protein. 30-60 min before.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if session exceeds 60 minutes.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.33,'Replenish - protein + carbs post-session.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
+  else{meals=[m('Breakfast',false,pp*.9,pp*1.4,LC*(hi?.10:.12),LC*.23,F*(hi?.25:.30),F*.35,'Normal balanced meal.'),m('Snack 1',false,pp*.8,pp*1.5,LC*(hi?.02:.07),LC*(hi?.12:.12),0,F*.03,'Protein + light carbs.'),m('Lunch',false,pp*.9,pp*(hi?1.8:1.4),LC*(hi?.18:.20),LC*(hi?.33:.33),F*(hi?.25:.30),F*.35,'Biggest carb meal of the day.'),m('Snack 2',false,0,pp*.5,LC*.15,LC*.20,0,F*.03,'Pre-workout fuel.'),m('Pre-Workout',true,0,10,BW,BW*2,0,5,'Fast carbs 30-60 min before. Keep it light.'),m('Mid-Workout',false,0,5,30,90,0,0,'Intra carbs if needed.'),m('Dinner / Post-Workout',false,pp*.9,pp*(hi?1.8:1.4),0,LC*.10,F*(hi?.25:.30),F*.33,'High protein, lower carb - winding down.'),m('Snack 3',false,hi?p7*.9:0,hi?p7*1.4:0,0,hi?LC*.05:0,0,hi?F*.05:0,'Casein protein before bed.',true)];}
   var visible=meals.filter(function(x){return !(x.ls&&!hi);});
-  document.getElementById('nt-meals').innerHTML=visible.map(function(x){
-    var badge=x.badge?'<div class="wbadge">Workout</div>':'';
-    return '<div class="meal-card '+(x.badge?'wk':'nm')+'">'
-      +'<div class="meal-header"><div class="meal-name">'+x.meal+'</div>'+badge+'</div>'
-      +'<div class="meal-macros">'
-      +'<div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'-'+x.pHi+'g</div></div>'
-      +'<div class="mcell"><div class="mlbl">Carbs</div><div class="mval">'+x.cLo+'-'+x.cHi+'g</div></div>'
-      +'<div class="mcell"><div class="mlbl">Fats</div><div class="mval">'+x.fLo+'-'+x.fHi+'g</div></div>'
-      +'</div><div class="mnote">'+x.note+'</div></div>';
-  }).join('');
+  document.getElementById('nt-meals').innerHTML=visible.map(function(x){var badge=x.badge?'<div class="wbadge">Workout</div>':'';return '<div class="meal-card '+(x.badge?'wk':'nm')+'"><div class="meal-header"><div class="meal-name">'+x.meal+'</div>'+badge+'</div><div class="meal-macros"><div class="mcell"><div class="mlbl">Protein</div><div class="mval pro">'+x.pLo+'-'+x.pHi+'g</div></div><div class="mcell"><div class="mlbl">Carbs</div><div class="mval">'+x.cLo+'-'+x.cHi+'g</div></div><div class="mcell"><div class="mlbl">Fats</div><div class="mval">'+x.fLo+'-'+x.fHi+'g</div></div></div><div class="mnote">'+x.note+'</div></div>';}).join('');
+  try{localStorage.setItem('tsa-nt',JSON.stringify({p:P,c:C,f:F,t:timing,bw:document.getElementById('nt-bw').value,bwUnit:ntBWUnit}));}catch(e){}
 }
 
 function setSuppBWU(u,el){
-  suppBWUnit=u;
-  el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  suppBWUnit=u;el.parentElement.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
   document.getElementById('supp-bw-lbl').textContent=u;
   var cur=parseFloat(document.getElementById('supp-bw').value);
   if(!isNaN(cur))document.getElementById('supp-bw').value=u==='kg'?Math.round(cur/2.20462*10)/10:Math.round(cur*2.20462*10)/10;
-  ntBWUnit=u;
-  var nt=document.getElementById('nt-bw-tog');if(nt)nt.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
-  var nl=document.getElementById('nt-bw-unit');if(nl)nl.textContent=u;
-  syncSuppToNT();
+  ntBWUnit=u;var nt=document.getElementById('nt-bw-tog');if(nt)nt.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===u);});
+  var nl=document.getElementById('nt-bw-unit');if(nl)nl.textContent=u;syncSuppToNT();
 }
 function getSuppBWLbs(){var v=parseFloat(document.getElementById('supp-bw').value)||185;return suppBWUnit==='kg'?v*2.20462:v;}
 function getSuppBracket(lbs){return lbs<=130?0:lbs<=175?1:2;}
-function bracketBar(b){
-  var labels=['<=130lbs','130-175lbs','175+lbs'];
-  return '<div class="bracket-bar">'+labels.map(function(l,i){return '<div class="bseg'+(i===b?' on':'')+'">'+l+'</div>';}).join('')+'</div>';
-}
+function bracketBar(b){var labels=['<=130lb','130-175lb','175+lb'];return '<div class="bracket-bar">'+labels.map(function(l,i){return '<div class="bseg'+(i===b?' on':'')+'">'+l+'</div>';}).join('')+'</div>';}
 function suppCard(s,b){
   var dose=s.scaled?s.doses[b]:s.dose;
   var tag=s.scaled?'<span class="supp-tag wt">Weight-scaled</span>':'<span class="supp-tag ft">Fixed dose</span>';
   var bar=s.scaled?bracketBar(b):'';
   var note=s.note?'<div class="supp-note">'+s.note+'</div>':'';
   var link=s.link?'<a href="'+s.link+'" target="_blank" rel="noopener" class="supp-link">Shop</a>':'';
-  return '<div class="supp-card '+(s.scaled?'scaled':'flat')+'">'
-    +'<div class="supp-header"><div class="supp-name">'+s.name+'</div>'+tag+'</div>'
-    +'<div class="supp-body"><div class="supp-dose">'+dose+'</div>'
-    +'<div class="supp-dose-lbl">'+s.form+'</div>'
-    +bar+'<div class="supp-timing">'+s.timing+'</div>'+note+link+'</div></div>';
+  return '<div class="supp-card '+(s.scaled?'scaled':'flat')+'"><div class="supp-header"><div class="supp-name">'+s.name+'</div>'+tag+'</div><div class="supp-body"><div class="supp-dose">'+dose+'</div><div class="supp-dose-lbl">'+s.form+'</div>'+bar+'<div class="supp-timing">'+s.timing+'</div>'+note+link+'</div></div>';
 }
 function calcSupps(){
   var lbs=getSuppBWLbs(),b=getSuppBracket(lbs);
@@ -1359,8 +1137,7 @@ function calcSupps(){
     {name:'Whey Protein',scaled:false,dose:'As needed',form:'Whey isolate - to hit daily protein target',timing:'Post-workout or to close daily protein gap',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'},
     {name:'Casein Protein',scaled:false,dose:'As needed',form:'Micellar casein - slow release overnight',timing:'Pre-bed meal to support overnight recovery',note:null,link:'https://us.myprotein.com/referrals.list?applyCode=ANTHONY-R362'}
   ];
-  document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div>'
-    +'<div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
+  document.getElementById('supp-out').innerHTML='<div class="supp-grid">'+SUPPS.map(function(s){return suppCard(s,b);}).join('')+'</div><div style="font-family:var(--mono);font-size:10px;color:#6b6b6b;margin-top:12px;padding-top:12px;border-top:1px solid #c8c2b4">MyProtein links include a $20 credit on your first $40+ order. Amazon links are affiliate links.</div>';
   try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}
 }
 
@@ -1375,54 +1152,29 @@ function buildGear(){
     {name:'Caffeine Energy Gum',link:'https://amzn.to/4jCf5Fw'},
     {name:'Rythmhealth - Home Blood Testing',link:'https://rythmhealth.com',code:'RIFE341K',discount:'$20 off'}
   ];
-  document.getElementById('gear-grid').innerHTML=GEAR.map(function(g){
-    var cr=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> - '+g.discount+'</div>':'';
-    return '<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+cr+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+(g.code?'Shop Rythmhealth':'Shop on Amazon')+'</a></div>';
-  }).join('');
+  document.getElementById('gear-grid').innerHTML=GEAR.map(function(g){var cr=g.code?'<div style="font-family:var(--mono);font-size:10px;color:#c0392b;padding:6px 14px;background:#faf9f6">Code: <strong>'+g.code+'</strong> - '+g.discount+'</div>':'';return '<div class="gear-card"><div class="gear-header"><div class="gear-name">'+g.name+'</div></div>'+cr+'<a href="'+g.link+'" target="_blank" rel="noopener" class="gear-link">'+(g.code?'Shop Rythmhealth':'Shop on Amazon')+'</a></div>';}).join('');
 }
 
-document.getElementById('supp-btn').addEventListener('click',calcSupps);
-document.getElementById('nt-bw').addEventListener('input',function(){syncBWToSupp();});
-document.getElementById('supp-bw').addEventListener('input',function(){
-  syncSuppToNT();
-  try{localStorage.setItem('tsa-supp',JSON.stringify({bw:document.getElementById('supp-bw').value,bwUnit:suppBWUnit}));}catch(e){}
-});
+// ── INIT ──
 buildGear();
-try{
-  var sd=JSON.parse(localStorage.getItem('tsa-supp')||'{}');
-  if(sd.bw)document.getElementById('supp-bw').value=sd.bw;
-  if(sd.bwUnit){suppBWUnit=sd.bwUnit;var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===sd.bwUnit);});var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=sd.bwUnit;}
-}catch(e){}
+try{var sd=JSON.parse(localStorage.getItem('tsa-supp')||'{}');if(sd.bw)document.getElementById('supp-bw').value=sd.bw;if(sd.bwUnit){suppBWUnit=sd.bwUnit;var st=document.getElementById('supp-bw-tog');if(st)st.querySelectorAll('.ubtn').forEach(function(b){b.classList.toggle('active',b.textContent.trim().toLowerCase()===sd.bwUnit);});var sl=document.getElementById('supp-bw-lbl');if(sl)sl.textContent=sd.bwUnit;}}catch(e){}
 
 wireControls();
 loadPlState();
-populateWuBarOptions();
 loadInputs();
-// render plate loader if a manual weight was restored
 if(plMode==='manual'){var pw=parseFloat(document.getElementById('pl-w').value);if(pw>0)rerender();}
+
 try{
   var lastTab=localStorage.getItem('tsa-last-tab');
-  if(lastTab&&document.getElementById('tab-'+lastTab)){
+  var tabMap={home:0,warmup:1,plates:2,nutrition:3,supps:4,products:5};
+  if(lastTab&&tabMap[lastTab]!==undefined&&document.getElementById('tab-'+lastTab)){
     var tabEls=document.querySelectorAll('.tab');
-    var tabMap={home:0,warmup:1,plates:2,nutrition:3,supps:4,products:5};
-    if(tabMap[lastTab]!==undefined){
-      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-      document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
-      tabEls[tabMap[lastTab]].classList.add('active');
-      document.getElementById('tab-'+lastTab).classList.add('active');
-    }
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+    tabEls[tabMap[lastTab]].classList.add('active');
+    document.getElementById('tab-'+lastTab).classList.add('active');
   }
 }catch(e){}
-document.getElementById('wu-exercise').addEventListener('change',function(){
-  try{localStorage.setItem('tsa-last-ex',this.value);}catch(e){}
-  loadExerciseInputs(this.value);
-  document.getElementById('wu-plate-panel').style.display='none';
-  document.getElementById('wu-res').style.display='none';
-  document.getElementById('wu-feel-wrap').style.display='none';
-  document.getElementById('wu-tbody').innerHTML='<tr><td colspan="4" style="text-align:center;color:#6b6b6b;padding:24px;font-size:11px;font-family:var(--mono)">Enter inputs and click Generate</td></tr>';
-  warmupSets=[];baseTargetKg=null;
-});
-document.getElementById('nt-btn').addEventListener('click',function(){setTimeout(saveInputs,100);},true);
 </script>
 
 <div id="cookie-banner" style="display:none">
