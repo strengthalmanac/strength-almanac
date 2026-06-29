@@ -788,14 +788,19 @@ function rwLb(r,b){b=b||45;var ps=Math.max(0,(r-b))/2;return b+Math.round(ps/2.5
 function snapLoadable(val,isKg,barInActiveUnit){
   return isKg?rwKg(val,barInActiveUnit):rwLb(val,barInActiveUnit);
 }
-// warmup display: target stored in kg internally. show primary in output unit (loadable), secondary = direct conversion
+// plain-text loadable weight in output unit (no HTML)
+function dWplain(kg,isKg,barKg){
+  var b=barKg||20;
+  if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg';}
+  var rl=rwLb(kg*2.20462,b*2.20462);return rl.toFixed(1)+' lb';
+}
+// HTML version with grey inline conversion (for table cells only)
 function dW(kg,isKg,barKg){
   var b=barKg||20;
   if(isKg){var r=rwKg(kg,b);return r.toFixed(1)+' kg <span style="color:#aaa">('+(r*2.20462).toFixed(1)+' lb)</span>';}
-  var barLb=b*2.20462;var rl=rwLb(kg*2.20462,barLb);
+  var rl=rwLb(kg*2.20462,b*2.20462);
   return rl.toFixed(1)+' lb <span style="color:#aaa">('+(rl/2.20462).toFixed(1)+' kg)</span>';
 }
-// returns the loadable weight in KG (internal) for a given target — used to feed plate display
 function dWKg(kg,isKg,barKg){
   var b=barKg||20;
   if(isKg)return rwKg(kg,b);
@@ -920,20 +925,19 @@ function syncSuppToNT(){
   var kg=suppBWUnit==='kg'?v:v/2.20462;
   el.value=ntBWUnit==='kg'?Math.round(kg*10)/10:Math.round(kg*2.20462*10)/10;
 }
-function setPlInputUnit(u,el){plInUnit=u;setToggle('pl-in-tog',u);rerender();}
+function setPlInputUnit(u,el){plInUnit=u;setToggle('pl-in-tog',u);rerender();savePlState();}
 function setPlOutputUnit(u,el){
   plOutUnit=u;setToggle('pl-out-tog',u);
   populatePlBarOptions();
-  if(lastActive!==null){
-    // lastActive was in the previous unit; convert the underlying kg-equivalent
-    rerender();
-  }
+  if(lastActive!==null){rerender();}
+  savePlState();
 }
 function setPlMode(m,el){
   plMode=m;el.parentElement.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('active');});el.classList.add('active');
   document.getElementById('pl-man').style.display=m==='manual'?'block':'none';
   document.getElementById('pl-wu').style.display=m==='warmup'?'block':'none';
   if(m==='warmup')populatePicker();else rerender();
+  savePlState();
 }
 function rerender(){
   var isKg=plOutUnit==='kg';
@@ -981,8 +985,9 @@ function wireControls(){
       document.getElementById('pl-cbar-g').style.display=document.getElementById('pl-bar').value==='custom'?'block':'none';
       document.getElementById('pl-ccol-g').style.display=document.getElementById('pl-col').value==='custom'?'block':'none';
       if(id==='pl-pick')pickWarmupSet();else rerender();
+      savePlState();
     });
-    el.addEventListener('input',function(){if(id==='pl-w'||id==='pl-cbar'||id==='pl-ccol')rerender();});
+    el.addEventListener('input',function(){if(id==='pl-w'||id==='pl-cbar'||id==='pl-ccol'){rerender();savePlState();}});
   });
   ['wu-bar','wu-col','wu-cbar','wu-ccol'].forEach(function(id){
     var el=document.getElementById(id);if(!el)return;
@@ -1047,7 +1052,7 @@ function showWuPlateCount(weightKg,label){
   }
   var perSide=Math.max(0,(total-bar-col*2))/2;
   var rem=perSide,loaded=[];
-  plates.forEach(function(p){while(rem>=p.w-0.001){loaded.push(p);rem-=p.w;}});
+  plates.forEach(function(p){while(rem>=p.w-0.02){loaded.push(p);rem=Math.round((rem-p.w)*1000)/1000;}});
   var counts={};loaded.forEach(function(p){counts[p.w]=(counts[p.w]||0)+1;});
   document.getElementById('wu-plate-label').textContent=label;
   document.getElementById('wu-plate-bar-lbl').textContent=bar.toFixed(bar%1?1:0)+unit+' bar'+(col>0?' + collars':'');
@@ -1057,6 +1062,12 @@ function showWuPlateCount(weightKg,label){
     return '<div class="mc" style="border-left:3px solid '+(pl?pl.color:'#333')+'"><div class="mv">'+counts[w]+'x'+w+unit+'</div><div class="ml">'+unit+'/side</div></div>';
   }).join('');
   if(col>0){html+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
+  // ── LOAD VALIDATION GUARD ──
+  var loadedSum=0;loaded.forEach(function(p){loadedSum+=p.w;});
+  var rebuilt=bar+col*2+loadedSum*2;
+  if(Math.abs(rebuilt-total)>0.05){
+    html+='<div style="grid-column:1/-1;font-family:var(--mono);font-size:10px;color:#e74c3c;padding-top:6px">&#9888; Load mismatch: plates total '+rebuilt.toFixed(1)+unit+', target '+total.toFixed(1)+unit+'</div>';
+  }
   document.getElementById('wu-plate-cards').innerHTML=html||'<div style="font-family:var(--mono);font-size:11px;color:#6b6b6b">Bar only ('+bar.toFixed(bar%1?1:0)+unit+')</div>';
   document.getElementById('wu-plate-panel').style.display='block';
 }
@@ -1122,20 +1133,20 @@ function calcWarmup(){
     if(s1Skip){
       rows.push('<tr class="skip-row"><td>S1</td><td>Skip</td><td>-</td><td></td></tr>');
     } else {
-      var d1=dW(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
+      var d1=dW(s1Kg,isKg,barKg),d1p=dWplain(s1Kg,isKg,barKg),wkg1=dWKg(s1Kg,isKg,barKg);
       rows.push('<tr onclick="showWuPlateCount('+wkg1+',\'S1\')">'
         +'<td style="font-family:var(--mono)">S1</td>'
         +'<td style="font-family:var(--mono)">'+d1+'</td>'
         +'<td style="font-family:var(--mono)">'+setRepsFull[1]+'</td>'
         +'<td style="font-family:var(--mono);font-size:11px">'+noRestTag()+'</td></tr>');
-      warmupSets.push({label:'S1',weightDisp:d1,weightKg:wkg1,reps:setRepsFull[1],note:''});
+      warmupSets.push({label:'S1',weightDisp:d1p,weightKg:wkg1,reps:setRepsFull[1],note:''});
     }
 
     var setRestMap={2:null,3:null,4:'s4',5:'s5',6:'s6'};
     ['S2','S3','S4','S5','S6'].forEach(function(lbl,i){
       var sn=i+2;
       var rawW=targetKg*scheme.pcts[sn];
-      var d=dW(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
+      var d=dW(rawW,isKg,barKg),dp=dWplain(rawW,isKg,barKg),wkg=dWKg(rawW,isKg,barKg);
       var r=setRepsFull[sn];
       var rk=setRestMap[sn];
       var noteCell=rk?restTag(REST[exKey][rk]):noRestTag();
@@ -1144,7 +1155,7 @@ function calcWarmup(){
         +'<td style="font-family:var(--mono)">'+d+'</td>'
         +'<td style="font-family:var(--mono)">'+r+'</td>'
         +'<td style="font-family:var(--mono);font-size:11px">'+noteCell+'</td></tr>');
-      warmupSets.push({label:lbl,weightDisp:d,weightKg:wkg,reps:r,note:''});
+      warmupSets.push({label:lbl,weightDisp:dp,weightKg:wkg,reps:r,note:''});
     });
   } else {
     // FAST: 4 working sets, rest starts at the set crossing 70%, reps matched by nearest full %
@@ -1202,7 +1213,7 @@ function calcWarmup(){
   rows.push('<tr class="ts" onclick="showWuPlateCount('+targetKg+',\'TOP SET\')">'
     +'<td>TOP SET</td><td>'+topD+'</td><td>'+goalReps+'</td>'
     +'<td style="font-size:11px">'+topCell+'</td></tr>');
-  warmupSets.push({label:'TOP SET',weightDisp:topD,weightKg:targetKg,reps:goalReps,note:tl});
+  warmupSets.push({label:'TOP SET',weightDisp:topPrimary,weightKg:targetKg,reps:goalReps,note:tl});
 
   document.getElementById('wu-tbody').innerHTML=rows.join('');
   document.getElementById('wu-plate-panel').style.display='none';
@@ -1247,7 +1258,7 @@ function renderPlates(totalActive){
   var snapped=bar+Math.round(Math.max(0,(totalActive-bar))/step)*step;
   var perSide=Math.max(0,(snapped-bar-col*2))/2;
   var rem=perSide,loaded=[];
-  plates.forEach(function(p){while(rem>=p.w-0.001){loaded.push(p);rem-=p.w;}});
+  plates.forEach(function(p){while(rem>=p.w-0.02){loaded.push(p);rem=Math.round((rem-p.w)*1000)/1000;}});
   var counts={};loaded.forEach(function(p){counts[p.w]=(counts[p.w]||0)+1;});
   var keys=Object.keys(counts).sort(function(a,b){return b-a;});
   var sHTML=keys.map(function(w){
@@ -1256,10 +1267,16 @@ function renderPlates(totalActive){
   }).join('');
   if(col>0){sHTML+='<div class="mc" style="border-left:3px solid #666"><div class="mv">1x'+(Math.round(col*10)/10)+unit+'</div><div class="ml">collar/side</div></div>';}
   document.getElementById('pl-summ').innerHTML=sHTML;
+  // ── LOAD VALIDATION GUARD ──
+  var loadedSum=0;loaded.forEach(function(p){loadedSum+=p.w;});
+  var rebuilt=bar+col*2+loadedSum*2;
+  var mismatch=Math.abs(rebuilt-snapped)>0.05;
   var conv=isKg?(snapped*2.20462):(snapped/2.20462);
   document.getElementById('pl-total').textContent=snapped.toFixed(snapped%1?1:1)+' '+unit;
   document.getElementById('pl-total-alt').textContent=conv.toFixed(1)+' '+(isKg?'lb':'kg');
-  document.getElementById('pl-conv').textContent='Bar: '+bar.toFixed(bar%1?1:0)+unit+(col>0?' + 2 collars @ '+(Math.round(col*10)/10)+unit+' ea':'')+' | '+(Math.round(perSide*100)/100)+unit+' per side';
+  var convLine='Bar: '+bar.toFixed(bar%1?1:0)+unit+(col>0?' + 2 collars @ '+(Math.round(col*10)/10)+unit+' ea':'')+' | '+(Math.round(perSide*100)/100)+unit+' per side';
+  if(mismatch){convLine='<span style="color:#e74c3c">&#9888; Load mismatch: plates total '+rebuilt.toFixed(1)+unit+', target '+snapped.toFixed(1)+unit+'</span><br>'+convLine;}
+  document.getElementById('pl-conv').innerHTML=convLine;
   var colHTML=col>0?mkCollar():'';
   var lp=loaded.slice().reverse().map(function(p){return mkPlate(p,isKg);}).join('');
   var rp=loaded.map(function(p){return mkPlate(p,isKg);}).join('');
@@ -1378,9 +1395,11 @@ try{
 }catch(e){}
 
 wireControls();
-populatePlBarOptions();
+loadPlState();
 populateWuBarOptions();
 loadInputs();
+// render plate loader if a manual weight was restored
+if(plMode==='manual'){var pw=parseFloat(document.getElementById('pl-w').value);if(pw>0)rerender();}
 try{
   var lastTab=localStorage.getItem('tsa-last-tab');
   if(lastTab&&document.getElementById('tab-'+lastTab)){
